@@ -33,10 +33,21 @@ const NavLinks = styled.nav`
 
   li {
     margin-right: 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 
     @media (max-width: 768px) {
       margin: 10px 0;
       cursor: pointer;
+      padding: 8px 12px;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &:active {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
     }
   }
 `;
@@ -46,7 +57,7 @@ const StyledNavLink = styled(NavLink)`
   font-size: 18px;
   color: #D3D3D3;
   transition: all 0.3s ease;
-  display: block; /* fill li on small screens */
+  display: block;
   width: 100%;
   height: 100%;
 
@@ -54,6 +65,12 @@ const StyledNavLink = styled(NavLink)`
     text-shadow: 
       0 0 20px rgba(255, 255, 255, 1),
       0 0 25px rgba(255, 255, 255, 1);
+  }
+
+  @media (max-width: 768px) {
+    &:hover {
+      text-shadow: none;
+    }
   }
 `;
 
@@ -86,14 +103,12 @@ const Header = () => {
     { name: "About", path: "/about" },
   ];
 
-  // Detect window resize
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
