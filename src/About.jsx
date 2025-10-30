@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Header from './shared/header';
+import Header from './shared/navbar/header';
 
 function About() {
   const [count, setCount] = useState(0)

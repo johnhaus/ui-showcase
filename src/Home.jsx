@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import styled, { keyframes } from 'styled-components';
-import Header from './shared/header';
+import Header from './shared/navbar/header';
 
 const GreenText = styled.p`
     color: green;
