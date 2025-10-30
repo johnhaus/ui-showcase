@@ -1,11 +1,11 @@
-import { StrictMode } from 'react'
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
-import Home from './Home.jsx'
-import About from './About.jsx'
-import { createGlobalStyle } from 'styled-components'
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router';
+import Home from './Home.jsx';
+import About from './About.jsx';
+import { createGlobalStyle } from 'styled-components';
 
-const root = document.getElementById("root");
+const root = document.getElementById('root');
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -29,7 +29,7 @@ const GlobalStyles = createGlobalStyle`
   #root {
     height: 100%;
   }
-`
+`;
 
 ReactDOM.createRoot(root).render(
   <StrictMode>

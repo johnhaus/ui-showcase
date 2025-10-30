@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
 import styled, { keyframes } from 'styled-components';
 import Header from './shared/navbar/header';
 
 const GreenText = styled.p`
-    color: green;
+  color: green;
 `;
 
 const GreyText = styled.p`
@@ -22,7 +22,7 @@ const LogoImage = styled.img`
   }
 `;
 
-const Card = styled.div `
+const Card = styled.div`
   padding: 2em;
 `;
 
@@ -44,11 +44,11 @@ const Rotate = styled(LogoImage)`
 `;
 
 function Home() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <Header/>
+      <Header />
       <div>
         <a href="https://vite.dev" target="_blank" rel="noopener noreferrer">
           <LogoImage src={viteLogo} alt="Vite logo" />
@@ -62,15 +62,11 @@ function Home() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <GreenText>
-          Home Page
-        </GreenText>
+        <GreenText>Home Page</GreenText>
       </Card>
-      <GreyText>
-        Click on the Vite and React logos to learn more
-      </GreyText>
+      <GreyText>Click on the Vite and React logos to learn more</GreyText>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

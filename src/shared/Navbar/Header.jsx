@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { useState, useEffect, useRef } from 'react';
+import { NavLink, useNavigate } from 'react-router';
 import styled from 'styled-components';
-import Hamburger from "./Hamburger";
-import NavMenu from "./NavMenu";
+import Hamburger from './Hamburger';
+import NavMenu from './NavMenu';
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -10,7 +10,7 @@ const HeaderWrapper = styled.header`
   align-items: center;
   padding: 20px;
   height: 40px;
-  background-color: #8B0000;
+  background-color: #8b0000;
 `;
 
 const Header = () => {
@@ -19,16 +19,16 @@ const Header = () => {
   const menuRef = useRef(null);
 
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
   ];
 
   useEffect(() => {
-  const handleClickOutside = (e) => {
-    if (!menuRef.current?.contains(e.target)) setMenuOpen(false);
-  };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const handleClickOutside = (e) => {
+      if (!menuRef.current?.contains(e.target)) setMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleNavigate = (path) => {

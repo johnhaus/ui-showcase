@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink } from 'react-router';
 import styled from 'styled-components';
 
 const NavLinks = styled.nav`
@@ -10,7 +10,7 @@ const NavLinks = styled.nav`
 
     @media (max-width: 768px) {
       flex-direction: column;
-      background-color: #8B0000;
+      background-color: #8b0000;
       position: fixed;
       top: 70px;
       right: 0;
@@ -18,7 +18,7 @@ const NavLinks = styled.nav`
       border-radius: 4px;
       overflow: hidden;
 
-      transform: ${({ open }) => (open ? "translateX(0)" : "translateX(100%)")};
+      transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(100%)')};
       opacity: ${({ open }) => (open ? 1 : 0)};
       transition: all 0.35s ease-in-out;
     }
@@ -27,7 +27,9 @@ const NavLinks = styled.nav`
   li {
     margin-right: 20px;
     border-radius: 4px;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    transition:
+      background-color 0.3s ease,
+      transform 0.1s ease;
 
     @media (max-width: 768px) {
       margin: 5px 0;
@@ -46,16 +48,23 @@ const NavLinks = styled.nav`
       }
 
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         left: 50%;
         top: 50%;
         width: 0;
         height: 0;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 10%, transparent 10.01%);
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.4) 10%,
+          transparent 10.01%
+        );
         transform: translate(-50%, -50%);
         opacity: 0;
-        transition: width 0.4s ease, height 0.4s ease, opacity 0.4s ease;
+        transition:
+          width 0.4s ease,
+          height 0.4s ease,
+          opacity 0.4s ease;
       }
 
       &:active::after {
@@ -71,13 +80,13 @@ const NavLinks = styled.nav`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 18px;
-  color: #D3D3D3;
+  color: #d3d3d3;
   transition: all 0.3s ease;
   display: block;
   width: 100%;
 
   &:hover {
-    text-shadow: 
+    text-shadow:
       0 0 20px rgba(255, 255, 255, 1),
       0 0 25px rgba(255, 255, 255, 1);
   }
