@@ -96,12 +96,7 @@ const NavMenu = ({ open, isMobile, navItems, onNavigate }) => (
   <NavLinks open={open}>
     <ul>
       {navItems.map((item) => (
-        <li
-          key={item.name}
-          onClick={() => {
-            if (isMobile) onNavigate(item.path);
-          }}
-        >
+        <li key={item.name} onClick={() => onNavigate(item.path)}>
           <StyledNavLink to={item.path}>{item.name}</StyledNavLink>
         </li>
       ))}

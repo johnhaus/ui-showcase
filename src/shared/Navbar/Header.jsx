@@ -1,9 +1,8 @@
-import Hamburger from "./Hamburger";
-import NavMenu from "./NavMenu";
-
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router";
 import styled from 'styled-components';
+import Hamburger from "./Hamburger";
+import NavMenu from "./NavMenu";
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -16,7 +15,6 @@ const HeaderWrapper = styled.header`
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
@@ -24,12 +22,6 @@ const Header = () => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
   ];
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -41,19 +33,21 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleNavigate = (path) => {
+    const isMobile = window.innerWidth <= 768;
+    navigate(path);
+    if (isMobile) setMenuOpen(false);
+  };
+
   return (
     <HeaderWrapper>
       <div>Demo Website</div>
       <div ref={menuRef}>
-        <Hamburger open={menuOpen} toggle={() => setMenuOpen(!menuOpen)} />
+        <Hamburger toggle={() => setMenuOpen(!menuOpen)} />
         <NavMenu
           open={menuOpen}
-          isMobile={isMobile}
           navItems={navItems}
-          onNavigate={(path) => {
-            navigate(path);
-            setMenuOpen(false);
-          }}
+          onNavigate={handleNavigate}
         />
       </div>
     </HeaderWrapper>

@@ -18,7 +18,7 @@ const HamburgerWrapper = styled.div`
   }
 `;
 
-const Hamburger = ({ open, toggle }) => (
+const Hamburger = ({ toggle }) => (
   <HamburgerWrapper onClick={toggle}>
     <span></span>
     <span></span>
