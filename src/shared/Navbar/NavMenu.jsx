@@ -11,7 +11,7 @@ const NavLinks = styled.nav`
     @media (max-width: 768px) {
       flex-direction: column;
       background-color: #8B0000;
-      position: absolute;
+      position: fixed;
       top: 70px;
       right: 0;
       width: 200px;
