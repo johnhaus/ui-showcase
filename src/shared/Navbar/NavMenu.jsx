@@ -98,7 +98,7 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const NavMenu = ({ open, isMobile, navItems, onNavigate }) => (
+const NavMenu = ({ open, navItems, onNavigate }) => (
   <NavLinks open={open}>
     <ul>
       {navItems.map((item) => (
