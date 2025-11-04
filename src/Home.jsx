@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import Header from './shared/navbar/header';
 
 const MainLayout = styled.div`
   display: flex;
@@ -46,7 +45,6 @@ function Home() {
 
   return (
     <>
-      <Header />
       <MainLayout>
         <Intro>
           <h1>Intro text</h1>
