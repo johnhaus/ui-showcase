@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FaTrashAlt, FaCheck, FaExclamation } from 'react-icons/fa';
+import { FaTrashAlt, FaCheck, FaExclamation, FaUndo } from 'react-icons/fa';
 
 const Container = styled.div`
   display: flex;
@@ -61,14 +61,14 @@ const TaskButton = styled.button`
   ${(props) =>
     props.$isPriority &&
     `
-      background-color: ${props.$priority ? '#ff6347' : 'white'};
-      color: ${props.$priority ? 'white' : '#ff6347'};
-      border: ${props.$priority ? 'none' : '2px solid #ff6347'};
+      background-color: ${props.$priority ? '#d35400' : 'white'};
+      color: ${props.$priority ? 'white' : '#d35400'};
+      border: ${props.$priority ? 'none' : '2px solid #d35400'};
   `}
 `;
 
 const AddTaskButton = styled.button`
-  background-color: #007bff;
+  background-color: #8b0000;
   color: white;
   border: none;
   padding: 10px;
@@ -191,13 +191,13 @@ const TodoList = () => {
                         <FaExclamation />
                       </TaskButton>
                       <TaskButton
-                        $bgColor="#4caf50"
+                        $bgColor="#388e3c"
                         onClick={() => toggleCompletion(task.key)}
                       >
                         <FaCheck />
                       </TaskButton>
                       <TaskButton
-                        $bgColor="#f44336"
+                        $bgColor="#8b0000"
                         onClick={() => deleteTask(task.key)}
                       >
                         <FaTrashAlt />
@@ -210,7 +210,7 @@ const TodoList = () => {
         )}
 
         <Section>
-          <SectionTitle>Regular Tasks</SectionTitle>
+          <SectionTitle>Tasks</SectionTitle>
           <TaskList>
             {tasks
               .filter((task) => !task.priority && !task.completed)
@@ -226,13 +226,13 @@ const TodoList = () => {
                       <FaExclamation />
                     </TaskButton>
                     <TaskButton
-                      $bgColor="#4caf50"
+                      $bgColor="#388e3c"
                       onClick={() => toggleCompletion(task.key)}
                     >
                       <FaCheck />
                     </TaskButton>
                     <TaskButton
-                      $bgColor="#f44336"
+                      $bgColor="#8b0000"
                       onClick={() => deleteTask(task.key)}
                     >
                       <FaTrashAlt />
@@ -254,11 +254,19 @@ const TodoList = () => {
                     <span>{task.text}</span>
                     <div>
                       <TaskButton
-                        $bgColor="#4caf50"
+                        $bgColor="#388e3c"
                         onClick={() => toggleCompletion(task.key)}
                       >
-                        <FaCheck />
+                        <FaUndo />
                       </TaskButton>
+
+                      <TaskButton
+                        $bgColor="#8b0000"
+                        onClick={() => deleteTask(task.key)}
+                      >
+                        <FaTrashAlt />
+                      </TaskButton>
+
                     </div>
                   </TaskItem>
                 ))}
