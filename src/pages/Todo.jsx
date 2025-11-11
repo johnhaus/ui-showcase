@@ -175,36 +175,38 @@ const TodoList = () => {
           <AddTaskButton onClick={addTask}>Add Task</AddTaskButton>
         </InputWrapper>
 
-        <Section>
-          <SectionTitle>Priority Tasks</SectionTitle>
-          <TaskList>
-            {tasks
-              .filter((task) => task.priority && !task.completed)
-              .map((task) => (
-                <TaskItem key={task.key} completed={task.completed}>
-                  <span>{task.text}</span>
-                  <div>
-                    <TaskButton
-                      priority={task.priority}
-                      isPriority={true}
-                      onClick={() => togglePriority(task.key)}
-                    >
-                      <FaExclamation />
-                    </TaskButton>
-                    <TaskButton
-                      bgColor="#4caf50"
-                      onClick={() => toggleCompletion(task.key)}
-                    >
-                      <FaCheck />
-                    </TaskButton>
-                    <TaskButton bgColor="#f44336" onClick={() => deleteTask(task.key)}>
-                      <FaTrashAlt />
-                    </TaskButton>
-                  </div>
-                </TaskItem>
-              ))}
-          </TaskList>
-        </Section>
+        {tasks.filter((task) => task.priority && !task.completed).length > 0 && (
+          <Section>
+            <SectionTitle>Priority Tasks</SectionTitle>
+            <TaskList>
+              {tasks
+                .filter((task) => task.priority && !task.completed)
+                .map((task) => (
+                  <TaskItem key={task.key} completed={task.completed}>
+                    <span>{task.text}</span>
+                    <div>
+                      <TaskButton
+                        priority={task.priority}
+                        isPriority={true}
+                        onClick={() => togglePriority(task.key)}
+                      >
+                        <FaExclamation />
+                      </TaskButton>
+                      <TaskButton
+                        bgColor="#4caf50"
+                        onClick={() => toggleCompletion(task.key)}
+                      >
+                        <FaCheck />
+                      </TaskButton>
+                      <TaskButton bgColor="#f44336" onClick={() => deleteTask(task.key)}>
+                        <FaTrashAlt />
+                      </TaskButton>
+                    </div>
+                  </TaskItem>
+                ))}
+            </TaskList>
+          </Section>
+        )}
 
         <Section>
           <SectionTitle>Regular Tasks</SectionTitle>
@@ -237,6 +239,7 @@ const TodoList = () => {
           </TaskList>
         </Section>
 
+        {tasks.filter((task) => task.completed).length > 0 && (
         <Section>
           <SectionTitle>Completed Tasks</SectionTitle>
           <TaskList>
@@ -257,6 +260,7 @@ const TodoList = () => {
               ))}
           </TaskList>
         </Section>
+        )}
 
       </TodoWrapper>
     </Container>
