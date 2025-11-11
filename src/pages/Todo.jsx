@@ -33,18 +33,18 @@ const TaskList = styled.ul`
 `;
 
 const TaskItem = styled.li`
-  background-color: ${(props) => (props.completed ? '#d3f9d8' : '#f9f9f9')};
+  background-color: ${(props) => (props.$completed ? '#d3f9d8' : '#f9f9f9')};
   padding: 10px;
   margin: 8px 0;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: ${(props) => (props.completed ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.1)')};
+  box-shadow: ${(props) => (props.$completed ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.1)')};
 `;
 
 const TaskButton = styled.button`
-  background-color: ${(props) => props.bgcolor || '#f0f0f0'};
+  background-color: ${(props) => props.$bgColor || '#f0f0f0'};
   color: white;
   border: none;
   width: 40px;
@@ -59,11 +59,11 @@ const TaskButton = styled.button`
   }
 
   ${(props) =>
-    props.isPriority &&
+    props.$isPriority &&
     `
-      background-color: ${props.priority ? '#ff6347' : 'white'};
-      color: ${props.priority ? 'white' : '#ff6347'};
-      border: ${props.priority ? 'none' : '2px solid #ff6347'};
+      background-color: ${props.$priority ? '#ff6347' : 'white'};
+      color: ${props.$priority ? 'white' : '#ff6347'};
+      border: ${props.$priority ? 'none' : '2px solid #ff6347'};
   `}
 `;
 
@@ -124,7 +124,7 @@ const TodoList = () => {
       ]);
       setTaskText('');
       setIsPriority(false);
-      setKey(key + 1)
+      setKey(key + 1);
     }
   };
 
@@ -144,7 +144,6 @@ const TodoList = () => {
 
   const deleteTask = (taskId) => {
     const newTasks = tasks.filter((task) => task.key !== taskId);
-
     setTasks(newTasks);
   };
 
@@ -181,23 +180,26 @@ const TodoList = () => {
               {tasks
                 .filter((task) => task.priority && !task.completed)
                 .map((task) => (
-                  <TaskItem key={task.key} completed={task.completed ? 'true' : undefined}>
+                  <TaskItem key={task.key} $completed={task.completed}>
                     <span>{task.text}</span>
                     <div>
                       <TaskButton
-                        priority={task.priority ? 'true' : undefined}
-                        isPriority={true}
+                        $priority={task.priority}
+                        $isPriority={true}
                         onClick={() => togglePriority(task.key)}
                       >
                         <FaExclamation />
                       </TaskButton>
                       <TaskButton
-                        bgcolor="#4caf50"
+                        $bgColor="#4caf50"
                         onClick={() => toggleCompletion(task.key)}
                       >
                         <FaCheck />
                       </TaskButton>
-                      <TaskButton bgcolor="#f44336" onClick={() => deleteTask(task.key)}>
+                      <TaskButton
+                        $bgColor="#f44336"
+                        onClick={() => deleteTask(task.key)}
+                      >
                         <FaTrashAlt />
                       </TaskButton>
                     </div>
@@ -213,23 +215,26 @@ const TodoList = () => {
             {tasks
               .filter((task) => !task.priority && !task.completed)
               .map((task) => (
-                <TaskItem key={task.key} completed={task.completed ? 'true' : undefined}>
+                <TaskItem key={task.key} $completed={task.completed}>
                   <span>{task.text}</span>
                   <div>
                     <TaskButton
-                      priority={task.priority ? 'true' : undefined}
-                      isPriority={true}
+                      $priority={task.priority}
+                      $isPriority={true}
                       onClick={() => togglePriority(task.key)}
                     >
                       <FaExclamation />
                     </TaskButton>
                     <TaskButton
-                      bgcolor="#4caf50"
+                      $bgColor="#4caf50"
                       onClick={() => toggleCompletion(task.key)}
                     >
                       <FaCheck />
                     </TaskButton>
-                    <TaskButton bgcolor="#f44336" onClick={() => deleteTask(task.key)}>
+                    <TaskButton
+                      $bgColor="#f44336"
+                      onClick={() => deleteTask(task.key)}
+                    >
                       <FaTrashAlt />
                     </TaskButton>
                   </div>
@@ -239,26 +244,26 @@ const TodoList = () => {
         </Section>
 
         {tasks.filter((task) => task.completed).length > 0 && (
-        <Section>
-          <SectionTitle>Completed Tasks</SectionTitle>
-          <TaskList>
-            {tasks
-              .filter((task) => task.completed)
-              .map((task) => (
-                <TaskItem key={task.key} completed={task.completed ? 'true' : undefined}>
-                  <span>{task.text}</span>
-                  <div>
-                    <TaskButton
-                      bgcolor="#4caf50"
-                      onClick={() => toggleCompletion(task.key)}
-                    >
-                      <FaCheck />
-                    </TaskButton>
-                  </div>
-                </TaskItem>
-              ))}
-          </TaskList>
-        </Section>
+          <Section>
+            <SectionTitle>Completed Tasks</SectionTitle>
+            <TaskList>
+              {tasks
+                .filter((task) => task.completed)
+                .map((task) => (
+                  <TaskItem key={task.key} $completed={task.completed}>
+                    <span>{task.text}</span>
+                    <div>
+                      <TaskButton
+                        $bgColor="#4caf50"
+                        onClick={() => toggleCompletion(task.key)}
+                      >
+                        <FaCheck />
+                      </TaskButton>
+                    </div>
+                  </TaskItem>
+                ))}
+            </TaskList>
+          </Section>
         )}
       </TodoWrapper>
     </Container>
