@@ -151,7 +151,6 @@ const TodoList = () => {
   return (
     <Container>
       <TodoWrapper>
-
         <InputWrapper>
           <Label htmlFor="taskInput">Add a new task</Label>
           <Input
@@ -182,11 +181,11 @@ const TodoList = () => {
               {tasks
                 .filter((task) => task.priority && !task.completed)
                 .map((task) => (
-                  <TaskItem key={task.key} completed={task.completed}>
+                  <TaskItem key={task.key} completed={task.completed ? 'true' : undefined}>
                     <span>{task.text}</span>
                     <div>
                       <TaskButton
-                        priority={task.priority}
+                        priority={task.priority ? 'true' : undefined}
                         isPriority={true}
                         onClick={() => togglePriority(task.key)}
                       >
@@ -214,11 +213,11 @@ const TodoList = () => {
             {tasks
               .filter((task) => !task.priority && !task.completed)
               .map((task) => (
-                <TaskItem key={task.key} completed={task.completed}>
+                <TaskItem key={task.key} completed={task.completed ? 'true' : undefined}>
                   <span>{task.text}</span>
                   <div>
                     <TaskButton
-                      priority={task.priority}
+                      priority={task.priority ? 'true' : undefined}
                       isPriority={true}
                       onClick={() => togglePriority(task.key)}
                     >
@@ -246,7 +245,7 @@ const TodoList = () => {
             {tasks
               .filter((task) => task.completed)
               .map((task) => (
-                <TaskItem key={task.key} completed={task.completed}>
+                <TaskItem key={task.key} completed={task.completed ? 'true' : undefined}>
                   <span>{task.text}</span>
                   <div>
                     <TaskButton
@@ -261,7 +260,6 @@ const TodoList = () => {
           </TaskList>
         </Section>
         )}
-
       </TodoWrapper>
     </Container>
   );
