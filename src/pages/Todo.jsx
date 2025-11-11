@@ -44,7 +44,7 @@ const TaskItem = styled.li`
 `;
 
 const TaskButton = styled.button`
-  background-color: ${(props) => props.bgColor || '#f0f0f0'};
+  background-color: ${(props) => props.bgcolor || '#f0f0f0'};
   color: white;
   border: none;
   width: 40px;
@@ -193,12 +193,12 @@ const TodoList = () => {
                         <FaExclamation />
                       </TaskButton>
                       <TaskButton
-                        bgColor="#4caf50"
+                        bgcolor="#4caf50"
                         onClick={() => toggleCompletion(task.key)}
                       >
                         <FaCheck />
                       </TaskButton>
-                      <TaskButton bgColor="#f44336" onClick={() => deleteTask(task.key)}>
+                      <TaskButton bgcolor="#f44336" onClick={() => deleteTask(task.key)}>
                         <FaTrashAlt />
                       </TaskButton>
                     </div>
@@ -225,12 +225,12 @@ const TodoList = () => {
                       <FaExclamation />
                     </TaskButton>
                     <TaskButton
-                      bgColor="#4caf50"
+                      bgcolor="#4caf50"
                       onClick={() => toggleCompletion(task.key)}
                     >
                       <FaCheck />
                     </TaskButton>
-                    <TaskButton bgColor="#f44336" onClick={() => deleteTask(task.key)}>
+                    <TaskButton bgcolor="#f44336" onClick={() => deleteTask(task.key)}>
                       <FaTrashAlt />
                     </TaskButton>
                   </div>
@@ -250,7 +250,7 @@ const TodoList = () => {
                   <span>{task.text}</span>
                   <div>
                     <TaskButton
-                      bgColor="#4caf50"
+                      bgcolor="#4caf50"
                       onClick={() => toggleCompletion(task.key)}
                     >
                       <FaCheck />
