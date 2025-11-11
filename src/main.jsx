@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import Home from './Home.jsx';
 import About from './About.jsx';
-import Page1 from './pages/Page1.jsx';
+import Todo from './pages/Todo.jsx';
 import Page2 from './pages/Page2.jsx';
 import Page3 from './pages/Page3.jsx';
 import Page4 from './pages/Page4.jsx';
@@ -44,7 +44,7 @@ ReactDOM.createRoot(root).render(
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
-          <Route path="page1" element={<Page1 />} />
+          <Route path="todo" element={<Todo />} />
           <Route path="page2" element={<Page2 />} />
           <Route path="page3" element={<Page3 />} />
           <Route path="page4" element={<Page4 />} />

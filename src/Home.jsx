@@ -40,7 +40,7 @@ function Home() {
           <h1>Intro text</h1>
         </Intro>
         <CardContainer>
-          <Card to={'./page1'} title={'title'}>
+          <Card to={'./todo'} title={'Todo List'}>
             text
           </Card>
           <Card to={'./page2'} title={'title'}>
