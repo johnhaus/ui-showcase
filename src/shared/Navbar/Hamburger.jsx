@@ -8,10 +8,11 @@ const HamburgerWrapper = styled.div`
   span {
     height: 3px;
     width: 25px;
-    background: #d3d3d3;
+    background: ${({ theme }) => theme.colors.white};
     margin-bottom: 4px;
     border-radius: 2px;
   }
+  
 
   @media (max-width: 768px) {
     display: flex;

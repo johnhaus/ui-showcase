@@ -10,7 +10,7 @@ const NavLinks = styled.nav`
 
     @media (max-width: 768px) {
       flex-direction: column;
-      background-color: #8b0000;
+      background-color: ${({ theme }) => theme.colors.red};
       position: fixed;
       top: 70px;
       right: 0;
@@ -39,11 +39,11 @@ const NavLinks = styled.nav`
       overflow: hidden;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: ${({ theme }) => theme.colors.hoverTransparent};
       }
 
       &:active {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: ${({ theme }) => theme.colors.activeTransparent};
         transform: scale(0.98);
       }
 
@@ -54,11 +54,6 @@ const NavLinks = styled.nav`
         top: 50%;
         width: 0;
         height: 0;
-        background: radial-gradient(
-          circle,
-          rgba(255, 255, 255, 0.4) 10%,
-          transparent 10.01%
-        );
         transform: translate(-50%, -50%);
         opacity: 0;
         transition:
@@ -80,15 +75,15 @@ const NavLinks = styled.nav`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 18px;
-  color: #d3d3d3;
+  color: ${({ theme }) => theme.colors.white};
   transition: all 0.3s ease;
   display: block;
   width: 100%;
 
   &:hover {
     text-shadow:
-      0 0 20px rgba(255, 255, 255, 1),
-      0 0 25px rgba(255, 255, 255, 1);
+      0 0 20px ${({ theme }) => theme.colors.hoverWhite};,
+      0 0 25px ${({ theme }) => theme.colors.hoverWhite};,
   }
 
   @media (max-width: 768px) {

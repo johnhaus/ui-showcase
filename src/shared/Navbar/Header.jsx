@@ -10,7 +10,7 @@ const HeaderWrapper = styled.header`
   align-items: center;
   padding: 20px;
   height: 40px;
-  background-color: #8b0000;
+  background-color: ${({ theme }) => theme.colors.red};
 `;
 
 const Header = () => {
