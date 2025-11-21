@@ -5,7 +5,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { theme } from './theme.js';
 import Home from './Home.jsx';
 import About from './About.jsx';
-import Todo from './pages/Todo.jsx';
+import Todo from './pages/todo/Todo.jsx';
 import Page2 from './pages/Page2.jsx';
 import Page3 from './pages/Page3.jsx';
 import Page4 from './pages/Page4.jsx';

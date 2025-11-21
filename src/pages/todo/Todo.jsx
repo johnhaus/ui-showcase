@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import RoundButton from '../shared/Button/RoundButton';
-import Button from '../shared/Button/Button';
+import RoundButton from '../../shared/Button/RoundButton';
+import Button from '../../shared/Button/Button';
 import { FaTrashAlt, FaCheck, FaExclamation, FaUndo } from 'react-icons/fa';
-import TaskSection from './todo/TaskSection';
+import TaskSection from './TaskSection';
 
 const Container = styled.div`
   display: flex;
