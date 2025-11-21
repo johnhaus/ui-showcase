@@ -13,6 +13,21 @@ const HeaderWrapper = styled.header`
   background-color: ${({ theme }) => theme.colors.red};
 `;
 
+const HomeNavLink = styled(NavLink)`
+  text-decoration: none;
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.white};
+  transition: all 0.3s ease;
+  display: block;
+  width: 100%;
+
+  &:hover {
+    text-shadow:
+      0 0 20px ${({ theme }) => theme.colors.hoverWhite};,
+      0 0 25px ${({ theme }) => theme.colors.hoverWhite};,
+  }
+`;
+
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -39,7 +54,9 @@ const Header = () => {
 
   return (
     <HeaderWrapper>
-      <div>Demo Website</div>
+      <div>
+        <HomeNavLink to="/">Demo Website</HomeNavLink>
+      </div>
       <div ref={menuRef}>
         <Hamburger toggle={() => setMenuOpen(!menuOpen)} />
         <NavMenu
