@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import RoundButton from '../shared/Button/RoundButton';
 import Button from '../shared/Button/Button';
 import { FaTrashAlt, FaCheck, FaExclamation, FaUndo } from 'react-icons/fa';
+import TaskSection from './todo/TaskSection';
 
 const Container = styled.div`
   display: flex;
@@ -18,35 +19,6 @@ const TodoWrapper = styled.div`
   width: 90%;
   max-width: 600px;
   box-shadow: 0 0px 8px ${({ theme }) => theme.colors.lightGrey};
-`;
-
-const Section = styled.div`
-  margin-bottom: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.black};
-`;
-
-const SectionTitle = styled.h3`
-  font-weight: bold;
-`;
-
-const TaskList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const TaskItem = styled.li`
-  background-color: ${(props) =>
-    props.$completed
-      ? props.theme.colors.lightGreen
-      : props.theme.colors.white};
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: ${(props) =>
-    props.$completed ? 'none' : props.theme.colors.lightGrey};
 `;
 
 const InputWrapper = styled.div`
@@ -132,23 +104,24 @@ const TodoList = () => {
   };
 
   const toggleCompletion = (taskId) => {
-    const newTasks = tasks.map((task) =>
+    setTasks(tasks.map(task =>
       task.key === taskId ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(newTasks);
+    ));
   };
 
-  const togglePriority = (taskId) => {
-    const newTasks = tasks.map((task) =>
+ const togglePriority = (taskId) => {
+    setTasks(tasks.map(task =>
       task.key === taskId ? { ...task, priority: !task.priority } : task
-    );
-    setTasks(newTasks);
+    ));
   };
 
   const deleteTask = (taskId) => {
-    const newTasks = tasks.filter((task) => task.key !== taskId);
-    setTasks(newTasks);
+    setTasks(tasks.filter(task => task.key !== taskId));
   };
+
+  const priorityTasks = tasks.filter(task => task.priority && !task.completed);
+  const normalTasks = tasks.filter(task => !task.priority && !task.completed);
+  const completedTasks = tasks.filter(task => task.completed);
 
   return (
     <Container>
@@ -179,97 +152,74 @@ const TodoList = () => {
           <Button onClick={addTask}>Add Task</Button>
         </InputWrapper>
 
-        {tasks.filter((task) => task.priority && !task.completed).length >
-          0 && (
-          <Section>
-            <SectionTitle>Priority Tasks</SectionTitle>
-            <TaskList>
-              {tasks
-                .filter((task) => task.priority && !task.completed)
-                .map((task) => (
-                  <TaskItem key={task.key} $completed={task.completed}>
-                    <span>{task.text}</span>
-                    <div>
-                      <RoundButton
-                        icon={<FaExclamation />}
-                        $isPriority={true}
-                        $priority={task.priority}
-                        onClick={() => togglePriority(task.key)}
-                      />
-                      <RoundButton
-                        icon={<FaCheck />}
-                        $bgColor={({ theme }) => theme.colors.green}
-                        onClick={() => toggleCompletion(task.key)}
-                      />
-                      <RoundButton
-                        icon={<FaTrashAlt />}
-                        $bgColor={({ theme }) => theme.colors.red}
-                        onClick={() => deleteTask(task.key)}
-                      />
-                    </div>
-                  </TaskItem>
-                ))}
-            </TaskList>
-          </Section>
-        )}
+        <TaskSection
+          title="Priority Tasks"
+          tasks={priorityTasks}
+          renderButtons={(task) => (
+            <>
+              <RoundButton
+                icon={<FaExclamation />}
+                $isPriority
+                $priority={task.priority}
+                onClick={() => togglePriority(task.key)}
+              />
+              <RoundButton
+                icon={<FaCheck />}
+                $bgColor={({ theme }) => theme.colors.green}
+                onClick={() => toggleCompletion(task.key)}
+              />
+              <RoundButton
+                icon={<FaTrashAlt />}
+                $bgColor={({ theme }) => theme.colors.red}
+                onClick={() => deleteTask(task.key)}
+              />
+            </>
+          )}
+        />
 
-        <Section>
-          <SectionTitle>Tasks</SectionTitle>
-          <TaskList>
-            {tasks
-              .filter((task) => !task.priority && !task.completed)
-              .map((task) => (
-                <TaskItem key={task.key} $completed={task.completed}>
-                  <span>{task.text}</span>
-                  <div>
-                    <RoundButton
-                      icon={<FaExclamation />}
-                      $priority={task.priority}
-                      $isPriority={true}
-                      onClick={() => togglePriority(task.key)}
-                    />
-                    <RoundButton
-                      icon={<FaCheck />}
-                      $bgColor={({ theme }) => theme.colors.green}
-                      onClick={() => toggleCompletion(task.key)}
-                    />
-                    <RoundButton
-                      icon={<FaTrashAlt />}
-                      $bgColor={({ theme }) => theme.colors.red}
-                      onClick={() => deleteTask(task.key)}
-                    />
-                  </div>
-                </TaskItem>
-              ))}
-          </TaskList>
-        </Section>
+        <TaskSection
+          title="Tasks"
+          tasks={normalTasks}
+          renderButtons={(task) => (
+            <>
+              <RoundButton
+                icon={<FaExclamation />}
+                $isPriority
+                $priority={task.priority}
+                onClick={() => togglePriority(task.key)}
+              />
+              <RoundButton
+                icon={<FaCheck />}
+                $bgColor={({ theme }) => theme.colors.green}
+                onClick={() => toggleCompletion(task.key)}
+              />
+              <RoundButton
+                icon={<FaTrashAlt />}
+                $bgColor={({ theme }) => theme.colors.red}
+                onClick={() => deleteTask(task.key)}
+              />
+            </>
+          )}
+        />
 
-        {tasks.filter((task) => task.completed).length > 0 && (
-          <Section>
-            <SectionTitle>Completed Tasks</SectionTitle>
-            <TaskList>
-              {tasks
-                .filter((task) => task.completed)
-                .map((task) => (
-                  <TaskItem key={task.key} $completed={task.completed}>
-                    <span>{task.text}</span>
-                    <div>
-                      <RoundButton
-                        icon={<FaUndo />}
-                        $bgColor={({ theme }) => theme.colors.green}
-                        onClick={() => toggleCompletion(task.key)}
-                      />
-                      <RoundButton
-                        icon={<FaTrashAlt />}
-                        $bgColor={({ theme }) => theme.colors.red}
-                        onClick={() => deleteTask(task.key)}
-                      />
-                    </div>
-                  </TaskItem>
-                ))}
-            </TaskList>
-          </Section>
-        )}
+        <TaskSection
+          title="Completed Tasks"
+          tasks={completedTasks}
+          renderButtons={(task) => (
+            <>
+              <RoundButton
+                icon={<FaUndo />}
+                $bgColor={({ theme }) => theme.colors.green}
+                onClick={() => toggleCompletion(task.key)}
+              />
+              <RoundButton
+                icon={<FaTrashAlt />}
+                $bgColor={({ theme }) => theme.colors.red}
+                onClick={() => deleteTask(task.key)}
+              />
+            </>
+          )}
+        />
       </TodoWrapper>
     </Container>
   );
