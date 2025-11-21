@@ -11,18 +11,18 @@ const Container = styled.div`
 `;
 
 const TodoWrapper = styled.div`
-  background: rgba(255, 255, 255, 0.87);
-  color: #242424;
+  background: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.black};
   padding: 20px;
   border-radius: 8px;
   width: 90%;
   max-width: 600px;
-  box-shadow: 0 0px 8px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0px 8px ${({ theme }) => theme.colors.lightGrey};
 `;
 
 const Section = styled.div`
   margin-bottom: 20px;
-  border-top: 1px solid #242424;
+  border-top: 1px solid ${({ theme }) => theme.colors.black};
 `;
 
 const SectionTitle = styled.h3`
@@ -43,7 +43,7 @@ const TaskItem = styled.li`
   justify-content: space-between;
   align-items: center;
   box-shadow: ${(props) =>
-    props.$completed ? 'none' : '0 2px 4px rgba(0, 0, 0, 0.1)'};
+    props.$completed ? 'none' : props.theme.colors.lightGrey};
 `;
 
 const InputWrapper = styled.div`
@@ -61,7 +61,7 @@ const Input = styled.input`
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid ${({ theme }) => theme.colors.lightGrey};
   font-size: 16px;
 `;
 
@@ -74,8 +74,8 @@ const CheckboxInput = styled.input`
   display: none;
 
   &:checked + label .checkmark {
-    background-color: #8b0000;
-    border-color: #8b0000;
+    background-color: ${({ theme }) => theme.colors.red};
+    border-color: ${({ theme }) => theme.colors.black};
   }
 
   &:checked + label .checkmark::after {
@@ -84,7 +84,7 @@ const CheckboxInput = styled.input`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: ${({ theme }) => theme.colors.white};
     font-size: 16px;
   }
 `;
@@ -92,7 +92,7 @@ const CheckboxInput = styled.input`
 const CheckboxLabel = styled.label`
   position: relative;
   cursor: pointer;
-  padding-left: 30px; /* Space for the custom checkbox */
+  padding-left: 30px;
 
   .checkmark {
     position: absolute;
@@ -100,9 +100,9 @@ const CheckboxLabel = styled.label`
     top: 0;
     width: 20px;
     height: 20px;
-    border: 2px solid #ccc;
+    border: 1px solid ${({ theme }) => theme.colors.lightGrey};
     border-radius: 4px;
-    background-color: white;
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -191,12 +191,12 @@ const TodoList = () => {
                       />
                       <RoundButton
                         icon={<FaCheck />}
-                        $bgColor="#388e3c"
+                        $bgColor={({ theme }) => theme.colors.green}
                         onClick={() => toggleCompletion(task.key)}
                       />
                       <RoundButton
                         icon={<FaTrashAlt />}
-                        $bgColor="#8b0000"
+                        $bgColor={({ theme }) => theme.colors.red}
                         onClick={() => deleteTask(task.key)}
                       />
                     </div>
@@ -223,12 +223,12 @@ const TodoList = () => {
                     />
                     <RoundButton
                       icon={<FaCheck />}
-                      $bgColor="#388e3c"
+                      $bgColor={({ theme }) => theme.colors.green}
                       onClick={() => toggleCompletion(task.key)}
                     />
                     <RoundButton
                       icon={<FaTrashAlt />}
-                      $bgColor="#8b0000"
+                      $bgColor={({ theme }) => theme.colors.red}
                       onClick={() => deleteTask(task.key)}
                     />
                   </div>
@@ -249,12 +249,12 @@ const TodoList = () => {
                     <div>
                       <RoundButton
                         icon={<FaUndo />}
-                        $bgColor="#388e3c"
+                        $bgColor={({ theme }) => theme.colors.green}
                         onClick={() => toggleCompletion(task.key)}
                       />
                       <RoundButton
                         icon={<FaTrashAlt />}
-                        $bgColor="#8b0000"
+                        $bgColor={({ theme }) => theme.colors.red}
                         onClick={() => deleteTask(task.key)}
                       />
                     </div>
