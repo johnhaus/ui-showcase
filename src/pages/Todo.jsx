@@ -66,6 +66,10 @@ const Input = styled.input`
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.colors.lightGrey};
   font-size: 16px;
+
+  &:focus {
+    outline: 1px solid ${({ theme }) => theme.colors.black};
+  }
 `;
 
 const CheckboxWrapper = styled.div`
