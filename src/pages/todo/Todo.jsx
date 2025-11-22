@@ -85,6 +85,10 @@ const CheckboxLabel = styled.label`
   }
 `;
 
+export const deleteTaskLogic = (tasks, taskId) => {
+  return tasks.filter((task) => task.key !== taskId);
+};
+
 const TodoList = () => {
   const [key, setKey] = useState(1);
   const [tasks, setTasks] = useState([]);
@@ -120,7 +124,8 @@ const TodoList = () => {
   };
 
   const deleteTask = (taskId) => {
-    setTasks(tasks.filter((task) => task.key !== taskId));
+    const updatedTasks = deleteTaskLogic(tasks, taskId);
+    setTasks(updatedTasks);
   };
 
   const priorityTasks = tasks.filter(
