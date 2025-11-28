@@ -4,7 +4,7 @@ import RoundButton from '../../shared/Button/RoundButton';
 import Button from '../../shared/Button/Button';
 import { FaTrashAlt, FaCheck, FaExclamation, FaUndo } from 'react-icons/fa';
 import TaskSection from './TaskSection';
-import { deleteTaskLogic } from './taskUtils';
+import { addTaskLogic, togglePriorityLogic, toggleCompletionLogic, deleteTaskLogic } from './taskUtils';
 
 const Container = styled.div`
   display: flex;
@@ -92,37 +92,32 @@ const TodoList = () => {
   const [taskText, setTaskText] = useState('');
   const [isPriority, setIsPriority] = useState(false);
 
-  const addTask = () => {
-    if (taskText.trim() !== '') {
-      setTasks([
-        ...tasks,
-        { key: key, text: taskText, completed: false, priority: isPriority },
-      ]);
-      setTaskText('');
-      setIsPriority(false);
-      setKey(key + 1);
-    }
+const addTask = () => {
+  setTasks((prevTasks) => {
+    return addTaskLogic(prevTasks, key, taskText, isPriority);
+  });
+
+  setTaskText('');
+  setIsPriority(false);
+  setKey((prevKey) => prevKey + 1);
+};
+
+  const togglePriority = (taskId) => {
+    setTasks((prevTasks) => {
+      return togglePriorityLogic(prevTasks, taskId);
+    });
   };
 
   const toggleCompletion = (taskId) => {
-    setTasks(
-      tasks.map((task) =>
-        task.key === taskId ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
-
-  const togglePriority = (taskId) => {
-    setTasks(
-      tasks.map((task) =>
-        task.key === taskId ? { ...task, priority: !task.priority } : task
-      )
-    );
+    setTasks((prevTasks) => {
+      return toggleCompletionLogic(prevTasks, taskId);
+    });
   };
 
   const deleteTask = (taskId) => {
-    const updatedTasks = deleteTaskLogic(tasks, taskId);
-    setTasks(updatedTasks);
+    setTasks((prevTasks) => {
+      return deleteTaskLogic(prevTasks, taskId);
+    });
   };
 
   const priorityTasks = tasks.filter(
