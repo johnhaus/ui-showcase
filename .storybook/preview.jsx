@@ -1,5 +1,8 @@
 /** @type { import('@storybook/react-vite').Preview } */
 import { MemoryRouter } from 'react-router';
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../src/theme.js';
+import GlobalStyles from '../src/GlobalStyles';
 
 const preview = {
   parameters: {
@@ -19,9 +22,12 @@ const preview = {
   },
   decorators: [
     (Story) => (
-      <MemoryRouter>
-        <Story />
-      </MemoryRouter>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <MemoryRouter>
+          <Story />
+        </MemoryRouter>
+      </ThemeProvider>
     ),
   ],
 };
