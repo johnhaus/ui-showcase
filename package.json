@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "update": "vitest --update",
+    "test:visual": "test-storybook --url http://localhost:6006",
+    "test-storybook": "vitest --project=storybook",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -22,11 +25,13 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
     "@eslint/js": "^9.36.0",
+    "@playwright/test": "^1.57.0",
     "@storybook/addon-a11y": "^10.0.2",
     "@storybook/addon-docs": "^10.0.2",
     "@storybook/addon-onboarding": "^10.0.2",
     "@storybook/addon-vitest": "^10.0.2",
     "@storybook/react-vite": "^10.0.2",
+    "@storybook/test-runner": "^0.24.2",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
