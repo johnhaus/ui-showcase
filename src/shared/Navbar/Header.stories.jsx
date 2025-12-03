@@ -8,4 +8,9 @@ export default {
   },
 };
 
-export const Default = {};
+export const Default = {
+  render: (args) => <Header {...args} />,
+  parameters: {
+    screenshot: true
+  }
+};
