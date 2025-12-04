@@ -7,6 +7,7 @@ const config = {
     '@storybook/addon-onboarding',
     '@storybook/addon-a11y',
     '@storybook/addon-vitest',
+    '@storybook/test-runner',
   ],
   framework: {
     name: '@storybook/react-vite',
