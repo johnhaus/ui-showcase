@@ -14,9 +14,8 @@ const MainLayout = styled.div`
 
 const Intro = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%;
+  text-align: center;
   max-width: 900px;
   height: 200px;
   font-size: 24px;
@@ -37,20 +36,20 @@ function Home() {
     <>
       <MainLayout>
         <Intro>
-          <h1>Intro text</h1>
+          <h2>Welcome to my React and Vite demo page</h2>
         </Intro>
         <CardContainer>
           <Card to={'./todo'} title={'Todo List'}>
-            text
+            A front-end only Todo List built with React. Add, edit, and remove tasks directly in the browser.
           </Card>
-          <Card to={'./page2'} title={'title'}>
-            some longer text here
+          <Card to={'./page2'} title={'In Development'}>
+            This feature is currently being built. Check back soon.
           </Card>
-          <Card to={'./page3'} title={'title'}>
-            some text here
+          <Card to={'./page3'} title={'In Development'}>
+            This feature is currently being built. Check back soon.
           </Card>
-          <Card to={'./page4'} title={'title'}>
-            some really really long text that will wrap to a new line here
+          <Card to={'./page4'} title={'In Development'}>
+            This feature is currently being built. Check back soon.
           </Card>
         </CardContainer>
       </MainLayout>
