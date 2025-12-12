@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/Button/Button';
-import { useLogin, useSession, useCredentials, useSetupMode } from './loginUtils';
+import {
+  useLogin,
+  useSession,
+  useCredentials,
+  useSetupMode,
+} from './loginUtils';
 
 const Container = styled.div`
   display: flex;
@@ -79,9 +84,7 @@ const Login = () => {
 
   return (
     <Container>
-      <StatusContainer>
-        {loggedIn ? 'Logged in' : 'Logged out'}
-      </StatusContainer>
+      <StatusContainer>{loggedIn ? 'Logged in' : 'Logged out'}</StatusContainer>
       <LoginContainer>
         <InputWrapper>
           {!loggedIn && (
@@ -115,13 +118,24 @@ const Login = () => {
             <>
               {!setupMode ? (
                 <>
-                  <Button onClick={() => handleLogin(userNameText, passwordText, setLoggedIn)} text="Login" />
-                  <Button onClick={() => setSetupMode(true)} text="Create Account" />
+                  <Button
+                    onClick={() =>
+                      handleLogin(userNameText, passwordText, setLoggedIn)
+                    }
+                    text="Login"
+                  />
+                  <Button
+                    onClick={() => setSetupMode(true)}
+                    text="Create Account"
+                  />
                   <Button onClick={resetPassword} text="Reset Password" />
                 </>
               ) : (
                 <>
-                  <Button onClick={handleSetCredentials} text="Create Account" />
+                  <Button
+                    onClick={handleSetCredentials}
+                    text="Create Account"
+                  />
                   <Button onClick={() => setSetupMode(false)} text="Back" />
                 </>
               )}
