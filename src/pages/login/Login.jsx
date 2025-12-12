@@ -1,24 +1,32 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/Button/Button';
+import { useLogin, useSession, useCredentials, useSetupMode } from './loginUtils';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: center;
   align-items: center;
+  min-height: 100%;
 `;
 
-const LoginContainer = styled.div`
+const Card = styled.div`
   width: 90%;
   max-width: 600px;
-  height: 300px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.black};
   box-shadow: 0 0px 12px ${({ theme }) => theme.colors.white};
+  margin-bottom: 24px;
 `;
+
+const StatusContainer = styled(Card)`
+  height: 40px;
+  margin-top: 24px;
+`;
+
+const LoginContainer = styled(Card)``;
 
 const InputWrapper = styled.div`
   padding: 20px;
@@ -44,35 +52,85 @@ const Input = styled.input`
   }
 `;
 
-function Login() {
+const Login = () => {
+  const { loggedIn, setLoggedIn } = useSession();
+  const { error, handleLogin } = useLogin();
+  const { setCredentials, removeCredentials } = useCredentials();
+  const { setupMode, setSetupMode } = useSetupMode();
   const [userNameText, setUserNameText] = useState('');
   const [passwordText, setPasswordText] = useState('');
 
+  const handleLogout = () => {
+    removeCredentials();
+    setLoggedIn(false);
+  };
+
+  const resetPassword = () => {
+    removeCredentials();
+    setLoggedIn(false);
+    setSetupMode(true);
+  };
+
+  const handleSetCredentials = () => {
+    setCredentials(userNameText, passwordText);
+    setLoggedIn(true);
+    setSetupMode(false);
+  };
+
   return (
     <Container>
+      <StatusContainer>
+        {loggedIn ? 'Logged in' : 'Logged out'}
+      </StatusContainer>
       <LoginContainer>
         <InputWrapper>
-          <Label htmlFor="taskInput">Username</Label>
-          <Input
-            id="taskInput"
-            type="text"
-            value={userNameText}
-            onChange={(e) => setUserNameText(e.target.value)}
-            placeholder="Enter Username..."
-          />
-          <Label htmlFor="taskInput">Password</Label>
-          <Input
-            id="taskInput"
-            type="text"
-            value={passwordText}
-            onChange={(e) => setPasswordText(e.target.value)}
-            placeholder="Enter Password..."
-          />
-          <Button onClick={console.log("go")} text="Enter"></Button>
+          {!loggedIn && (
+            <>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                type="text"
+                id="username"
+                value={userNameText}
+                onChange={(e) => setUserNameText(e.target.value)}
+                placeholder="Enter Username..."
+              />
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                id="password"
+                value={passwordText}
+                onChange={(e) => setPasswordText(e.target.value)}
+                placeholder="Enter Password..."
+              />
+              {error && <div style={{ color: 'red' }}>{error}</div>}
+            </>
+          )}
+
+          {loggedIn ? (
+            <>
+              <Button onClick={handleLogout} text="Logout" />
+              <Button onClick={resetPassword} text="Reset Password" />
+            </>
+          ) : (
+            <>
+              {!setupMode ? (
+                <>
+                  <Button onClick={() => handleLogin(userNameText, passwordText, setLoggedIn)} text="Login" />
+                  <Button onClick={() => setSetupMode(true)} text="Create Account" />
+                  <Button onClick={resetPassword} text="Reset Password" />
+                </>
+              ) : (
+                <>
+                  <Button onClick={handleSetCredentials} text="Create Account" />
+                  <Button onClick={() => setSetupMode(false)} text="Back" />
+                </>
+              )}
+            </>
+          )}
         </InputWrapper>
       </LoginContainer>
     </Container>
   );
-}
+};
 
 export default Login;
