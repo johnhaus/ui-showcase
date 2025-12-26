@@ -3,7 +3,6 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { cardStyles } from '../styles/cardStyles';
 
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,7 +45,6 @@ const Content = styled.div`
   margin: 8px;
 `;
 
-
 function Page3() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,7 +52,8 @@ function Page3() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      axios.get('https://jsonplaceholder.typicode.com/posts/')
+      axios
+        .get('https://jsonplaceholder.typicode.com/posts/')
         .then((response) => {
           setUsers(response.data);
           setLoading(false);
@@ -74,24 +73,19 @@ function Page3() {
       <h1>Posts</h1>
 
       <PostContainer>
-        {loading && (
-          <p>Loading...</p>
-        )}
-        {error && (
-          <p>{error}</p>
-        )}
-        {(!loading && !error) && (
-        <List>
-          {users.map((user) => (
-            <ListItem key={user.id}>
-              <Title>{user.title}</Title>
-              <Content>{user.body}</Content>
-            </ListItem>
-          ))}
-        </List>
+        {loading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
+        {!loading && !error && (
+          <List>
+            {users.map((user) => (
+              <ListItem key={user.id}>
+                <Title>{user.title}</Title>
+                <Content>{user.body}</Content>
+              </ListItem>
+            ))}
+          </List>
         )}
       </PostContainer>
-    
     </Container>
   );
 }
