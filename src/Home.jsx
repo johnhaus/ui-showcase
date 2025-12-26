@@ -31,6 +31,10 @@ const CardContainer = styled.div`
   margin-bottom: 16px;
 `;
 
+const SmallText = styled.div`
+  margin-top: 16px;
+`;
+
 function Home() {
   return (
     <>
@@ -48,8 +52,12 @@ function Home() {
             username and password. Does not include any back-end logic and is
             not intended to store sensitive information.
           </Card>
-          <Card to={'./page3'} title={'In Development'}>
+          <Card to={'./page3'} title={'Posts Explorer'}>
             This feature is currently being built. Check back soon.
+            {/*A demo component that fetches and displays user posts with search, filtering, and comments.
+            <SmallText>
+              <small>Data provided by: jsonplaceholder.typicode.com</small>
+            </SmallText>*/}
           </Card>
           <Card to={'./page4'} title={'In Development'}>
             This feature is currently being built. Check back soon.

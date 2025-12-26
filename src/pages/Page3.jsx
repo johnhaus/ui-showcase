@@ -70,7 +70,7 @@ function Page3() {
   return (
     <Container>
       <MenuBar>Menu Bar</MenuBar>
-      <h1>Posts</h1>
+      <h1>Posts Explorer</h1>
 
       <PostContainer>
         {loading && <p>Loading...</p>}
