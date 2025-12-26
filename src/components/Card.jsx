@@ -1,20 +1,16 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router';
+import { cardStyles } from '../styles/cardStyles';
 
 const StyledCard = styled(NavLink)`
   width: 300px;
   height: 300px;
-  border: 5px solid ${({ theme }) => theme.colors.red};
-  border-radius: 16px;
-  background-color: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) => theme.colors.black};
-  box-shadow: 0 0px 12px ${({ theme }) => theme.colors.white};
-  transition: all 0.3s ease-in-out;
-  text-decoration: none;
   &:hover {
     transform: scale(1.05);
     background-color: ${({ theme }) => theme.colors.hoverWhite};
   }
+
+  ${cardStyles}
 `;
 
 const Header = styled.h3`
