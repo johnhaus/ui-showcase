@@ -15,7 +15,7 @@ import Layout from './Layout';
 const root = document.getElementById('root');
 
 ReactDOM.createRoot(root).render(
-  <StrictMode>
+  // <StrictMode>
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <BrowserRouter>
@@ -31,5 +31,5 @@ ReactDOM.createRoot(root).render(
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
-  </StrictMode>
+  // </StrictMode>
 );
