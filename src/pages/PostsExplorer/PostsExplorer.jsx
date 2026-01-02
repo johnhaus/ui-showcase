@@ -50,6 +50,7 @@ const initialState = {
   loading: false,
   error: null,
   page: 1,
+  hasMore: true,
 };
 
 const actionTypes = {
@@ -57,6 +58,7 @@ const actionTypes = {
   SET_ERROR: 'SET_ERROR',
   SET_POSTS: 'SET_POSTS',
   SET_PAGE: 'SET_PAGE',
+  SET_HAS_MORE: 'SET_HAS_MORE',
 };
 
 const reducer = (state, action) => {
@@ -69,6 +71,8 @@ const reducer = (state, action) => {
       return { ...state, posts: [...state.posts, ...action.payload] };
     case actionTypes.SET_PAGE:
       return { ...state, page: action.payload };
+    case actionTypes.SET_HAS_MORE:
+      return { ...state, hasMore: action.payload };
     default:
       return state;
   }
@@ -76,14 +80,14 @@ const reducer = (state, action) => {
 
 function PostsExplorer() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { posts, loading, error, page } = state;
+  const { posts, loading, error, page, hasMore } = state;
 
   const loadMoreRef = useRef(null);
   const observerRef = useRef(null);
 
 
   const fetchPosts = useCallback(async () => {
-    if (loading) return;
+    if (loading || !hasMore) return;
 
     dispatch({ type: actionTypes.SET_LOADING, payload: true });
 
@@ -93,25 +97,28 @@ function PostsExplorer() {
       );
 
       if (response.data.length === 0) {
-        observerRef.current?.disconnect();
+        dispatch({ type: actionTypes.SET_HAS_MORE, payload: false });
         return;
       }
 
       dispatch({ type: actionTypes.SET_POSTS, payload: response.data });
       dispatch({ type: actionTypes.SET_PAGE, payload: page + 1 });
     } catch (err) {
-      dispatch({ type: actionTypes.SET_ERROR, payload: 'Failed to fetch data' });
+      dispatch({
+        type: actionTypes.SET_ERROR,
+        payload: 'Failed to fetch data',
+      });
     } finally {
       dispatch({ type: actionTypes.SET_LOADING, payload: false });
     }
-  }, [page, loading]);
+  }, [page, loading, hasMore]);
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
   useEffect(() => {
-    if (!loadMoreRef.current) return;
+    if (!loadMoreRef.current || !hasMore) return;
 
     observerRef.current = new IntersectionObserver(
       ([entry]) => {
@@ -119,17 +126,13 @@ function PostsExplorer() {
           fetchPosts();
         }
       },
-      {
-        root: null,
-        rootMargin: '100px',
-        threshold: 0,
-      }
+      { root: null, rootMargin: '100px', threshold: 0 }
     );
 
     observerRef.current.observe(loadMoreRef.current);
 
     return () => observerRef.current?.disconnect();
-  }, [fetchPosts]);
+  }, [fetchPosts, loading, hasMore]);
 
   return (
     <Container>
@@ -145,10 +148,15 @@ function PostsExplorer() {
             </ListItem>
           ))}
 
-          <li ref={loadMoreRef} style={{ height: 1 }} />
+          <li ref={loadMoreRef} style={{ height: 1, listStyle: 'none', margin: 0, padding: 0 }} />
 
           {loading && <ListItem>Loading…</ListItem>}
           {error && <ListItem>{error}</ListItem>}
+          {!hasMore && posts.length > 0 && (
+            <ListItem>
+              No more posts
+            </ListItem>
+          )}
         </List>
       </PostContainer>
     </Container>
