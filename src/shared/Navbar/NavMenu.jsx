@@ -115,7 +115,10 @@ const NavMenu = ({ open, navItems, onNavigate }) => (
                 </IconWrapper>
               </StyledExternalLink>
             ) : (
-              <StyledNavLink to={item.path} onClick={() => onNavigate(item.path)}>
+              <StyledNavLink
+                to={item.path}
+                onClick={() => onNavigate(item.path)}
+              >
                 {item.name}
               </StyledNavLink>
             )}

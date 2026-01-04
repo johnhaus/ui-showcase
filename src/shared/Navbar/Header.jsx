@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router';
-import { FaGithub } from "react-icons/fa";
+import { FaGithub } from 'react-icons/fa';
 import styled from 'styled-components';
 import Hamburger from './Hamburger';
 import NavMenu from './NavMenu';
@@ -39,11 +39,11 @@ const Header = () => {
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
     {
-      name: "GitHub",
-      path: "https://github.com/johnhaus",
+      name: 'GitHub',
+      path: 'https://github.com/johnhaus',
       icon: FaGithub,
-      external: true
-    }
+      external: true,
+    },
   ];
 
   useEffect(() => {
