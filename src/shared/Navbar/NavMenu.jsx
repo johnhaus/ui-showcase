@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router';
 import styled from 'styled-components';
+import navLinkStyles from '../../styles/navLinkStyles';
 
 const NavLinks = styled.nav`
   ul {
@@ -27,6 +28,8 @@ const NavLinks = styled.nav`
   li {
     margin-right: 20px;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
     transition:
       background-color 0.3s ease,
       transform 0.1s ease;
@@ -56,6 +59,7 @@ const NavLinks = styled.nav`
         height: 0;
         transform: translate(-50%, -50%);
         opacity: 0;
+        pointer-events: none;
         transition:
           width 0.4s ease,
           height 0.4s ease,
@@ -73,34 +77,51 @@ const NavLinks = styled.nav`
 `;
 
 const StyledNavLink = styled(NavLink)`
-  text-decoration: none;
   font-size: 18px;
-  color: ${({ theme }) => theme.colors.white};
-  transition: all 0.3s ease;
-  display: block;
-  width: 100%;
+  ${navLinkStyles}
+`;
 
-  &:hover {
-    text-shadow:
-      0 0 20px ${({ theme }) => theme.colors.hoverWhite};,
-      0 0 25px ${({ theme }) => theme.colors.hoverWhite};,
-  }
+const StyledExternalLink = styled.a`
+  font-size: 22px;
+  ${navLinkStyles}
+`;
 
-  @media (max-width: 768px) {
-    &:hover {
-      text-shadow: none;
-    }
+const IconWrapper = styled.div`
+  line-height: 0;
+
+  svg {
+    display: block;
   }
 `;
 
 const NavMenu = ({ open, navItems, onNavigate }) => (
   <NavLinks open={open}>
     <ul>
-      {navItems.map((item) => (
-        <li key={item.name} onClick={() => onNavigate(item.path)}>
-          <StyledNavLink to={item.path}>{item.name}</StyledNavLink>
-        </li>
-      ))}
+      {navItems.map((item) => {
+        const Icon = item.icon;
+
+        return (
+          <li key={item.name}>
+            {item.external ? (
+              <StyledExternalLink
+                href={item.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={item.name}
+                className="nav-link"
+              >
+                <IconWrapper>
+                  <Icon />
+                </IconWrapper>
+              </StyledExternalLink>
+            ) : (
+              <StyledNavLink to={item.path} onClick={() => onNavigate(item.path)}>
+                {item.name}
+              </StyledNavLink>
+            )}
+          </li>
+        );
+      })}
     </ul>
   </NavLinks>
 );
