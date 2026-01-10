@@ -222,6 +222,11 @@ function PostsExplorer() {
     });
   };
 
+  const handleClearSearch = () => {
+    dispatch({ type: actionTypes.SET_SEARCH_INPUT, payload: '' });
+    dispatch({ type: actionTypes.SET_ACTIVE_QUERY, payload: '' });
+  };
+
   return (
     <Container>
       <MenuBar>
@@ -232,6 +237,12 @@ function PostsExplorer() {
           onChange={handleSearchChange}
         />
         <Button onClick={handleSearchSubmit}>Search</Button>
+        <Button
+          onClick={handleClearSearch}
+          disabled={!searchInput && !activeQuery}
+        >
+          Clear
+        </Button>
       </MenuBar>
       <h1>Posts Explorer</h1>
 
