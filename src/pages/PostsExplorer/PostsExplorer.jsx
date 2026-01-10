@@ -147,7 +147,8 @@ const reducer = (state, action) => {
 
 function PostsExplorer() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { posts, loading, error, page, hasMore, searchInput, activeQuery } = state;
+  const { posts, loading, error, page, hasMore, searchInput, activeQuery } =
+    state;
 
   const loadMoreRef = useRef(null);
   const observerRef = useRef(null);
@@ -179,6 +180,8 @@ function PostsExplorer() {
       dispatch({ type: actionTypes.SET_POSTS, payload: response.data });
       dispatch({ type: actionTypes.SET_PAGE, payload: page + 1 });
     } catch (err) {
+      console.error('Failed to load posts:', err);
+
       dispatch({
         type: actionTypes.SET_ERROR,
         payload: 'Failed to load posts.',
