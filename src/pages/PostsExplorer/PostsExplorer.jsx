@@ -54,6 +54,18 @@ const PostContainer = styled.div`
   max-width: 800px;
 `;
 
+const ErrorContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  padding: 0;
+  margin-bottom: 24px;
+`;
+
+const ErrorMessage = styled.div`
+  margin-bottom: 16px;
+`;
+
 const List = styled.ul`
   width: 90%;
   padding: 0;
@@ -84,10 +96,6 @@ const Title = styled.h3`
 
 const Content = styled.div`
   margin: 8px;
-`;
-
-const ErrorMessage = styled.div`
-  width: 380px;
 `;
 
 const initialState = {
@@ -227,6 +235,11 @@ function PostsExplorer() {
     dispatch({ type: actionTypes.SET_ACTIVE_QUERY, payload: '' });
   };
 
+  const handleRetry = () => {
+    dispatch({ type: actionTypes.SET_ERROR, payload: null });
+    fetchPosts();
+  };
+
   return (
     <Container>
       <MenuBar>
@@ -261,12 +274,21 @@ function PostsExplorer() {
           />
 
           {loading && <div>Loading…</div>}
-          {error && <ErrorMessage>{error}</ErrorMessage>}
           {!hasMore && posts.length > 0 && (
             <LastListItem>No more posts</LastListItem>
           )}
         </List>
       </PostContainer>
+      {error && (
+        <ErrorContainer>
+          <div>
+            <ErrorMessage>{error}</ErrorMessage>
+            <Button onClick={handleRetry} disabled={loading}>
+              Retry
+            </Button>
+          </div>
+        </ErrorContainer>
+      )}
     </Container>
   );
 }
