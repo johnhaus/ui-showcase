@@ -198,9 +198,17 @@ const Login = () => {
 
           {loggedIn && changeCredentials && (
             <ButtonColumn>
-              <Button onClick={() => updateCredentials()} text="Update" size="sm" />
+              <Button
+                onClick={() => updateCredentials()}
+                text="Update"
+                size="sm"
+              />
               <Button onClick={() => goBack()} text="Back" size="sm" />
-              <Button onClick={() => resetAccount()} text="Delete Account" size="sm" />
+              <Button
+                onClick={() => resetAccount()}
+                text="Delete Account"
+                size="sm"
+              />
             </ButtonColumn>
           )}
 
@@ -210,9 +218,13 @@ const Login = () => {
               <Button
                 onClick={() => changeAccountCredentials()}
                 text="Create An Account"
-                size="sm" 
+                size="sm"
               />
-              <Button onClick={() => resetAccount()} text="Reset Account" size="sm" />
+              <Button
+                onClick={() => resetAccount()}
+                text="Reset Account"
+                size="sm"
+              />
             </ButtonColumn>
           )}
 
@@ -221,7 +233,7 @@ const Login = () => {
               <Button
                 onClick={() => updateCredentials()}
                 text="Create Account"
-                size="sm" 
+                size="sm"
               />
               <Button onClick={() => goBack()} text="Back" size="sm" />
             </ButtonColumn>
@@ -233,7 +245,7 @@ const Login = () => {
               <Button
                 onClick={() => changeAccountCredentials()}
                 text="Update Account"
-                size="sm" 
+                size="sm"
               />
             </ButtonColumn>
           )}
