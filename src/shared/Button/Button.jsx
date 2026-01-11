@@ -46,9 +46,9 @@ const Button = ({
   return (
     <StyledButton
       onClick={onClick}
-      fullWidth={fullWidth}
+      $fullWidth={fullWidth}
       width={width}
-      size={size}
+      $size={size}
     >
       {text}
     </StyledButton>

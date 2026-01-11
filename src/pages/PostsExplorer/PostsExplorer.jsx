@@ -2,6 +2,7 @@ import React, { useReducer, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { cardStyles } from '../../styles/cardStyles';
+import Button from '../../shared/Button/Button';
 
 const Container = styled.div`
   display: flex;
@@ -32,22 +33,6 @@ const SearchInput = styled.input`
   }
 `;
 
-const Button = styled.button`
-  background-color: ${({ theme }) => theme.colors.red};
-  color: ${({ theme }) => theme.colors.white};
-  flex: 0;
-  border: none;
-  padding: 0 8px;
-  border-radius: 5px;
-  width: 100%;
-  height: 44px;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
 const PostContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -56,14 +41,13 @@ const PostContainer = styled.div`
 
 const ErrorContainer = styled.div`
   display: flex;
-  justify-content: center;
-  width: 90%;
-  padding: 0;
-  margin-bottom: 24px;
+  flex-direction: column;
 `;
 
 const ErrorMessage = styled.div`
-  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
 `;
 
 const List = styled.ul`
@@ -249,13 +233,12 @@ function PostsExplorer() {
           value={searchInput}
           onChange={handleSearchChange}
         />
-        <Button onClick={handleSearchSubmit}>Search</Button>
+        <Button onClick={handleSearchSubmit} text="Search" />
         <Button
           onClick={handleClearSearch}
           disabled={!searchInput && !activeQuery}
-        >
-          Clear
-        </Button>
+          text="Clear"
+        />
       </MenuBar>
       <h1>Posts Explorer</h1>
 
@@ -281,12 +264,10 @@ function PostsExplorer() {
       </PostContainer>
       {error && (
         <ErrorContainer>
-          <div>
             <ErrorMessage>{error}</ErrorMessage>
-            <Button onClick={handleRetry} disabled={loading}>
-              Retry
-            </Button>
-          </div>
+            <ErrorMessage>
+              <Button onClick={handleRetry} disabled={loading} text="Retry" />
+            </ErrorMessage>
         </ErrorContainer>
       )}
     </Container>
