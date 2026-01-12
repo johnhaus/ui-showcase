@@ -39,7 +39,14 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ onClick, text, width, fullWidth = false, size = 'md', disabled = false }) => {
+const Button = ({
+  onClick,
+  text,
+  width,
+  fullWidth = false,
+  size = 'md',
+  disabled = false,
+}) => {
   return (
     <StyledButton
       onClick={onClick}
