@@ -10,7 +10,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const MenuBar = styled.div`
+const SearchBar = styled.div`
   display: flex;
   height: 80px;
   width: 90%;
@@ -65,13 +65,21 @@ const ListItem = styled.li`
   ${cardStyles}
 `;
 
-const LastListItem = styled.div`
+const LastListItem = styled.li`
   display: flex;
   height: 40px;
+  list-style-type: none;
   justify-content: center;
   align-items: center;
 
   ${cardStyles}
+`;
+
+const Sentinel = styled.li`
+  height: 1px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 `;
 
 const Title = styled.h3`
@@ -208,9 +216,12 @@ function PostsExplorer() {
   };
 
   const handleSearchSubmit = () => {
+    const query = searchInput.trim();
+    if (query === activeQuery) return;
+
     dispatch({
       type: actionTypes.SET_ACTIVE_QUERY,
-      payload: searchInput.trim(),
+      payload: query,
     });
   };
 
@@ -224,14 +235,19 @@ function PostsExplorer() {
     fetchPosts();
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleSearchSubmit();
+  };
+
   return (
     <Container>
-      <MenuBar>
+      <SearchBar>
         <SearchInput
           type="text"
           placeholder="Search posts..."
           value={searchInput}
           onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
         />
         <Button onClick={handleSearchSubmit} text="Search" />
         <Button
@@ -239,7 +255,7 @@ function PostsExplorer() {
           disabled={!searchInput && !activeQuery}
           text="Clear"
         />
-      </MenuBar>
+      </SearchBar>
       <h1>Posts Explorer</h1>
 
       <PostContainer>
@@ -251,17 +267,18 @@ function PostsExplorer() {
             </ListItem>
           ))}
 
-          <li
-            ref={loadMoreRef}
-            style={{ height: 1, listStyle: 'none', margin: 0, padding: 0 }}
-          />
+          <Sentinel ref={loadMoreRef} />
 
-          {loading && <div>Loading…</div>}
           {!hasMore && posts.length > 0 && (
             <LastListItem>No more posts</LastListItem>
           )}
         </List>
       </PostContainer>
+      {loading && (
+        <div role="status" aria-live="polite">
+          Loading…
+        </div>
+      )}
       {error && (
         <ErrorContainer>
           <ErrorMessage>{error}</ErrorMessage>
@@ -269,6 +286,9 @@ function PostsExplorer() {
             <Button onClick={handleRetry} disabled={loading} text="Retry" />
           </ErrorMessage>
         </ErrorContainer>
+      )}
+      {!hasMore && posts.length === 0 && (
+        <div>No posts found that match your search term</div>
       )}
     </Container>
   );
