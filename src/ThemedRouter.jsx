@@ -18,9 +18,9 @@ export default function ThemedRouter() {
   const resolvedTheme = useResolvedTheme(theme);
 
   return (
-    <ThemeProvider theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}>
-      <GlobalStyles />
-      <BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider theme={resolvedTheme === 'dark' ? darkTheme : lightTheme}>
+        <GlobalStyles />
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Home />} />
@@ -31,7 +31,7 @@ export default function ThemedRouter() {
             <Route path="page4" element={<Page4 />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </ThemeProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
