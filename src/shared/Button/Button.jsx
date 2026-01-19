@@ -13,7 +13,7 @@ const paddingMap = {
   lg: '0 20px',
 };
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   background-color: ${({ theme }) => theme.colors.red};
   color: ${({ theme }) => theme.colors.white};
   border: none;
