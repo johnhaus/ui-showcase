@@ -70,7 +70,7 @@ const CheckboxInput = styled.input`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.alwaysWhite};
     font-size: 16px;
   }
 `;
@@ -88,7 +88,7 @@ const CheckboxLabel = styled.label`
     height: 20px;
     border: 1px solid ${({ theme }) => theme.colors.lightGrey};
     border-radius: 4px;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.alwaysWhite};
   }
 `;
 

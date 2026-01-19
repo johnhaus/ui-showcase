@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledButton = styled.button`
   background-color: ${({ $bgColor, theme }) => $bgColor || theme.colors.white};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.alwaysWhite};
   border: none;
   width: 40px;
   height: 40px;
@@ -20,7 +20,7 @@ const StyledButton = styled.button`
     $isPriority &&
     `
       background-color: ${$priority ? theme.colors.orange : theme.colors.white};
-      color: ${$priority ? theme.colors.white : theme.colors.orange};
+      color: ${$priority ? theme.colors.alwaysWhite : theme.colors.orange};
       border: ${$priority ? 'none' : `2px solid ${theme.colors.orange}`};
     `}
 `;

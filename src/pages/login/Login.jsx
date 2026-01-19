@@ -29,7 +29,7 @@ const StatusContainer = styled(LoginContainer)`
 `;
 
 const ErrorContainer = styled.div`
-  color: ${({ theme }) => theme.colors.red};
+  color: ${({ theme }) => theme.colors.errorRed};
 `;
 
 const InputWrapper = styled.div`

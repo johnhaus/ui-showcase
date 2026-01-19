@@ -25,7 +25,7 @@ const SearchInput = styled.input`
   min-width: 180px;
   height: 40px;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.colors.lightGrey};
+  border: 2px solid ${({ theme }) => theme.colors.lightGrey};
   font-size: 16px;
 
   &:focus {
