@@ -14,7 +14,7 @@ const LoginContainer = styled.div`
   width: 90%;
   max-width: 600px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.backgroundSecondary};
   color: ${({ theme }) => theme.colors.textPrimary};
   box-shadow: 0 0px 12px ${({ theme }) => theme.colors.white};
   margin-bottom: 24px;

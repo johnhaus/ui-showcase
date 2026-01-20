@@ -11,6 +11,8 @@ export const darkTheme = {
 
     textPrimary: palette.black,
     textSecondary: palette.white,
+    backgroundPrimary: palette.black,
+    backgroundSecondary: palette.white,
     black: '#242424',
     alwaysBlack: '#242424',
     white: 'rgba(255, 255, 255, 0.87)',
@@ -35,6 +37,8 @@ export const lightTheme = {
 
     textPrimary: palette.white,
     textSecondary: palette.black,
+    backgroundPrimary: palette.white,
+    backgroundSecondary: palette.black,
     black: 'rgba(255, 255, 255, 0.87)',
     alwaysBlack: '#242424',
     white: '#242424',

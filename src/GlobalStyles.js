@@ -6,7 +6,7 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.5;
     font-weight: 400;
     color: ${({ theme }) => theme.colors.textSecondary};
-    background-color: ${({ theme }) => theme.colors.black};
+    background-color: ${({ theme }) => theme.colors.backgroundPrimary};
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
