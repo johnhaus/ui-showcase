@@ -42,11 +42,11 @@ const NavLinks = styled.nav`
       overflow: hidden;
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.action.hoverSubtle};
+        background-color: ${({ theme }) => theme.colors.action.hoverSubtleFixed};
       }
 
       &:active {
-        background-color: ${({ theme }) => theme.colors.action.hoverSubtle};
+        background-color: ${({ theme }) => theme.colors.action.hoverSubtleFixed};
         transform: scale(0.98);
       }
 

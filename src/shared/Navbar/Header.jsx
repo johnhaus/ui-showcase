@@ -18,7 +18,7 @@ const HeaderWrapper = styled.header`
 const HomeNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 18px;
-  color: ${({ theme }) => theme.colors.text.fixed};
+  color: ${({ theme }) => theme.colors.text.fixedLight};
   transition: all 0.3s ease;
   display: block;
   width: 100%;

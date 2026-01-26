@@ -5,17 +5,18 @@ export const darkTheme = {
     background: {
       canvas: palette.black,
       surface: palette.white,
+      fixedLight: palette.white,
     },
     text: {
       onCanvas: palette.white,
       onSurface: palette.black,
-      fixed: palette.white,
+      fixedLight: palette.white,
+      fixedDark: palette.black,
     },
     action: {
       hover: palette.white91,
-      hoverSubtle: palette.white10,
       hoverFixed: palette.white91,
-      active: palette.white20,
+      hoverSubtleFixed: palette.white10,
     },
     // Button colors and error/success messaging
     intent: {
@@ -37,7 +38,6 @@ export const darkTheme = {
     // Box-shadow colors
     emphasis: {
       high: palette.white,
-      low: palette.black10,
     },
     // Focus colors
     focus: {
@@ -54,25 +54,21 @@ export const lightTheme = {
     background: {
       canvas: palette.white,
       surface: palette.black,
+      fixedLight: palette.white,
     },
     text: {
       onCanvas: palette.black,
       onSurface: palette.white,
-      fixed: palette.white,
+      fixedLight: palette.white,
+      fixedDark: palette.black,
     },
     action: {
       hover: palette.black91,
-      hoverSubtle: palette.white10,
       hoverFixed: palette.white91,
-      active: palette.white20,
+      hoverSubtleFixed: palette.white10,
     },
     intent: {
       destructive: palette.red300,
-      warning: palette.orange600,
-      success: palette.green700,
-    },
-    status: {
-      error: palette.red300,
       warning: palette.orange600,
       success: palette.green700,
     },
@@ -83,16 +79,15 @@ export const lightTheme = {
       primary: palette.red900,
     },
     border: {
-      strong: palette.black,
+      strong: palette.white,
       inverseStrong: palette.black,
       subtle: palette.black10,
     },
     emphasis: {
-      high: palette.white,
-      low: palette.black10,
+      high: palette.black,
     },
     focus: {
-      ring: palette.black,
+      ring: palette.white,
     },
     control: {
       background: palette.white,

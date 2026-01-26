@@ -70,7 +70,7 @@ const CheckboxInput = styled.input`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: ${({ theme }) => theme.colors.text.fixed};
+    color: ${({ theme }) => theme.colors.text.fixedLight};
     font-size: 16px;
   }
 `;

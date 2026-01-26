@@ -3,7 +3,7 @@ import TodoItemRow from './TodoItemRow';
 
 const Section = styled.div`
   margin-bottom: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.black};
+  border-top: 1px solid ${({ theme }) => theme.colors.border.strong};
 `;
 
 const SectionTitle = styled.h3`

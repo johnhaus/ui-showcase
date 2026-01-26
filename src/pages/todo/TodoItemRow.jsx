@@ -1,22 +1,17 @@
 import styled from 'styled-components';
 
 const TodoItem = styled.li`
-  color: ${(props) =>
-    props.$completed
-      ? props.theme.colors.textOnLight
-      : props.theme.colors.textPrimary};
+  color: ${(props) => props.theme.colors.text.fixedDark};
   background-color: ${(props) =>
     props.$completed
-      ? props.theme.colors.lightGreen
-      : props.theme.colors.white};
+      ? props.theme.colors.surface.highlight
+      : props.theme.colors.background.fixedLight};
   padding: 10px;
   margin: 8px 0;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: ${(props) =>
-    props.$completed ? 'none' : props.theme.colors.lightGrey};
 `;
 
 const TodoItemRow = ({ task, renderButtons }) => (
