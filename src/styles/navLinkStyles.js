@@ -13,7 +13,7 @@ const navLinkStyles = css`
       0 0 25px ${({ theme }) => theme.colors.action.hoverFixed};
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     &:hover {
       text-shadow: none;
     }

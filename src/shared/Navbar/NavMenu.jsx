@@ -4,7 +4,7 @@ import navLinkStyles from '../../styles/navLinkStyles';
 
 const NavLinks = styled.nav`
   pointer-events: ${({ open }) => (open ? 'auto' : 'auto')};
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
     pointer-events: ${({ open }) => (open ? 'auto' : 'none')};
   }
 
@@ -14,7 +14,7 @@ const NavLinks = styled.nav`
     padding: 0;
     margin: 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
       flex-direction: column;
       background-color: ${({ theme }) => theme.colors.accent.primary};
       position: fixed;
@@ -39,7 +39,7 @@ const NavLinks = styled.nav`
       background-color 0.3s ease,
       transform 0.1s ease;
 
-    @media (max-width: 768px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
       margin: 5px 0;
       cursor: pointer;
       padding: 10px 14px;

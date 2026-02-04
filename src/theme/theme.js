@@ -1,6 +1,13 @@
 import palette from './palette';
 
+export const baseTheme = {
+  breakpoints: {
+    mobile: '768px',
+  },
+};
+
 export const darkTheme = {
+  ...baseTheme,
   colors: {
     background: {
       canvas: palette.black,
@@ -50,6 +57,7 @@ export const darkTheme = {
 };
 
 export const lightTheme = {
+  ...baseTheme,
   colors: {
     background: {
       canvas: palette.white,
