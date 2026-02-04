@@ -106,10 +106,7 @@ const NavMenu = ({ open, navItems, onNavigate }) => {
   const tabIndex = isMobile && !open ? -1 : undefined;
 
   return (
-    <NavLinks
-      open={open}
-      aria-hidden={isMobile && !open}
-    >
+    <NavLinks open={open} aria-hidden={isMobile && !open}>
       <ul>
         {navItems.map((item) => {
           const Icon = item.icon;
