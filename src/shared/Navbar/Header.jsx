@@ -66,7 +66,11 @@ const Header = () => {
         <HomeNavLink to="/">Demo Website</HomeNavLink>
       </div>
       <div ref={menuRef}>
-        <Hamburger toggle={() => setMenuOpen(!menuOpen)} />
+        <Hamburger
+          toggle={() => setMenuOpen(!menuOpen)}
+          aria-expanded={menuOpen}
+          aria-controls="nav-menu"
+        />
         <NavMenu
           open={menuOpen}
           navItems={navItems}

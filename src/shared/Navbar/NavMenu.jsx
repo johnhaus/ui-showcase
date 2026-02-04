@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import navLinkStyles from '../../styles/navLinkStyles';
 
 const NavLinks = styled.nav`
+  pointer-events: ${({ open }) => (open ? 'auto' : 'auto')};
+  @media (max-width: 768px) {
+    pointer-events: ${({ open }) => (open ? 'auto' : 'none')};
+  }
+
   ul {
     display: flex;
     list-style: none;
@@ -96,39 +101,48 @@ const IconWrapper = styled.div`
   }
 `;
 
-const NavMenu = ({ open, navItems, onNavigate }) => (
-  <NavLinks open={open}>
-    <ul>
-      {navItems.map((item) => {
-        const Icon = item.icon;
+const NavMenu = ({ open, navItems, onNavigate }) => {
+  const isMobile = window.innerWidth <= 768;
+  const tabIndex = isMobile && !open ? -1 : undefined;
 
-        return (
-          <li key={item.name}>
-            {item.external ? (
-              <StyledExternalLink
-                href={item.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={item.name}
-                className="nav-link"
-              >
-                <IconWrapper>
-                  <Icon />
-                </IconWrapper>
-              </StyledExternalLink>
-            ) : (
-              <StyledNavLink
-                to={item.path}
-                onClick={() => onNavigate(item.path)}
-              >
-                {item.name}
-              </StyledNavLink>
-            )}
-          </li>
-        );
-      })}
-    </ul>
-  </NavLinks>
-);
+  return (
+    <NavLinks
+      open={open}
+      aria-hidden={isMobile && !open}
+    >
+      <ul>
+        {navItems.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <li key={item.name}>
+              {item.external ? (
+                <StyledExternalLink
+                  href={item.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item.name}
+                  tabIndex={tabIndex}
+                >
+                  <IconWrapper>
+                    <Icon />
+                  </IconWrapper>
+                </StyledExternalLink>
+              ) : (
+                <StyledNavLink
+                  to={item.path}
+                  onClick={() => onNavigate(item.path)}
+                  tabIndex={tabIndex}
+                >
+                  {item.name}
+                </StyledNavLink>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </NavLinks>
+  );
+};
 
 export default NavMenu;

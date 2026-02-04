@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
-const HamburgerWrapper = styled.div`
+const HamburgerWrapper = styled.button`
   display: none;
   flex-direction: column;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 
   span {
     height: 3px;
@@ -19,10 +22,10 @@ const HamburgerWrapper = styled.div`
 `;
 
 const Hamburger = ({ toggle }) => (
-  <HamburgerWrapper onClick={toggle}>
-    <span></span>
-    <span></span>
-    <span></span>
+  <HamburgerWrapper onClick={toggle} aria-label="Open menu">
+    <span />
+    <span />
+    <span />
   </HamburgerWrapper>
 );
 
