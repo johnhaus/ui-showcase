@@ -17,7 +17,7 @@ const Header = styled.h3`
   text-align: center;
 `;
 
-const TextArea = styled.p`
+const TextArea = styled.div`
   padding: 8px;
 `;
 

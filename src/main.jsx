@@ -1,9 +1,12 @@
 import { StrictMode } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { PreferencesProvider } from './preferences/PreferencesProvider';
 import ThemedRouter from './ThemedRouter';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+root.render(
   <StrictMode>
     <PreferencesProvider>
       <ThemedRouter />
