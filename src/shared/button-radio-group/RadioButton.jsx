@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StyledButton } from '../Button/Button';
+import { StyledButton } from '../button/Button';
 
 const Label = styled.label`
   display: inline-flex;
