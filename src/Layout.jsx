@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router';
-import Header from './shared/navbar/Header';
+import Navbar from './shared/navbar/Navbar';
 import styled from 'styled-components';
 
 const LayoutContainer = styled.div`
@@ -16,7 +16,7 @@ const ContentContainer = styled.div`
 const Layout = () => {
   return (
     <LayoutContainer>
-      <Header />
+      <Navbar />
       <ContentContainer>
         <Outlet />
       </ContentContainer>

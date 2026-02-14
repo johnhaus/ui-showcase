@@ -31,7 +31,7 @@ const HomeNavLink = styled(NavLink)`
   }
 `;
 
-const Header = () => {
+const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const menuRef = useRef(null);
@@ -85,4 +85,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;
