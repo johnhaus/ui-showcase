@@ -81,12 +81,19 @@ const ButtonColumn = styled.div`
  */
 
 const Login = () => {
+  const [mode, setMode] = useState('login');
+  // 'login' | 'create' | 'loggedIn' | 'update'
+
   const [userNameText, setUserNameText] = useState('');
   const [passwordText, setPasswordText] = useState('');
   const [retypePasswordText, setRetypePasswordText] = useState('');
-  const [changeCredentials, setChangeCredentials] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState('');
+
+  const isLogin = mode === 'login';
+  const isCreate = mode === 'create';
+  const isLoggedIn = mode === 'loggedIn';
+  const isUpdate = mode === 'update';
+  const isAuthenticated = mode === 'loggedIn' || mode === 'update';
 
   const clearFields = () => {
     setUserNameText('');
@@ -94,25 +101,21 @@ const Login = () => {
     setRetypePasswordText('');
   };
 
-  const clearError = () => {
-    setError('');
-  };
+  const isValidText = (value) =>
+    typeof value === 'string' && /^\S+$/.test(value);
 
   const accountLogin = () => {
     const userName = localStorage.getItem('username');
     const password = localStorage.getItem('password');
 
     if (userName === userNameText && password === passwordText) {
-      setLoggedIn(true);
+      setMode('loggedIn');
       clearFields();
-      clearError();
+      setError('');
     } else {
       setError('Invalid credentials, please try again');
     }
   };
-
-  const isValidText = (value) =>
-    typeof value === 'string' && /^\S+$/.test(value);
 
   const updateCredentials = () => {
     const username = userNameText.trim();
@@ -135,52 +138,51 @@ const Login = () => {
     }
     localStorage.setItem('username', username);
     localStorage.setItem('password', password);
+
     clearFields();
-    goBack();
-    accountLogout();
-    clearError();
+    setMode('login');
     setError('Changes saved, please log in to continue');
   };
 
-  const goBack = () => {
-    clearError();
-    setChangeCredentials(false);
-    clearFields();
-  };
-
   const changeAccountCredentials = () => {
-    clearError();
     const userName = localStorage.getItem('username');
     const password = localStorage.getItem('password');
 
-    if (!loggedIn && (userName || password)) {
-      setError('An account already exists, please login or reset your account...');
+    if (!isLoggedIn && (userName || password)) {
+      setError(
+        'An account already exists, please login or reset your account...'
+      );
       return;
     }
 
-    setChangeCredentials(true);
+    setMode(isLoggedIn ? 'update' : 'create');
+    setError('');
   };
 
   const resetAccount = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('password');
-    setLoggedIn(false);
-    setError('Your account has been deleted');
-    setChangeCredentials(false);
+    setMode('login');
     clearFields();
+    setError('Your account has been deleted');
   };
 
   const accountLogout = () => {
-    clearError();
-    setLoggedIn(false);
+    setMode('login');
+    setError('');
   };
 
   return (
     <Container>
-      <StatusContainer>{loggedIn ? `Logged in as ${localStorage.getItem('username')}` : 'Logged out'}</StatusContainer>
+      <StatusContainer>
+        {isAuthenticated
+          ? `Logged in as ${localStorage.getItem('username')}`
+          : 'Logged out'}
+      </StatusContainer>
+
       <LoginContainer>
         <InputWrapper>
-          {(!loggedIn || changeCredentials) && (
+          {(isLogin || isCreate || isUpdate) && (
             <>
               <Label htmlFor="username">Username</Label>
               <Input
@@ -198,14 +200,17 @@ const Login = () => {
                 onChange={(e) => setPasswordText(e.target.value)}
                 placeholder="Enter Password..."
               />
-              {changeCredentials && (
+
+              {(isCreate || isUpdate) && (
                 <>
                   <Label htmlFor="retypePassword">Retype Password</Label>
                   <Input
                     type="password"
                     id="retypePassword"
                     value={retypePasswordText}
-                    onChange={(e) => setRetypePasswordText(e.target.value)}
+                    onChange={(e) =>
+                      setRetypePasswordText(e.target.value)
+                    }
                     placeholder="Retype Password..."
                   />
                 </>
@@ -214,23 +219,7 @@ const Login = () => {
             </>
           )}
 
-          {loggedIn && changeCredentials && (
-            <ButtonColumn>
-              <Button
-                onClick={updateCredentials}
-                text="Update"
-                size="sm"
-              />
-              <Button onClick={goBack} text="Back" size="sm" />
-              <Button
-                onClick={resetAccount}
-                text="Delete Account"
-                size="sm"
-              />
-            </ButtonColumn>
-          )}
-
-          {!loggedIn && !changeCredentials && (
+          {isLogin && (
             <ButtonColumn>
               <Button onClick={accountLogin} text="Login" size="sm" />
               <Button
@@ -246,23 +235,47 @@ const Login = () => {
             </ButtonColumn>
           )}
 
-          {!loggedIn && changeCredentials && (
+          {isCreate && (
             <ButtonColumn>
               <Button
                 onClick={updateCredentials}
                 text="Create Account"
                 size="sm"
               />
-              <Button onClick={goBack} text="Back" size="sm" />
+              <Button
+                onClick={() => setMode('login')}
+                text="Back"
+                size="sm"
+              />
             </ButtonColumn>
           )}
 
-          {loggedIn && !changeCredentials && (
+          {isLoggedIn && (
             <ButtonColumn>
               <Button onClick={accountLogout} text="Logout" size="sm" />
               <Button
-                onClick={changeAccountCredentials}
+                onClick={() => setMode('update')}
                 text="Update Account"
+                size="sm"
+              />
+            </ButtonColumn>
+          )}
+
+          {isUpdate && (
+            <ButtonColumn>
+              <Button
+                onClick={updateCredentials}
+                text="Update"
+                size="sm"
+              />
+              <Button
+                onClick={() => setMode('loggedIn')}
+                text="Back"
+                size="sm"
+              />
+              <Button
+                onClick={resetAccount}
+                text="Delete Account"
                 size="sm"
               />
             </ButtonColumn>
