@@ -208,9 +208,7 @@ const Login = () => {
                     type="password"
                     id="retypePassword"
                     value={retypePasswordText}
-                    onChange={(e) =>
-                      setRetypePasswordText(e.target.value)
-                    }
+                    onChange={(e) => setRetypePasswordText(e.target.value)}
                     placeholder="Retype Password..."
                   />
                 </>
@@ -227,11 +225,7 @@ const Login = () => {
                 text="Create An Account"
                 size="sm"
               />
-              <Button
-                onClick={resetAccount}
-                text="Reset Account"
-                size="sm"
-              />
+              <Button onClick={resetAccount} text="Reset Account" size="sm" />
             </ButtonColumn>
           )}
 
@@ -242,11 +236,7 @@ const Login = () => {
                 text="Create Account"
                 size="sm"
               />
-              <Button
-                onClick={() => setMode('login')}
-                text="Back"
-                size="sm"
-              />
+              <Button onClick={() => setMode('login')} text="Back" size="sm" />
             </ButtonColumn>
           )}
 
@@ -263,21 +253,13 @@ const Login = () => {
 
           {isUpdate && (
             <ButtonColumn>
-              <Button
-                onClick={updateCredentials}
-                text="Update"
-                size="sm"
-              />
+              <Button onClick={updateCredentials} text="Update" size="sm" />
               <Button
                 onClick={() => setMode('loggedIn')}
                 text="Back"
                 size="sm"
               />
-              <Button
-                onClick={resetAccount}
-                text="Delete Account"
-                size="sm"
-              />
+              <Button onClick={resetAccount} text="Delete Account" size="sm" />
             </ButtonColumn>
           )}
         </InputWrapper>
