@@ -4,7 +4,7 @@ import GlobalStyles from './GlobalStyles';
 import { lightTheme, darkTheme } from './theme/theme.js';
 import Layout from './Layout';
 import Home from './Home';
-import Settings from './Settings';
+import Settings from './pages/settings/Settings';
 import Todo from './pages/todo/Todo';
 import Login from './pages/login/Login';
 import PostsExplorer from './pages/posts-explorer/PostsExplorer';

@@ -233,7 +233,7 @@ All architectural decisions, implementation choices, and tradeoff evaluations we
 src/
  ├── components/        # Reusable UI components (e.g., Card)
  ├── hooks/             # Custom hooks (e.g., useBreakpoint)
- ├── pages/             # Feature modules (login, posts-explorer, todo)
+ ├── pages/             # Feature modules (login, posts-explorer, todo, settings)
  ├── preferences/       # User preference context & provider
  ├── shared/            # Shared UI primitives (buttons, navbar, etc.)
  ├── styles/            # Shared style utilities
@@ -242,7 +242,6 @@ src/
  ├── Home.js
  ├── Layout.js          # Layout wrapper
  ├── main.js            # Application entry point
- ├── Settings.jsx
  └── ThemedRouter.jsx   # Router abstraction with theme support
 ```
 
