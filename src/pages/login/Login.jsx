@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/button/Button';
 
@@ -84,6 +84,7 @@ const Login = () => {
   const [mode, setMode] = useState('login');
   // 'login' | 'create' | 'loggedIn' | 'update'
 
+  const [account, setAccount] = useState(null);
   const [userNameText, setUserNameText] = useState('');
   const [passwordText, setPasswordText] = useState('');
   const [retypePasswordText, setRetypePasswordText] = useState('');
@@ -95,6 +96,14 @@ const Login = () => {
   const isUpdate = mode === 'update';
   const isAuthenticated = mode === 'loggedIn' || mode === 'update';
 
+  useEffect(() => {
+    const stored = localStorage.getItem('account');
+
+    if (stored) {
+      setAccount(JSON.parse(stored));
+    }
+  }, []);
+
   const clearFields = () => {
     setUserNameText('');
     setPasswordText('');
@@ -105,10 +114,15 @@ const Login = () => {
     typeof value === 'string' && /^\S+$/.test(value);
 
   const accountLogin = () => {
-    const userName = localStorage.getItem('username');
-    const password = localStorage.getItem('password');
+    if (!account) {
+      setError('No account found, please create an account');
+      return;
+    }
 
-    if (userName === userNameText && password === passwordText) {
+    if (
+      account.username === userNameText &&
+      account.password === passwordText
+    ) {
       setMode('loggedIn');
       clearFields();
       setError('');
@@ -136,8 +150,10 @@ const Login = () => {
       setError('Passwords do not match');
       return;
     }
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
+    const newAccount = { username, password };
+
+    localStorage.setItem('account', JSON.stringify(newAccount));
+    setAccount(newAccount);
 
     clearFields();
     setMode('login');
@@ -145,10 +161,9 @@ const Login = () => {
   };
 
   const changeAccountCredentials = () => {
-    const userName = localStorage.getItem('username');
-    const password = localStorage.getItem('password');
+    const accountExists = !!account;
 
-    if (!isLoggedIn && (userName || password)) {
+    if (!isLoggedIn && accountExists) {
       setError(
         'An account already exists, please login or reset your account...'
       );
@@ -160,8 +175,8 @@ const Login = () => {
   };
 
   const resetAccount = () => {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
+    localStorage.removeItem('account');
+    setAccount(null);
     setMode('login');
     clearFields();
     setError('Your account has been deleted');
@@ -175,8 +190,8 @@ const Login = () => {
   return (
     <Container>
       <StatusContainer>
-        {isAuthenticated
-          ? `Logged in as ${localStorage.getItem('username')}`
+        {isAuthenticated && account
+          ? `Logged in as ${account.username}`
           : 'Logged out'}
       </StatusContainer>
 
