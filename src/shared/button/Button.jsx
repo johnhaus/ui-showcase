@@ -41,6 +41,7 @@ export const StyledButton = styled.button`
 `;
 
 const Button = ({
+  type = 'button',
   onClick,
   text,
   width,
@@ -50,6 +51,7 @@ const Button = ({
 }) => {
   return (
     <StyledButton
+      type={type}
       onClick={onClick}
       disabled={disabled}
       $fullWidth={fullWidth}

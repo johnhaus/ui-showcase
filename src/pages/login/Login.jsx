@@ -32,7 +32,7 @@ const ErrorContainer = styled.div`
   color: ${({ theme }) => theme.colors.intent.destructive};
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.form`
   padding: 20px;
   margin-bottom: 15px;
   display: flex;
@@ -187,6 +187,18 @@ const Login = () => {
     setError('');
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (mode === 'login') {
+      accountLogin();
+    }
+
+    if (mode === 'create' || mode === 'update') {
+      updateCredentials();
+    }
+  };
+
   return (
     <Container>
       <StatusContainer>
@@ -196,24 +208,35 @@ const Login = () => {
       </StatusContainer>
 
       <LoginContainer>
-        <InputWrapper>
-          {(isLogin || isCreate || isUpdate) && (
+        <InputWrapper onSubmit={handleSubmit}>
+          {!isLoggedIn && (
             <>
               <Label htmlFor="username">Username</Label>
               <Input
                 type="text"
                 id="username"
                 value={userNameText}
-                onChange={(e) => setUserNameText(e.target.value)}
+                onChange={(e) => {
+                  setUserNameText(e.target.value);
+                  setError('');
+                }}
                 placeholder="Enter Username..."
+                autoComplete="username"
+                required
               />
+
               <Label htmlFor="password">Password</Label>
               <Input
                 type="password"
                 id="password"
                 value={passwordText}
-                onChange={(e) => setPasswordText(e.target.value)}
+                onChange={(e) => {
+                  setPasswordText(e.target.value);
+                  setError('');
+                }}
                 placeholder="Enter Password..."
+                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                required
               />
 
               {(isCreate || isUpdate) && (
@@ -223,8 +246,13 @@ const Login = () => {
                     type="password"
                     id="retypePassword"
                     value={retypePasswordText}
-                    onChange={(e) => setRetypePasswordText(e.target.value)}
+                    onChange={(e) => {
+                      setRetypePasswordText(e.target.value);
+                      setError('');
+                    }}
                     placeholder="Retype Password..."
+                    autoComplete="new-password"
+                    required
                   />
                 </>
               )}
@@ -234,23 +262,21 @@ const Login = () => {
 
           {isLogin && (
             <ButtonColumn>
-              <Button onClick={accountLogin} text="Login" size="sm" />
+              <Button type="submit" text="Login" size="sm" />
               <Button
                 onClick={changeAccountCredentials}
                 text="Create An Account"
                 size="sm"
               />
-              <Button onClick={resetAccount} text="Reset Account" size="sm" />
+              {account && (
+                <Button onClick={resetAccount} text="Reset Account" size="sm" />
+              )}
             </ButtonColumn>
           )}
 
           {isCreate && (
             <ButtonColumn>
-              <Button
-                onClick={updateCredentials}
-                text="Create Account"
-                size="sm"
-              />
+              <Button type="submit" text="Create Account" size="sm" />
               <Button onClick={() => setMode('login')} text="Back" size="sm" />
             </ButtonColumn>
           )}
@@ -268,7 +294,8 @@ const Login = () => {
 
           {isUpdate && (
             <ButtonColumn>
-              <Button onClick={updateCredentials} text="Update" size="sm" />
+              <Button type="submit" text="Update" size="sm" />
+
               <Button
                 onClick={() => setMode('loggedIn')}
                 text="Back"
