@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/button/Button';
 
@@ -63,6 +63,75 @@ const ButtonColumn = styled.div`
   gap: 12px;
 `;
 
+const MODES = {
+  LOGIN: 'login',
+  CREATE: 'create',
+  LOGGED_IN: 'loggedIn',
+  UPDATE: 'update',
+};
+
+const initialState = {
+  mode: MODES.LOGIN,
+  account: null,
+  form: {
+    username: '',
+    password: '',
+    retype: '',
+  },
+  error: '',
+};
+
+function authReducer(state, action) {
+  switch (action.type) {
+    case 'SET_MODE':
+      return {
+        ...state,
+        mode: action.payload,
+        error: '',
+      };
+
+    case 'SET_ACCOUNT':
+      return {
+        ...state,
+        account: action.payload,
+      };
+
+    case 'UPDATE_FIELD':
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          [action.field]: action.value,
+        },
+        error: '',
+      };
+
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case 'CLEAR_FORM':
+      return {
+        ...state,
+        form: { username: '', password: '', retype: '' },
+      };
+
+    case 'RESET_ACCOUNT':
+      return {
+        ...state,
+        account: null,
+        mode: MODES.LOGIN,
+        form: initialState.form,
+        error: '',
+      };
+
+    default:
+      return state;
+  }
+}
+
 /**
  * ⚠️ DEMO-ONLY AUTHENTICATION
  *
@@ -81,120 +150,112 @@ const ButtonColumn = styled.div`
  */
 
 const Login = () => {
-  const [mode, setMode] = useState('login');
-  // 'login' | 'create' | 'loggedIn' | 'update'
-
-  const [account, setAccount] = useState(null);
-  const [userNameText, setUserNameText] = useState('');
-  const [passwordText, setPasswordText] = useState('');
-  const [retypePasswordText, setRetypePasswordText] = useState('');
-  const [error, setError] = useState('');
-
-  const isLogin = mode === 'login';
-  const isCreate = mode === 'create';
-  const isLoggedIn = mode === 'loggedIn';
-  const isUpdate = mode === 'update';
-  const isAuthenticated = mode === 'loggedIn' || mode === 'update';
+  const [state, dispatch] = useReducer(authReducer, initialState);
+  const { mode, account, form, error } = state;
 
   useEffect(() => {
     const stored = localStorage.getItem('account');
+    if (!stored) return;
 
-    if (stored) {
-      setAccount(JSON.parse(stored));
+    try {
+      const parsed = JSON.parse(stored);
+      dispatch({ type: 'SET_ACCOUNT', payload: parsed });
+    } catch {
+      localStorage.removeItem('account');
     }
   }, []);
-
-  const clearFields = () => {
-    setUserNameText('');
-    setPasswordText('');
-    setRetypePasswordText('');
-  };
 
   const isValidText = (value) =>
     typeof value === 'string' && /^\S+$/.test(value);
 
   const accountLogin = () => {
     if (!account) {
-      setError('No account found, please create an account');
+      dispatch({
+        type: 'SET_ERROR',
+        payload: 'No account found, please create an account',
+      });
       return;
     }
 
     if (
-      account.username === userNameText &&
-      account.password === passwordText
+      account.username === form.username &&
+      account.password === form.password
     ) {
-      setMode('loggedIn');
-      clearFields();
-      setError('');
+      dispatch({ type: 'SET_MODE', payload: MODES.LOGGED_IN });
+      dispatch({ type: 'CLEAR_FORM' });
     } else {
-      setError('Invalid credentials, please try again');
+      dispatch({
+        type: 'SET_ERROR',
+        payload: 'Invalid credentials, please try again',
+      });
     }
   };
 
   const updateCredentials = () => {
-    const username = userNameText.trim();
-    const password = passwordText.trim();
-    const retype = retypePasswordText.trim();
+    const username = form.username.trim();
+    const password = form.password.trim();
+    const retype = form.retype.trim();
 
     if (!isValidText(username)) {
-      setError('Invalid username');
+      dispatch({ type: 'SET_ERROR', payload: 'Invalid username' });
       return;
     }
 
     if (!isValidText(password)) {
-      setError('Invalid password');
+      dispatch({ type: 'SET_ERROR', payload: 'Invalid password' });
       return;
     }
 
     if (password !== retype) {
-      setError('Passwords do not match');
+      dispatch({ type: 'SET_ERROR', payload: 'Passwords do not match' });
       return;
     }
     const newAccount = { username, password };
 
     localStorage.setItem('account', JSON.stringify(newAccount));
-    setAccount(newAccount);
-
-    clearFields();
-    setMode('login');
-    setError('Changes saved, please log in to continue');
+    dispatch({ type: 'SET_ACCOUNT', payload: newAccount });
+    dispatch({ type: 'CLEAR_FORM' });
+    dispatch({ type: 'SET_MODE', payload: MODES.LOGIN });
+    dispatch({
+      type: 'SET_ERROR',
+      payload: 'Changes saved, please log in to continue',
+    });
   };
 
   const changeAccountCredentials = () => {
-    const accountExists = !!account;
-
-    if (!isLoggedIn && accountExists) {
-      setError(
-        'An account already exists, please login or reset your account...'
-      );
+    if (mode !== MODES.LOGGED_IN && account) {
+      dispatch({
+        type: 'SET_ERROR',
+        payload:
+          'An account already exists, please login or reset your account...',
+      });
       return;
     }
 
-    setMode(isLoggedIn ? 'update' : 'create');
-    setError('');
+    dispatch({
+      type: 'SET_MODE',
+      payload: mode === MODES.LOGGED_IN ? MODES.UPDATE : MODES.CREATE,
+    });
   };
 
   const resetAccount = () => {
     localStorage.removeItem('account');
-    setAccount(null);
-    setMode('login');
-    clearFields();
-    setError('Your account has been deleted');
+    dispatch({ type: 'RESET_ACCOUNT' });
   };
 
   const accountLogout = () => {
-    setMode('login');
-    setError('');
+    dispatch({ type: 'SET_MODE', payload: MODES.LOGIN });
+    dispatch({ type: 'SET_ERROR', payload: '' });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (mode === 'login') {
+    if (mode === MODES.LOGIN) {
       accountLogin();
     }
 
-    if (mode === 'create' || mode === 'update') {
+    if (mode === MODES.CREATE || mode === MODES.UPDATE) {
       updateCredentials();
     }
   };
@@ -202,24 +263,27 @@ const Login = () => {
   return (
     <Container>
       <StatusContainer>
-        {isAuthenticated && account
+        {(mode === MODES.LOGGED_IN || mode === MODES.UPDATE) && account
           ? `Logged in as ${account.username}`
           : 'Logged out'}
       </StatusContainer>
 
       <LoginContainer>
         <InputWrapper onSubmit={handleSubmit}>
-          {!isLoggedIn && (
+          {mode !== MODES.LOGGED_IN && (
             <>
               <Label htmlFor="username">Username</Label>
               <Input
                 type="text"
                 id="username"
-                value={userNameText}
-                onChange={(e) => {
-                  setUserNameText(e.target.value);
-                  setError('');
-                }}
+                value={form.username}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'UPDATE_FIELD',
+                    field: 'username',
+                    value: e.target.value,
+                  })
+                }
                 placeholder="Enter Username..."
                 autoComplete="username"
                 required
@@ -229,27 +293,35 @@ const Login = () => {
               <Input
                 type="password"
                 id="password"
-                value={passwordText}
-                onChange={(e) => {
-                  setPasswordText(e.target.value);
-                  setError('');
-                }}
+                value={form.password}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'UPDATE_FIELD',
+                    field: 'password',
+                    value: e.target.value,
+                  })
+                }
                 placeholder="Enter Password..."
-                autoComplete={isLogin ? 'current-password' : 'new-password'}
+                autoComplete={
+                  mode === MODES.LOGIN ? 'current-password' : 'new-password'
+                }
                 required
               />
 
-              {(isCreate || isUpdate) && (
+              {(mode === MODES.CREATE || mode === MODES.UPDATE) && (
                 <>
                   <Label htmlFor="retypePassword">Retype Password</Label>
                   <Input
                     type="password"
                     id="retypePassword"
-                    value={retypePasswordText}
-                    onChange={(e) => {
-                      setRetypePasswordText(e.target.value);
-                      setError('');
-                    }}
+                    value={form.retype}
+                    onChange={(e) =>
+                      dispatch({
+                        type: 'UPDATE_FIELD',
+                        field: 'retype',
+                        value: e.target.value,
+                      })
+                    }
                     placeholder="Retype Password..."
                     autoComplete="new-password"
                     required
@@ -260,7 +332,7 @@ const Login = () => {
             </>
           )}
 
-          {isLogin && (
+          {mode === MODES.LOGIN && (
             <ButtonColumn>
               <Button type="submit" text="Login" size="sm" />
               <Button
@@ -274,30 +346,40 @@ const Login = () => {
             </ButtonColumn>
           )}
 
-          {isCreate && (
+          {mode === MODES.CREATE && (
             <ButtonColumn>
               <Button type="submit" text="Create Account" size="sm" />
-              <Button onClick={() => setMode('login')} text="Back" size="sm" />
+              <Button
+                onClick={() =>
+                  dispatch({ type: 'SET_MODE', payload: MODES.LOGIN })
+                }
+                text="Back"
+                size="sm"
+              />
             </ButtonColumn>
           )}
 
-          {isLoggedIn && (
+          {mode === MODES.LOGGED_IN && (
             <ButtonColumn>
               <Button onClick={accountLogout} text="Logout" size="sm" />
               <Button
-                onClick={() => setMode('update')}
+                onClick={() =>
+                  dispatch({ type: 'SET_MODE', payload: MODES.UPDATE })
+                }
                 text="Update Account"
                 size="sm"
               />
             </ButtonColumn>
           )}
 
-          {isUpdate && (
+          {mode === MODES.UPDATE && (
             <ButtonColumn>
               <Button type="submit" text="Update" size="sm" />
 
               <Button
-                onClick={() => setMode('loggedIn')}
+                onClick={() =>
+                  dispatch({ type: 'SET_MODE', payload: MODES.LOGGED_IN })
+                }
                 text="Back"
                 size="sm"
               />
