@@ -96,6 +96,14 @@ function authReducer(state, action) {
         account: action.payload,
       };
 
+    case 'LOGIN_SUCCESS':
+      return {
+        ...state,
+        mode: MODES.LOGGED_IN,
+        form: initialState.form,
+        error: '',
+      };
+
     case 'UPDATE_FIELD':
       return {
         ...state,
@@ -104,6 +112,15 @@ function authReducer(state, action) {
           [action.field]: action.value,
         },
         error: '',
+      };
+
+    case 'UPDATE_ACCOUNT':
+      return {
+        ...state,
+        account: action.payload,
+        mode: MODES.LOGIN,
+        form: { username: '', password: '', retype: '' },
+        error: 'Changes saved, please log in to continue',
       };
 
     case 'SET_ERROR':
@@ -181,8 +198,7 @@ const Login = () => {
       account.username === form.username &&
       account.password === form.password
     ) {
-      dispatch({ type: 'SET_MODE', payload: MODES.LOGGED_IN });
-      dispatch({ type: 'CLEAR_FORM' });
+      dispatch({ type: 'LOGIN_SUCCESS' });
     } else {
       dispatch({
         type: 'SET_ERROR',
@@ -213,13 +229,7 @@ const Login = () => {
     const newAccount = { username, password };
 
     localStorage.setItem('account', JSON.stringify(newAccount));
-    dispatch({ type: 'SET_ACCOUNT', payload: newAccount });
-    dispatch({ type: 'CLEAR_FORM' });
-    dispatch({ type: 'SET_MODE', payload: MODES.LOGIN });
-    dispatch({
-      type: 'SET_ERROR',
-      payload: 'Changes saved, please log in to continue',
-    });
+    dispatch({ type: 'UPDATE_ACCOUNT', payload: newAccount });
   };
 
   const changeAccountCredentials = () => {
@@ -251,12 +261,12 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (mode === MODES.LOGIN) {
-      accountLogin();
-    }
-
-    if (mode === MODES.CREATE || mode === MODES.UPDATE) {
-      updateCredentials();
+    switch (mode) {
+      case MODES.LOGIN:
+        return accountLogin();
+      case MODES.CREATE:
+        case MODES.UPDATE:
+      return updateCredentials();
     }
   };
 
