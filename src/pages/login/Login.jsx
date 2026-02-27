@@ -265,8 +265,8 @@ const Login = () => {
       case MODES.LOGIN:
         return accountLogin();
       case MODES.CREATE:
-        case MODES.UPDATE:
-      return updateCredentials();
+      case MODES.UPDATE:
+        return updateCredentials();
     }
   };
 
