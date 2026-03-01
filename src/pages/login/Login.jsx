@@ -70,14 +70,16 @@ const MODES = {
   UPDATE: 'update',
 };
 
+const emptyForm = {
+  username: '',
+  password: '',
+  retype: '',
+};
+
 const initialState = {
   mode: MODES.LOGIN,
   account: null,
-  form: {
-    username: '',
-    password: '',
-    retype: '',
-  },
+  form: { ...emptyForm },
   error: '',
 };
 
@@ -100,7 +102,7 @@ function authReducer(state, action) {
       return {
         ...state,
         mode: MODES.LOGGED_IN,
-        form: initialState.form,
+        form: { ...emptyForm },
         error: '',
       };
 
@@ -119,7 +121,7 @@ function authReducer(state, action) {
         ...state,
         account: action.payload,
         mode: MODES.LOGIN,
-        form: { username: '', password: '', retype: '' },
+        form: { ...emptyForm },
         error: 'Changes saved, please log in to continue',
       };
 
@@ -132,7 +134,7 @@ function authReducer(state, action) {
     case 'CLEAR_FORM':
       return {
         ...state,
-        form: { username: '', password: '', retype: '' },
+        form: { ...emptyForm },
       };
 
     case 'RESET_ACCOUNT':
@@ -140,8 +142,8 @@ function authReducer(state, action) {
         ...state,
         account: null,
         mode: MODES.LOGIN,
-        form: initialState.form,
-        error: '',
+        form: { ...emptyForm },
+        error: 'Your account has been deleted',
       };
 
     default:
@@ -255,7 +257,6 @@ const Login = () => {
 
   const accountLogout = () => {
     dispatch({ type: 'SET_MODE', payload: MODES.LOGIN });
-    dispatch({ type: 'SET_ERROR', payload: '' });
   };
 
   const handleSubmit = (e) => {
