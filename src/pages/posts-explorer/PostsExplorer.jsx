@@ -1,9 +1,9 @@
-import React, { useReducer, useEffect, useCallback, useRef } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { cardStyles } from '../../styles/cardStyles';
 import Button from '../../shared/button/Button';
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 
 const Container = styled.div`
   display: flex;
@@ -123,7 +123,7 @@ const reducer = (state, action) => {
           state.page === 1
             ? action.payload
             : [...state.posts, ...action.payload],
-            page: state.page + 1,
+        page: state.page + 1,
       };
     case actionTypes.SET_HAS_MORE:
       return { ...state, hasMore: action.payload };

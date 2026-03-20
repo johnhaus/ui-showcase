@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export default function useInfiniteScroll({
   hasMore,
   loading,
   onLoadMore,
-  rootMargin = "100px",
+  rootMargin = '100px',
 }) {
   const sentinelRef = useRef(null);
   const triggeredRef = useRef(false);
@@ -21,11 +21,7 @@ export default function useInfiniteScroll({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (
-          entry.isIntersecting &&
-          !loading &&
-          !triggeredRef.current
-        ) {
+        if (entry.isIntersecting && !loading && !triggeredRef.current) {
           triggeredRef.current = true;
           onLoadMore();
         }

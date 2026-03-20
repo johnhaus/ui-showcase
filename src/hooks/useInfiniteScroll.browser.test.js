@@ -25,7 +25,10 @@ globalThis.IntersectionObserver = MockIntersectionObserver;
 
 function TestComponent(props) {
   const sentinelRef = useInfiniteScroll(props);
-  return React.createElement('div', { ref: sentinelRef, 'data-testid': 'sentinel' });
+  return React.createElement('div', {
+    ref: sentinelRef,
+    'data-testid': 'sentinel',
+  });
 }
 
 describe('useInfiniteScroll', () => {
@@ -211,10 +214,7 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([
-        { isIntersecting: false },
-        { isIntersecting: true },
-      ]);
+      observerCallback([{ isIntersecting: false }, { isIntersecting: true }]);
     });
 
     expect(onLoadMore).not.toHaveBeenCalled();
