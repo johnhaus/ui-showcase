@@ -55,7 +55,7 @@ const reducer = (state, action) => {
 
 function usePostsExplorer() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { posts, loading, error, page, hasMore, searchInput, activeQuery } = state;
+  const { loading, error, page, hasMore, activeQuery } = state;
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore || error) return;
