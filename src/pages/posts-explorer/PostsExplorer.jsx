@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { cardStyles } from '../../styles/cardStyles';
 import Button from '../../shared/button/Button';
 import useInfiniteScroll from '../../hooks/useInfiniteScroll';
-import usePostsExplorer, { actionTypes } from '../../hooks/usePostsExplorer';
+import usePostsExplorer from './usePostsExplorer';
+import { actionTypes } from './postsReducer';
 
 const Container = styled.div`
   display: flex;
