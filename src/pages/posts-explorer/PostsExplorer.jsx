@@ -97,7 +97,7 @@ function PostsExplorer() {
   const { posts, loading, error, hasMore, searchInput, activeQuery } = state;
 
   const loadMoreRef = useInfiniteScroll({
-    hasMore,
+    hasMore: hasMore && !error,
     loading,
     onLoadMore: fetchPosts,
   });

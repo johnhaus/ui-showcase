@@ -7,7 +7,7 @@ function usePostsExplorer() {
   const { loading, error, page, hasMore, activeQuery } = state;
 
   const fetchPosts = useCallback(async () => {
-    if (loading || !hasMore || error) return;
+    if (loading || !hasMore) return;
 
     dispatch({ type: actionTypes.SET_LOADING, payload: true });
 
