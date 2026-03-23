@@ -23,7 +23,7 @@ export const reducer = (state, action) => {
       return { ...state, loading: action.payload };
 
     case actionTypes.SET_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, loading: false };
 
     case actionTypes.SET_POSTS:
       return {
