@@ -4,7 +4,7 @@ import { reducer, initialState, actionTypes } from './postsReducer';
 
 function usePostsExplorer() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { loading, error, page, hasMore, activeQuery } = state;
+  const { loading, page, hasMore, activeQuery } = state;
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -31,9 +31,7 @@ function usePostsExplorer() {
       }
 
       dispatch({ type: actionTypes.SET_POSTS, payload: response.data });
-    } catch (err) {
-      console.error('Failed to load posts:', err);
-
+    } catch {
       dispatch({
         type: actionTypes.SET_ERROR,
         payload: 'Failed to load posts.',
@@ -41,7 +39,7 @@ function usePostsExplorer() {
     } finally {
       dispatch({ type: actionTypes.SET_LOADING, payload: false });
     }
-  }, [page, loading, hasMore, error, activeQuery]);
+  }, [page, loading, hasMore, activeQuery]);
 
   return { state, dispatch, fetchPosts };
 }
