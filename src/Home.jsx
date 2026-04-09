@@ -58,8 +58,8 @@ function Home() {
               <small>Data provided by: jsonplaceholder.typicode.com</small>
             </SmallText>
           </Card>
-          <Card to={'./page4'} title={'In Development'}>
-            This feature is currently being built. Check back soon.
+          <Card to={'./budget-dashboard'} title={'Budget Dashboard'}>
+            Track spending, manage income, and gain insights into your budget.
           </Card>
         </CardContainer>
       </MainLayout>

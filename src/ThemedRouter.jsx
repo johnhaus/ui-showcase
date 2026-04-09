@@ -8,7 +8,7 @@ import Settings from './pages/settings/Settings';
 import Todo from './pages/todo/Todo';
 import Login from './pages/login/Login';
 import PostsExplorer from './pages/posts-explorer/PostsExplorer';
-import Page4 from './pages/Page4';
+import BudgetDashboard from './pages/budget-dashboard/BudgetDashboard';
 import { PreferencesProvider } from './preferences/PreferencesProvider';
 import { usePreferences } from './preferences/usePreferences';
 import { useResolvedTheme } from './theme/useResolvedTheme';
@@ -28,7 +28,7 @@ export default function ThemedRouter() {
             <Route path="todo" element={<Todo />} />
             <Route path="login" element={<Login />} />
             <Route path="posts-explorer" element={<PostsExplorer />} />
-            <Route path="page4" element={<Page4 />} />
+            <Route path="budget-dashboard" element={<BudgetDashboard />} />
           </Route>
         </Routes>
       </ThemeProvider>
