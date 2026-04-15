@@ -1,4 +1,4 @@
-const isBrowser = () => typeof window !== "undefined";
+const isBrowser = () => typeof window !== 'undefined';
 
 const logError = (message, error) => {
   if (import.meta.env.DEV) {
@@ -55,6 +55,6 @@ export const clear = () => {
   try {
     localStorage.clear();
   } catch (e) {
-    logError("localStorage clear failed", e);
+    logError('localStorage clear failed', e);
   }
 };

@@ -2,12 +2,13 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { getItem, setItem, removeItem, clear } from './localStorage';
 
 describe('localStorage utilities', () => {
-  const silenceWarnings = () => vi.spyOn(console, 'warn').mockImplementation(() => {});
+  const silenceWarnings = () =>
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
 
   beforeEach(() => {
-    global.window = {};
+    globalThis.window = {};
 
-    global.localStorage = {
+    globalThis.localStorage = {
       store: {},
 
       getItem(key) {
@@ -29,13 +30,13 @@ describe('localStorage utilities', () => {
   });
 
   it('does not crash if window is undefined', () => {
-    delete global.window;
+    delete globalThis.window;
 
     expect(() => getItem('key')).not.toThrow();
   });
 
   it('setItem does nothing when not in browser', () => {
-    delete global.window;
+    delete globalThis.window;
 
     expect(() => setItem('key', 'value')).not.toThrow();
   });
@@ -82,7 +83,7 @@ describe('localStorage utilities', () => {
   });
 
   it('stores value as JSON string', () => {
-  	setItem('key', { foo: 'bar' });
+    setItem('key', { foo: 'bar' });
 
     const expected = '{"foo":"bar"}';
 
@@ -90,43 +91,43 @@ describe('localStorage utilities', () => {
   });
 
   it('stores and retrieves boolean values correctly', () => {
-  	setItem('key', true);
-  	const result = getItem('key');
-  	expect(result).toBe(true);
+    setItem('key', true);
+    const result = getItem('key');
+    expect(result).toBe(true);
   });
 
   it('stores and retrieves number values correctly', () => {
-  	setItem('key', 123);
-  	const result = getItem('key');
-  	expect(result).toBe(123);
+    setItem('key', 123);
+    const result = getItem('key');
+    expect(result).toBe(123);
   });
 
   it('stores and retrieves array correctly', () => {
     const arr = [1, 2, 3];
- 	  setItem('arrayKey', arr);
+    setItem('arrayKey', arr);
 
-  	const result = getItem('arrayKey');
-  	expect(result).toEqual(arr);
+    const result = getItem('arrayKey');
+    expect(result).toEqual(arr);
   });
 
   it('handles large objects', () => {
-  	const largeObj = { largeKey: new Array(1000).fill('a').join('') };
-  	setItem('largeObj', largeObj);
-  
-  	const result = getItem('largeObj');
-  	expect(result).toEqual(largeObj);
+    const largeObj = { largeKey: new Array(1000).fill('a').join('') };
+    setItem('largeObj', largeObj);
+
+    const result = getItem('largeObj');
+    expect(result).toEqual(largeObj);
   });
 
   it('handles undefined values correctly', () => {
-  	setItem('key', undefined);
+    setItem('key', undefined);
     const result = getItem('key');
-  	expect(result).toBe(null);
+    expect(result).toBe(null);
   });
 
   it('handles null values correctly', () => {
-  	setItem('key', null);
-  	const result = getItem('key');
-  	expect(result).toBe(null);
+    setItem('key', null);
+    const result = getItem('key');
+    expect(result).toBe(null);
   });
 
   it('returns parsed value when key exists', () => {
@@ -185,12 +186,12 @@ describe('localStorage utilities', () => {
   });
 
   it('clears all items', () => {
-  	setItem('key1', 'value1');
-  	setItem('key2', 'value2');
-  
-  	clear();
+    setItem('key1', 'value1');
+    setItem('key2', 'value2');
 
-  	expect(localStorage.getItem('key1')).toBe(null);
-  	expect(localStorage.getItem('key2')).toBe(null);
+    clear();
+
+    expect(localStorage.getItem('key1')).toBe(null);
+    expect(localStorage.getItem('key2')).toBe(null);
   });
 });
