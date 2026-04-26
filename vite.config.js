@@ -10,9 +10,9 @@ export default defineConfig({
       {
         name: 'unit',
         test: {
-          include: ['src/**/*.{test,spec}.{js,ts}'],
+          include: ['src/**/*.{test,spec}.{js,ts,jsx}'],
           exclude: ['**/*.browser.test.{js,ts,jsx,tsx}'],
-          environment: 'node',
+          environment: 'jsdom',
           globals: true,
         },
       },
