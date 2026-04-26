@@ -10,9 +10,7 @@ describe('useLocalStorage', () => {
   });
 
   it('initializes with initialValue when storage is empty', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     expect(result.current.value).toBe('initial');
   });
@@ -22,9 +20,7 @@ describe('useLocalStorage', () => {
 
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    const { result } = renderHook(() =>
-      useLocalStorage('bad', 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage('bad', 'initial'));
 
     expect(result.current.value).toBe('initial');
 
@@ -34,17 +30,13 @@ describe('useLocalStorage', () => {
   it('initializes with stored value when present', () => {
     localStorage.setItem(key, JSON.stringify('stored'));
 
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     expect(result.current.value).toBe('stored');
   });
 
   it('persists value to localStorage when setValue is called', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     act(() => {
       result.current.setValue('new-value');
@@ -55,9 +47,7 @@ describe('useLocalStorage', () => {
   });
 
   it('supports functional updates', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 1)
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 1));
 
     act(() => {
       result.current.setValue((prev) => prev + 1);
@@ -68,9 +58,7 @@ describe('useLocalStorage', () => {
   });
 
   it('removes value and resets to initialValue', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     act(() => {
       result.current.remove();
@@ -81,9 +69,7 @@ describe('useLocalStorage', () => {
   });
 
   it('updates state when storage event fires (cross-tab simulation)', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     act(() => {
       localStorage.setItem(key, JSON.stringify('external'));
@@ -100,9 +86,7 @@ describe('useLocalStorage', () => {
   });
 
   it('ignores storage events for different keys', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     act(() => {
       window.dispatchEvent(
@@ -117,9 +101,7 @@ describe('useLocalStorage', () => {
   });
 
   it('handles undefined value by removing from localStorage', () => {
-    const { result } = renderHook(() =>
-      useLocalStorage(key, 'initial')
-    );
+    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
 
     act(() => {
       result.current.setValue(undefined);
