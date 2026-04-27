@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { getItem, setItem, removeItem, clear } from './localStorage';
 
 describe('localStorage utilities', () => {
@@ -16,7 +16,7 @@ describe('localStorage utilities', () => {
       },
 
       setItem(key, value) {
-        this.store[key] = String(value);
+        this.store[key] = value;
       },
 
       removeItem(key) {
@@ -38,24 +38,26 @@ describe('localStorage utilities', () => {
   it('setItem does nothing when not in browser', () => {
     delete globalThis.window;
 
-    expect(() => setItem('key', 'value')).not.toThrow();
+    setItem('key', 'value');
+    expect(globalThis.localStorage.store['key']).toBeUndefined();
   });
 
-  it('returns fallback when key does not exist', () => {
-    const result = getItem('missing', 'fallback');
-    expect(result).toBe('fallback');
+  it('returns initial value when key does not exist', () => {
+    const result = getItem('missing', 'initial');
+    expect(result).toBe('initial');
   });
 
-  it('returns fallback if getItem throws', () => {
+  it('returns initial value if getItem throws', () => {
     const warnSpy = silenceWarnings();
 
     localStorage.getItem = () => {
       throw new Error('fail');
     };
 
-    const result = getItem('key', 'fallback');
+    const result = getItem('key', 'initial');
 
-    expect(result).toBe('fallback');
+    expect(result).toBe('initial');
+    expect(warnSpy).toHaveBeenCalled();
 
     warnSpy.mockRestore();
   });
@@ -63,23 +65,22 @@ describe('localStorage utilities', () => {
   it('returns null when stored value is "null"', () => {
     localStorage.setItem('key', JSON.stringify(null));
 
-    const result = getItem('key', 'fallback');
+    const result = getItem('key', 'initial');
 
     expect(result).toBe(null);
   });
 
-  it('returns raw value when JSON is invalid', () => {
+  it('returns initial value when JSON is invalid', () => {
     localStorage.setItem('bad', 'not-json');
 
-    const result = getItem('bad', 'fallback');
-
-    expect(result).toBe('not-json');
-  });
-
-  it('does not throw when JSON.parse fails', () => {
-    localStorage.setItem('bad', 'invalid-json');
-
-    expect(() => getItem('bad')).not.toThrow();
+    const warnSpy = silenceWarnings();
+    const result = getItem('bad', 'initial');
+    expect(result).toBe('initial');
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid JSON'),
+      expect.any(Error)
+    );
+    warnSpy.mockRestore();
   });
 
   it('stores value as JSON string', () => {
@@ -161,6 +162,7 @@ describe('localStorage utilities', () => {
     };
 
     expect(() => setItem('key', 'value')).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
 
     warnSpy.mockRestore();
   });
@@ -181,6 +183,7 @@ describe('localStorage utilities', () => {
     };
 
     expect(() => removeItem('key')).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
 
     warnSpy.mockRestore();
   });
@@ -193,5 +196,18 @@ describe('localStorage utilities', () => {
 
     expect(localStorage.getItem('key1')).toBe(null);
     expect(localStorage.getItem('key2')).toBe(null);
+  });
+
+  it('does not throw if clear fails', () => {
+    const warnSpy = silenceWarnings();
+
+    localStorage.clear = () => {
+      throw new Error('fail');
+    };
+
+    expect(() => clear()).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
+
+    warnSpy.mockRestore();
   });
 });

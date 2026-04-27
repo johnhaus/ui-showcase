@@ -6,21 +6,22 @@ const logError = (message, error) => {
   }
 };
 
-export const getItem = (key, fallback = null) => {
-  if (!isBrowser()) return fallback;
+export const getItem = (key, initialValue = null) => {
+  if (!isBrowser()) return initialValue;
 
   try {
     const stored = localStorage.getItem(key);
-    if (stored === null) return fallback;
+    if (stored === null) return initialValue;
 
     try {
       return JSON.parse(stored);
-    } catch {
-      return stored;
+    } catch (e) {
+      logError(`Invalid JSON for key "${key}"`, e);
+      return initialValue;
     }
   } catch (e) {
     logError(`localStorage getItem failed for key "${key}"`, e);
-    return fallback;
+    return initialValue;
   }
 };
 
