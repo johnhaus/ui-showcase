@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { PreferencesContext } from './PreferencesContext';
 
 const defaultPreferences = {
@@ -7,23 +7,31 @@ const defaultPreferences = {
 };
 
 export function PreferencesProvider({ children }) {
-  const [preferences, setPreferences] = useState(() => {
-    const stored = localStorage.getItem('preferences');
-    return stored ? JSON.parse(stored) : defaultPreferences;
-  });
+  const {
+    value: preferences,
+    setValue: setPreferences,
+    remove: removePreferences,
+  } = useLocalStorage('preferences', defaultPreferences);
 
-  useEffect(() => {
-    localStorage.setItem('preferences', JSON.stringify(preferences));
-  }, [preferences]);
+  const mergedPreferences = { ...defaultPreferences, ...preferences };
 
   const setTheme = (theme) => setPreferences((prev) => ({ ...prev, theme }));
 
   const setLanguage = (language) =>
     setPreferences((prev) => ({ ...prev, language }));
 
+  const resetPreferences = () => {
+    removePreferences();
+  };
+
   return (
     <PreferencesContext.Provider
-      value={{ ...preferences, setTheme, setLanguage }}
+      value={{
+        ...mergedPreferences,
+        setTheme,
+        setLanguage,
+        resetPreferences,
+      }}
     >
       {children}
     </PreferencesContext.Provider>
