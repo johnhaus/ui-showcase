@@ -28,7 +28,6 @@ describe('useFeatureFlags', () => {
   });
 });
 
-
 describe('useFeatureFlag', () => {
   const mockToggle = vi.fn();
   const mockUpdate = vi.fn();
@@ -36,7 +35,11 @@ describe('useFeatureFlag', () => {
 
   const wrapper = ({ children }) => (
     <FeatureFlagContext.Provider
-      value={{ flags: mockFlags, toggleFlag: mockToggle, updateFlag: mockUpdate }}
+      value={{
+        flags: mockFlags,
+        toggleFlag: mockToggle,
+        updateFlag: mockUpdate,
+      }}
     >
       {children}
     </FeatureFlagContext.Provider>
@@ -48,21 +51,29 @@ describe('useFeatureFlag', () => {
   });
 
   it('returns correct isEnabled value', () => {
-    const { result } = renderHook(() => useFeatureFlag('betaDashboard'), { wrapper });
+    const { result } = renderHook(() => useFeatureFlag('betaDashboard'), {
+      wrapper,
+    });
     expect(result.current.isEnabled).toBe(true);
 
-    const { result: r2 } = renderHook(() => useFeatureFlag('testFlag'), { wrapper });
+    const { result: r2 } = renderHook(() => useFeatureFlag('testFlag'), {
+      wrapper,
+    });
     expect(r2.current.isEnabled).toBe(false);
   });
 
   it('calls toggleFlag when toggle is called', () => {
-    const { result } = renderHook(() => useFeatureFlag('betaDashboard'), { wrapper });
+    const { result } = renderHook(() => useFeatureFlag('betaDashboard'), {
+      wrapper,
+    });
     act(() => result.current.toggle());
     expect(mockToggle).toHaveBeenCalledWith('betaDashboard');
   });
 
   it('calls updateFlag with correct value', () => {
-    const { result } = renderHook(() => useFeatureFlag('testFlag'), { wrapper });
+    const { result } = renderHook(() => useFeatureFlag('testFlag'), {
+      wrapper,
+    });
     act(() => result.current.setEnabled(true));
     expect(mockUpdate).toHaveBeenCalledWith('testFlag', true);
   });
