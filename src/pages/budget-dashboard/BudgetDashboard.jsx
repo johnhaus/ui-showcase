@@ -14,7 +14,7 @@ const BudgetDashboard = () => {
   return (
     <Container>
       <label>
-        <input type="checkbox" checked={isEnabled} onChange={toggle} disabled />
+        <input type="checkbox" checked={isEnabled} onChange={toggle} />
         Enable Beta Budget Dashboard
       </label>
 
