@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import defaultFlagsJson from '../config/featureFlags.json';
 import { FeatureFlagContext } from './FeatureFlagContext';
 import {
@@ -48,11 +48,40 @@ export const FeatureFlagProvider = ({ children }) => {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
+  const updateFlag = useCallback((key, value) => {
+    if (!(key in defaultFlags)) {
+      console.warn(`Unknown feature flag: ${key}`);
+      return;
+    }
+
+    setFlags((prev) => ({ ...prev, [key]: value }));
+  }, []);
+
+  const toggleFlag = useCallback((key) => {
+    if (!(key in defaultFlags)) {
+      console.warn(`Unknown feature flag: ${key}`);
+      return;
+    }
+
+    setFlags((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  }, []);
+
+  const resetFlags = useCallback(() => {
+    removeItem(STORAGE_KEY);
+    setFlags({ ...defaultFlags });
+  }, []);
+
   const value = useMemo(
     () => ({
       flags,
+      updateFlag,
+      toggleFlag,
+      resetFlags,
     }),
-    [flags]
+    [flags, toggleFlag, updateFlag, resetFlags]
   );
 
   return (
