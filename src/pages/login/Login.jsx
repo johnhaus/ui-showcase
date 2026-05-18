@@ -289,7 +289,11 @@ const Login = () => {
           )}
 
           {feedback && (
-            <FeedbackContainer type={feedback.type} role="alert" aria-live="polite">
+            <FeedbackContainer
+              type={feedback.type}
+              role="alert"
+              aria-live="polite"
+            >
               {feedback.message}
             </FeedbackContainer>
           )}
