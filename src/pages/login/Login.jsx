@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 import { authReducer, initialState, MODES } from './authReducer';
 import styled from 'styled-components';
-import Button from '../../shared/button/Button';
+import LoginActions from './LoginActions';
 
 const Container = styled.div`
   display: flex;
@@ -227,6 +227,14 @@ const Login = () => {
     }
   };
 
+  const updateField = (field) => (e) => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      field,
+      value: e.target.value,
+    });
+  };
+
   return (
     <Container>
       <StatusContainer>
@@ -244,13 +252,7 @@ const Login = () => {
                 type="text"
                 id="username"
                 value={form.username}
-                onChange={(e) =>
-                  dispatch({
-                    type: 'UPDATE_FIELD',
-                    field: 'username',
-                    value: e.target.value,
-                  })
-                }
+                onChange={updateField('username')}
                 placeholder="Enter Username..."
                 autoComplete="username"
                 required
@@ -261,13 +263,7 @@ const Login = () => {
                 type="password"
                 id="password"
                 value={form.password}
-                onChange={(e) =>
-                  dispatch({
-                    type: 'UPDATE_FIELD',
-                    field: 'password',
-                    value: e.target.value,
-                  })
-                }
+                onChange={updateField('password')}
                 placeholder="Enter Password..."
                 autoComplete={
                   mode === MODES.LOGIN ? 'current-password' : 'new-password'
@@ -282,13 +278,7 @@ const Login = () => {
                     type="password"
                     id="retypePassword"
                     value={form.retype}
-                    onChange={(e) =>
-                      dispatch({
-                        type: 'UPDATE_FIELD',
-                        field: 'retype',
-                        value: e.target.value,
-                      })
-                    }
+                    onChange={updateField('retype')}
                     placeholder="Retype Password..."
                     autoComplete="new-password"
                     required
@@ -299,67 +289,21 @@ const Login = () => {
           )}
 
           {feedback && (
-            <FeedbackContainer type={feedback.type}>
+            <FeedbackContainer type={feedback.type} role="alert" aria-live="polite">
               {feedback.message}
             </FeedbackContainer>
           )}
 
-          {mode === MODES.LOGIN && (
-            <ButtonColumn>
-              <Button type="submit" text="Login" size="sm" />
-              {!account && (
-                <Button
-                  onClick={changeAccountCredentials}
-                  text="Create An Account"
-                  size="sm"
-                />
-              )}
-              {account && (
-                <Button onClick={resetAccount} text="Reset Account" size="sm" />
-              )}
-            </ButtonColumn>
-          )}
-
-          {mode === MODES.CREATE && (
-            <ButtonColumn>
-              <Button type="submit" text="Create Account" size="sm" />
-              <Button
-                onClick={() =>
-                  dispatch({ type: 'SET_MODE', payload: MODES.LOGIN })
-                }
-                text="Back"
-                size="sm"
-              />
-            </ButtonColumn>
-          )}
-
-          {mode === MODES.LOGGED_IN && (
-            <ButtonColumn>
-              <Button onClick={accountLogout} text="Logout" size="sm" />
-              <Button
-                onClick={() =>
-                  dispatch({ type: 'SET_MODE', payload: MODES.UPDATE })
-                }
-                text="Update Account"
-                size="sm"
-              />
-            </ButtonColumn>
-          )}
-
-          {mode === MODES.UPDATE && (
-            <ButtonColumn>
-              <Button type="submit" text="Update" size="sm" />
-
-              <Button
-                onClick={() =>
-                  dispatch({ type: 'SET_MODE', payload: MODES.LOGGED_IN })
-                }
-                text="Back"
-                size="sm"
-              />
-              <Button onClick={resetAccount} text="Delete Account" size="sm" />
-            </ButtonColumn>
-          )}
+          <ButtonColumn>
+            <LoginActions
+              mode={mode}
+              account={account}
+              dispatch={dispatch}
+              changeAccountCredentials={changeAccountCredentials}
+              resetAccount={resetAccount}
+              accountLogout={accountLogout}
+            />
+          </ButtonColumn>
         </InputWrapper>
       </LoginContainer>
     </Container>
