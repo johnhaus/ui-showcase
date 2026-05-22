@@ -1,47 +1,76 @@
-import { useReducer, useCallback } from 'react';
+import { useReducer, useCallback, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { reducer, initialState, actionTypes } from './postsReducer';
+import { fetchPostsApi } from './postsApi';
 
-function usePostsExplorer() {
+const usePostsExplorer = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { loading, page, hasMore, activeQuery } = state;
+  const abortControllerRef = useRef(null);
 
   const fetchPosts = useCallback(async () => {
     if (loading || !hasMore) return;
 
-    dispatch({ type: actionTypes.SET_LOADING, payload: true });
+    abortControllerRef.current?.abort();
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    dispatch({
+      type: actionTypes.SET_LOADING,
+      payload: true,
+    });
 
     try {
-      const params = new URLSearchParams({
-        _page: page,
-        _limit: 20,
+      const posts = await fetchPostsApi({
+        page,
+        query: activeQuery,
+        signal: controller.signal,
       });
 
-      if (activeQuery) {
-        params.append('q', activeQuery);
-      }
+      if (posts.length === 0) {
+        dispatch({
+          type: actionTypes.SET_HAS_MORE,
+          payload: false,
+        });
 
-      const response = await axios.get(
-        `https://jsonplaceholder.typicode.com/posts?${params.toString()}`
-      );
-
-      if (response.data.length === 0) {
-        dispatch({ type: actionTypes.SET_HAS_MORE, payload: false });
         return;
       }
 
-      dispatch({ type: actionTypes.SET_POSTS, payload: response.data });
-    } catch {
+      dispatch({
+        type: actionTypes.SET_POSTS,
+        payload: posts,
+      });
+    } catch (error) {
+      if (axios.isCancel(error) || error.name === 'CanceledError') {
+        return;
+      }
+
       dispatch({
         type: actionTypes.SET_ERROR,
         payload: 'Failed to load posts.',
       });
     } finally {
-      dispatch({ type: actionTypes.SET_LOADING, payload: false });
+      if (!controller.signal.aborted) {
+        dispatch({
+          type: actionTypes.SET_LOADING,
+          payload: false,
+        });
+      }
     }
   }, [page, loading, hasMore, activeQuery]);
 
-  return { state, dispatch, fetchPosts };
-}
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
+
+  return {
+    state,
+    dispatch,
+    fetchPosts,
+  };
+};
 
 export default usePostsExplorer;
