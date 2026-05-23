@@ -12,7 +12,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const SearchBar = styled.div`
+const SearchBar = styled.form`
   display: flex;
   height: 80px;
   width: 90%;
@@ -134,15 +134,14 @@ function PostsExplorer() {
     fetchPosts();
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearchSubmit();
+  };
+
   return (
     <Container>
-      <SearchBar
-        as="form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSearchSubmit();
-        }}
-      >
+      <SearchBar onSubmit={handleSubmit}>
         <SearchInput
           type="text"
           placeholder="Search posts..."
@@ -164,7 +163,7 @@ function PostsExplorer() {
         <List>
           {posts.map((post) => (
             <ListItem key={post.id}>
-              <Title>{post.id}</Title>
+              <Title>{post.id}. {post.title}</Title>
               <Content>{post.body}</Content>
             </ListItem>
           ))}
