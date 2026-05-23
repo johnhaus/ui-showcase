@@ -163,7 +163,9 @@ function PostsExplorer() {
         <List>
           {posts.map((post) => (
             <ListItem key={post.id}>
-              <Title>{post.id}. {post.title}</Title>
+              <Title>
+                {post.id}. {post.title}
+              </Title>
               <Content>{post.body}</Content>
             </ListItem>
           ))}
