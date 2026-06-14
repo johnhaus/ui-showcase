@@ -11,6 +11,7 @@ const LayoutContainer = styled.div`
 const ContentContainer = styled.div`
   flex-grow: 1;
   overflow-y: auto;
+  scrollbar-gutter: stable;
 `;
 
 const Layout = () => {
