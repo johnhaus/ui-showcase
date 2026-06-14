@@ -105,12 +105,8 @@ const BudgetDashboard = () => {
     <Container>
       <FeatureToggle>
         <label>
-          <input
-            type="checkbox"
-            checked={isEnabled}
-            onChange={toggle}
-          />
-          {' '}Enable Beta Budget Dashboard
+          <input type="checkbox" checked={isEnabled} onChange={toggle} /> Enable
+          Beta Budget Dashboard
         </label>
       </FeatureToggle>
 
@@ -119,9 +115,7 @@ const BudgetDashboard = () => {
           <DashboardContent>
             <Header>
               <Title>Budget Dashboard</Title>
-              <Subtitle>
-                Track your income and expenses
-              </Subtitle>
+              <Subtitle>Track your income and expenses</Subtitle>
             </Header>
 
             <SummaryContainer>
@@ -144,16 +138,12 @@ const BudgetDashboard = () => {
             <BudgetContainer>
               <SectionCard>
                 <SectionTitle>Income</SectionTitle>
-                <EmptyState>
-                  No income entries yet.
-                </EmptyState>
+                <EmptyState>No income entries yet.</EmptyState>
               </SectionCard>
 
               <SectionCard>
                 <SectionTitle>Expenses</SectionTitle>
-                <EmptyState>
-                  No expense entries yet.
-                </EmptyState>
+                <EmptyState>No expense entries yet.</EmptyState>
               </SectionCard>
             </BudgetContainer>
           </DashboardContent>
