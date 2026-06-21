@@ -39,8 +39,7 @@ const ToggleThumb = styled.span`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: ${({ theme }) =>
-    theme.colors.background.fixedLight};
+  background-color: ${({ theme }) => theme.colors.background.fixedLight};
   transition: transform 0.2s ease;
   transform: ${({ $checked }) =>
     $checked ? 'translateX(24px)' : 'translateX(0)'};
@@ -65,7 +64,7 @@ const ToggleSwitch = ({
       />
 
       <ToggleTrack $checked={checked}>
-  		<ToggleThumb $checked={checked} />
+        <ToggleThumb $checked={checked} />
       </ToggleTrack>
 
       {label && <span>{label}</span>}
