@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useFeatureFlag } from '../../context/useFeatureFlags';
+import ToggleSwitch from '../../shared/toggle-switch/ToggleSwitch';
 
 const Container = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ const Subtitle = styled.p`
   opacity: 0.8;
 `;
 
-const SummaryContainer = styled.div`
+const SummaryContainer = styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
@@ -104,10 +105,11 @@ const BudgetDashboard = () => {
   return (
     <Container>
       <FeatureToggle>
-        <label>
-          <input type="checkbox" checked={isEnabled} onChange={toggle} /> Enable
-          Beta Budget Dashboard
-        </label>
+        <ToggleSwitch
+          checked={isEnabled}
+          onChange={toggle}
+          label="Enable Beta Budget Dashboard"
+        />
       </FeatureToggle>
 
       {isEnabled ? (
