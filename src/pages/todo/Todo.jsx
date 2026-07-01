@@ -95,7 +95,7 @@ const CheckboxLabel = styled.label`
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    background-color: ${({ theme }) => theme.colors.control.background};
+    background-color: ${({ theme }) => theme.colors.control.fixedLight};
   }
 `;
 

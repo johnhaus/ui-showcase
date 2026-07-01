@@ -52,6 +52,7 @@ export const darkTheme = {
     },
     control: {
       background: palette.white,
+      fixedLight: palette.white,
     },
   },
 };
@@ -98,7 +99,8 @@ export const lightTheme = {
       ring: palette.white,
     },
     control: {
-      background: palette.white,
+      background: palette.black,
+      fixedLight: palette.white,
     },
   },
 };

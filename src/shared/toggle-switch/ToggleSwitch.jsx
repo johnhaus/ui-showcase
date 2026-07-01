@@ -6,7 +6,7 @@ const ToggleLabel = styled.label`
   gap: 12px;
 
   cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+  opacity: ${({ $disabled }) => ($disabled ? 0.8 : 1)};
 `;
 
 const ToggleInput = styled.input`
@@ -36,8 +36,9 @@ const ToggleThumb = styled.span`
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid ${({ theme }) => theme.colors.border.strong};
   border-radius: 50%;
   background-color: ${({ theme }) => theme.colors.background.fixedLight};
   transition: transform 0.2s ease;

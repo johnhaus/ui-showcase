@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledButton = styled.button`
   background-color: ${({ $bgColor, theme }) =>
-    $bgColor || theme.colors.control.background};
+    $bgColor || theme.colors.control.fixedLight};
   color: ${({ theme }) => theme.colors.text.fixedLight};
 
   border: none;
@@ -24,7 +24,7 @@ const StyledButton = styled.button`
       background-color: ${
         $priority
           ? theme.colors.intent.warning
-          : theme.colors.control.background
+          : theme.colors.control.fixedLight
       };
       color: ${
         $priority ? theme.colors.text.fixedLight : theme.colors.intent.warning
