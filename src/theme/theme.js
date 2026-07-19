@@ -24,6 +24,7 @@ export const darkTheme = {
       hover: palette.white91,
       hoverFixed: palette.white91,
       hoverSubtleFixed: palette.white10,
+      disabled: palette.black10,
     },
     // Button colors and error/success messaging
     intent: {
@@ -75,6 +76,7 @@ export const lightTheme = {
       hover: palette.black91,
       hoverFixed: palette.white91,
       hoverSubtleFixed: palette.white10,
+      disabled: palette.black10,
     },
     intent: {
       destructive: palette.red300,
