@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import IconButton from '../button/IconButton';
 import { FaTimes } from 'react-icons/fa';
 
@@ -15,6 +15,9 @@ const Overlay = styled.div`
 
 const Container = styled.div`
   width: min(500px, 80vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
   background: ${({ theme }) => theme.colors.background.surface};
   color: ${({ theme }) => theme.colors.text.onSurface};
   border-radius: 8px;
@@ -22,7 +25,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const Header = styled.div`
+const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,6 +43,15 @@ const Body = styled.div`
 `;
 
 const Modal = ({ isOpen, title, onClose, children }) => {
+  const titleId = useId();
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      closeButtonRef.current?.focus();
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -63,13 +75,17 @@ const Modal = ({ isOpen, title, onClose, children }) => {
       <Container
         role="dialog"
         aria-modal="true"
-        aria-labelledby="modal-title"
+        aria-labelledby={titleId}
         onClick={(e) => e.stopPropagation()}
       >
         <Header>
-          <Title id="modal-title">{title}</Title>
+          <Title id={titleId}>{title}</Title>
 
-          <IconButton aria-label="Close modal" onClick={onClose}>
+          <IconButton
+            ref={closeButtonRef}
+            aria-label="Close modal"
+            onClick={onClose}
+          >
             <FaTimes />
           </IconButton>
         </Header>
