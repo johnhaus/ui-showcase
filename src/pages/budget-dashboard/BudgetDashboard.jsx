@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { useFeatureFlag } from '../../context/useFeatureFlags';
 import ToggleSwitch from '../../shared/toggle-switch/ToggleSwitch';
+import Button from '../../shared/button/Button';
+import { useState } from 'react';
+import BudgetEntryForm from './BudgetEntryForm';
+import Modal from '../../shared/modal/Modal';
 
 const Container = styled.div`
   display: flex;
@@ -23,7 +27,9 @@ const DashboardContent = styled.div`
 `;
 
 const Header = styled.header`
-  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 `;
 
 const Title = styled.h2`
@@ -101,6 +107,20 @@ const EnableFeature = styled.div`
 
 const BudgetDashboard = () => {
   const { isEnabled, toggle } = useFeatureFlag('betaBudgetDashboard');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [entries, setEntries] = useState([]);
+
+  const income = entries.filter((e) => e.type === 'income');
+  const expenses = entries.filter((e) => e.type === 'expense');
+
+  const totalIncome = income.reduce((sum, e) => sum + e.amount, 0);
+  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const remainingBudget = totalIncome - totalExpenses;
+
+  const handleAddEntry = (entry) => {
+    setEntries((current) => [...current, entry]);
+    setIsModalOpen(false);
+  };
 
   return (
     <Container>
@@ -115,37 +135,71 @@ const BudgetDashboard = () => {
       {isEnabled ? (
         <DashboardWrapper>
           <DashboardContent>
+            <Modal
+              isOpen={isModalOpen}
+              title="Add Budget Entry"
+              onClose={() => setIsModalOpen(false)}
+            >
+              <BudgetEntryForm onSubmit={handleAddEntry} />
+            </Modal>
             <Header>
-              <Title>Budget Dashboard</Title>
-              <Subtitle>Track your income and expenses</Subtitle>
+              <div>
+                <Title>Budget Dashboard</Title>
+                <Subtitle>Track your income and expenses</Subtitle>
+              </div>
+              <Button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                text="+ Add Entry"
+              />
             </Header>
 
             <SummaryContainer>
               <SummaryCard>
                 <SummaryLabel>Total Income</SummaryLabel>
-                <SummaryValue>$0.00</SummaryValue>
+                <SummaryValue>${totalIncome.toFixed(2)}</SummaryValue>
               </SummaryCard>
 
               <SummaryCard>
                 <SummaryLabel>Total Expenses</SummaryLabel>
-                <SummaryValue>$0.00</SummaryValue>
+                <SummaryValue>${totalExpenses.toFixed(2)}</SummaryValue>
               </SummaryCard>
 
               <SummaryCard>
                 <SummaryLabel>Remaining Budget</SummaryLabel>
-                <SummaryValue>$0.00</SummaryValue>
+                <SummaryValue>${remainingBudget.toFixed(2)}</SummaryValue>
               </SummaryCard>
             </SummaryContainer>
 
             <BudgetContainer>
               <SectionCard>
                 <SectionTitle>Income</SectionTitle>
-                <EmptyState>No income entries yet.</EmptyState>
+                {income.length === 0 ? (
+                  <EmptyState>No income entries yet.</EmptyState>
+                ) : (
+                  <ul>
+                    {income.map((entry) => (
+                      <li key={entry.id}>
+                        {entry.description} — ${entry.amount.toFixed(2)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </SectionCard>
 
               <SectionCard>
                 <SectionTitle>Expenses</SectionTitle>
-                <EmptyState>No expense entries yet.</EmptyState>
+                {expenses.length === 0 ? (
+                  <EmptyState>No expense entries yet.</EmptyState>
+                ) : (
+                  <ul>
+                    {expenses.map((entry) => (
+                      <li key={entry.id}>
+                        {entry.description} — ${entry.amount.toFixed(2)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </SectionCard>
             </BudgetContainer>
           </DashboardContent>
