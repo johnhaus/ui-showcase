@@ -96,18 +96,18 @@ const BudgetEntryForm = ({ onSubmit }) => {
       <Field>
         <Label htmlFor="amount">Amount</Label>
         <Input
-           id="amount"
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Amount"
-            required
+          id="amount"
+          type="number"
+          min="0.01"
+          step="0.01"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Amount"
+          required
         />
       </Field>
 
-      <Button type="submit" text="Add Entry" size="md"/>
+      <Button type="submit" text="Add Entry" size="md" />
     </Form>
   );
 };
