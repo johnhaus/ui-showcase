@@ -43,15 +43,6 @@ function Home() {
           <h2>A showcase of interactive UI built with React and Vite</h2>
         </Intro>
         <CardContainer>
-          <Card to={'./todo'} title={'Todo List'}>
-            A front-end only Todo List built with React. Add, edit, and remove
-            tasks directly in the browser.
-          </Card>
-          <Card to={'./login'} title={'Front End Login'}>
-            A front-end login component that utilizes localStorage to hold a
-            username and password. Does not include any back-end logic and is
-            not intended to store sensitive information.
-          </Card>
           <Card to={'./posts-explorer'} title={'Posts Explorer'}>
             A demo component that fetches and displays user posts with search.
             <SmallText>
@@ -60,6 +51,15 @@ function Home() {
           </Card>
           <Card to={'./budget-dashboard'} title={'Budget Dashboard'}>
             Track spending, manage income, and gain insights into your budget.
+          </Card>
+          <Card to={'./todo'} title={'Todo List'}>
+            A front-end only Todo List built with React. Add, edit, and remove
+            tasks directly in the browser.
+          </Card>
+          <Card to={'./login'} title={'Front End Login'}>
+            A front-end login component that utilizes localStorage to hold a
+            username and password. Does not include any back-end logic and is
+            not intended to store sensitive information.
           </Card>
         </CardContainer>
       </MainLayout>
