@@ -5,6 +5,7 @@ import Button from '../../shared/button/Button';
 import { useState } from 'react';
 import BudgetEntryForm from './BudgetEntryForm';
 import Modal from '../../shared/modal/Modal';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 const Container = styled.div`
   display: flex;
@@ -157,17 +158,17 @@ const BudgetDashboard = () => {
             <SummaryContainer>
               <SummaryCard>
                 <SummaryLabel>Total Income</SummaryLabel>
-                <SummaryValue>${totalIncome.toFixed(2)}</SummaryValue>
+                <SummaryValue>{formatCurrency(totalIncome)}</SummaryValue>
               </SummaryCard>
 
               <SummaryCard>
                 <SummaryLabel>Total Expenses</SummaryLabel>
-                <SummaryValue>${totalExpenses.toFixed(2)}</SummaryValue>
+                <SummaryValue>{formatCurrency(totalExpenses)}</SummaryValue>
               </SummaryCard>
 
               <SummaryCard>
                 <SummaryLabel>Remaining Budget</SummaryLabel>
-                <SummaryValue>${remainingBudget.toFixed(2)}</SummaryValue>
+                <SummaryValue>{formatCurrency(remainingBudget)}</SummaryValue>
               </SummaryCard>
             </SummaryContainer>
 
@@ -180,7 +181,7 @@ const BudgetDashboard = () => {
                   <ul>
                     {income.map((entry) => (
                       <li key={entry.id}>
-                        {entry.description} — ${entry.amount.toFixed(2)}
+                        {entry.description} — {formatCurrency(entry.amount)}
                       </li>
                     ))}
                   </ul>
@@ -195,7 +196,7 @@ const BudgetDashboard = () => {
                   <ul>
                     {expenses.map((entry) => (
                       <li key={entry.id}>
-                        {entry.description} — ${entry.amount.toFixed(2)}
+                        {entry.description} — {formatCurrency(entry.amount)}
                       </li>
                     ))}
                   </ul>
