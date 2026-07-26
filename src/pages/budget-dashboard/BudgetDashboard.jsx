@@ -181,7 +181,8 @@ const BudgetDashboard = () => {
                   <ul>
                     {income.map((entry) => (
                       <li key={entry.id}>
-                        {entry.description} — {formatCurrency(entry.amountInCents)}
+                        {entry.description} —{' '}
+                        {formatCurrency(entry.amountInCents)}
                       </li>
                     ))}
                   </ul>
@@ -196,7 +197,8 @@ const BudgetDashboard = () => {
                   <ul>
                     {expenses.map((entry) => (
                       <li key={entry.id}>
-                        {entry.description} — {formatCurrency(entry.amountInCents)}
+                        {entry.description} —{' '}
+                        {formatCurrency(entry.amountInCents)}
                       </li>
                     ))}
                   </ul>
