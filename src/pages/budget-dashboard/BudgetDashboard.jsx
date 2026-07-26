@@ -114,8 +114,8 @@ const BudgetDashboard = () => {
   const income = entries.filter((e) => e.type === 'income');
   const expenses = entries.filter((e) => e.type === 'expense');
 
-  const totalIncome = income.reduce((sum, e) => sum + e.amount, 0);
-  const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const totalIncome = income.reduce((sum, e) => sum + e.amountInCents, 0);
+  const totalExpenses = expenses.reduce((sum, e) => sum + e.amountInCents, 0);
   const remainingBudget = totalIncome - totalExpenses;
 
   const handleAddEntry = (entry) => {
@@ -181,7 +181,7 @@ const BudgetDashboard = () => {
                   <ul>
                     {income.map((entry) => (
                       <li key={entry.id}>
-                        {entry.description} — {formatCurrency(entry.amount)}
+                        {entry.description} — {formatCurrency(entry.amountInCents)}
                       </li>
                     ))}
                   </ul>
@@ -196,7 +196,7 @@ const BudgetDashboard = () => {
                   <ul>
                     {expenses.map((entry) => (
                       <li key={entry.id}>
-                        {entry.description} — {formatCurrency(entry.amount)}
+                        {entry.description} — {formatCurrency(entry.amountInCents)}
                       </li>
                     ))}
                   </ul>

@@ -45,25 +45,27 @@ const Label = styled.label`
 const BudgetEntryForm = ({ onSubmit }) => {
   const [type, setType] = useState('income');
   const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
+  const [amountInCents, setAmountInCents] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!description.trim() || Number(amount) <= 0) {
+    if (!description.trim() || Number(amountInCents) <= 0) {
       return;
     }
+
+    const parsedAmount = Number.parseFloat(amountInCents);
 
     onSubmit({
       id: crypto.randomUUID(),
       type,
       description: description.trim(),
-      amount: Number(amount),
+      amountInCents: Math.round(parsedAmount * 100),
     });
 
     setType('income');
     setDescription('');
-    setAmount('');
+    setAmountInCents('');
   };
 
   return (
@@ -100,8 +102,8 @@ const BudgetEntryForm = ({ onSubmit }) => {
           type="number"
           min="0.01"
           step="0.01"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          value={amountInCents}
+          onChange={(e) => setAmountInCents(e.target.value)}
           placeholder="Amount"
           required
         />
