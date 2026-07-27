@@ -24,7 +24,7 @@ const Select = styled.select`
   border-radius: 5px;
   border: none;
   font-size: 16px;
-  background-color: ${({ theme }) => theme.colors.background.surface};
+  background-color: ${({ theme }) => theme.colors.background.fixedLight};
 
   &:focus {
     outline: 1px solid ${({ theme }) => theme.colors.focus.ring};
