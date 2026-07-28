@@ -4,6 +4,7 @@ import ToggleSwitch from '../../shared/toggle-switch/ToggleSwitch';
 import Button from '../../shared/button/Button';
 import { useState } from 'react';
 import BudgetEntryForm from './BudgetEntryForm';
+import BudgetSummaryCard from './BudgetSummaryCard';
 import Modal from '../../shared/modal/Modal';
 import { formatCurrency } from '../../utils/formatCurrency';
 
@@ -51,23 +52,6 @@ const SummaryContainer = styled.section`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
-`;
-
-const SummaryCard = styled.div`
-  background: ${({ theme }) => theme.colors.background.fixedLight};
-  color: ${({ theme }) => theme.colors.text.fixedDark};
-  padding: 16px;
-  border-radius: 8px;
-`;
-
-const SummaryLabel = styled.div`
-  font-size: 14px;
-  margin-bottom: 8px;
-`;
-
-const SummaryValue = styled.div`
-  font-size: 24px;
-  font-weight: bold;
 `;
 
 const BudgetContainer = styled.section`
@@ -156,20 +140,15 @@ const BudgetDashboard = () => {
             </Header>
 
             <SummaryContainer>
-              <SummaryCard>
-                <SummaryLabel>Total Income</SummaryLabel>
-                <SummaryValue>{formatCurrency(totalIncome)}</SummaryValue>
-              </SummaryCard>
-
-              <SummaryCard>
-                <SummaryLabel>Total Expenses</SummaryLabel>
-                <SummaryValue>{formatCurrency(totalExpenses)}</SummaryValue>
-              </SummaryCard>
-
-              <SummaryCard>
-                <SummaryLabel>Remaining Budget</SummaryLabel>
-                <SummaryValue>{formatCurrency(remainingBudget)}</SummaryValue>
-              </SummaryCard>
+              <BudgetSummaryCard label="Total Income" amount={totalIncome} />
+              <BudgetSummaryCard
+                label="Total Expenses"
+                amount={totalExpenses}
+              />
+              <BudgetSummaryCard
+                label="Remaining Budget"
+                amount={remainingBudget}
+              />
             </SummaryContainer>
 
             <BudgetContainer>
