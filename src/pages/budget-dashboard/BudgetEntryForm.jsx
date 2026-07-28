@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/button/Button';
+import { ENTRY_TYPES } from './constants';
 
 const Form = styled.form`
   display: flex;
@@ -43,7 +44,7 @@ const Label = styled.label`
 `;
 
 const BudgetEntryForm = ({ onSubmit }) => {
-  const [type, setType] = useState('income');
+  const [type, setType] = useState(ENTRY_TYPES.INCOME);
   const [description, setDescription] = useState('');
   const [amountInCents, setAmountInCents] = useState('');
 
@@ -63,7 +64,7 @@ const BudgetEntryForm = ({ onSubmit }) => {
       amountInCents: Math.round(parsedAmount * 100),
     });
 
-    setType('income');
+    setType(ENTRY_TYPES.INCOME);
     setDescription('');
     setAmountInCents('');
   };
@@ -78,8 +79,8 @@ const BudgetEntryForm = ({ onSubmit }) => {
           onChange={(e) => setType(e.target.value)}
           required
         >
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
+          <option value={ENTRY_TYPES.INCOME}>Income</option>
+          <option value={ENTRY_TYPES.EXPENSE}>Expense</option>
         </Select>
       </Field>
 

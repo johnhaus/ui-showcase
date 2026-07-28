@@ -7,6 +7,7 @@ import BudgetEntryForm from './BudgetEntryForm';
 import BudgetSummaryCard from './BudgetSummaryCard';
 import Modal from '../../shared/modal/Modal';
 import { formatCurrency } from '../../utils/formatCurrency';
+import { ENTRY_TYPES } from './constants';
 
 const Container = styled.div`
   display: flex;
@@ -95,8 +96,8 @@ const BudgetDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [entries, setEntries] = useState([]);
 
-  const income = entries.filter((e) => e.type === 'income');
-  const expenses = entries.filter((e) => e.type === 'expense');
+  const income = entries.filter((e) => e.type === ENTRY_TYPES.INCOME);
+  const expenses = entries.filter((e) => e.type === ENTRY_TYPES.EXPENSE);
 
   const totalIncome = income.reduce((sum, e) => sum + e.amountInCents, 0);
   const totalExpenses = expenses.reduce((sum, e) => sum + e.amountInCents, 0);
