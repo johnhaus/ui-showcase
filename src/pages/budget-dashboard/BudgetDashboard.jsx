@@ -5,6 +5,7 @@ import Button from '../../shared/button/Button';
 import { useState } from 'react';
 import BudgetEntryForm from './BudgetEntryForm';
 import BudgetSummaryCard from './BudgetSummaryCard';
+import useBudget from './useBudget';
 import Modal from '../../shared/modal/Modal';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { ENTRY_TYPES } from './constants';
@@ -94,17 +95,17 @@ const EnableFeature = styled.div`
 const BudgetDashboard = () => {
   const { isEnabled, toggle } = useFeatureFlag('betaBudgetDashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [entries, setEntries] = useState([]);
+  const {
+    income,
+    expenses,
+    totalIncome,
+    totalExpenses,
+    remainingBudget,
+    addEntry,
+  } = useBudget();
 
-  const income = entries.filter((e) => e.type === ENTRY_TYPES.INCOME);
-  const expenses = entries.filter((e) => e.type === ENTRY_TYPES.EXPENSE);
-
-  const totalIncome = income.reduce((sum, e) => sum + e.amountInCents, 0);
-  const totalExpenses = expenses.reduce((sum, e) => sum + e.amountInCents, 0);
-  const remainingBudget = totalIncome - totalExpenses;
-
-  const handleAddEntry = (entry) => {
-    setEntries((current) => [...current, entry]);
+  const addBudgetEntry = (entry) => {
+    addEntry(entry);
     setIsModalOpen(false);
   };
 
@@ -126,7 +127,7 @@ const BudgetDashboard = () => {
               title="Add Budget Entry"
               onClose={() => setIsModalOpen(false)}
             >
-              <BudgetEntryForm onSubmit={handleAddEntry} />
+              <BudgetEntryForm onSubmit={addBudgetEntry} />
             </Modal>
             <Header>
               <div>
