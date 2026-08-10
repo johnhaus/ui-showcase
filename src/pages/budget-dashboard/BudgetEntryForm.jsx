@@ -58,7 +58,6 @@ const BudgetEntryForm = ({ onSubmit }) => {
     const parsedAmount = Number.parseFloat(amount);
 
     onSubmit({
-      id: crypto.randomUUID(),
       type,
       description: description.trim(),
       amountInCents: Math.round(parsedAmount * 100),

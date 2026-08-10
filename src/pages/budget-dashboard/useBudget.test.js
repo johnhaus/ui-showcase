@@ -19,7 +19,6 @@ describe('useBudget', () => {
     const { result } = renderHook(() => useBudget());
 
     const entry = {
-      id: '1',
       description: 'Salary',
       amountInCents: 500000,
       type: ENTRY_TYPES.INCOME,
@@ -29,8 +28,10 @@ describe('useBudget', () => {
       result.current.addEntry(entry);
     });
 
-    expect(result.current.entries).toEqual([entry]);
-    expect(result.current.income).toEqual([entry]);
+    expect(result.current.entries).toHaveLength(1);
+    expect(result.current.entries[0]).toMatchObject(entry);
+    expect(result.current.entries[0].id).toBeDefined();
+    expect(result.current.income).toEqual([result.current.entries[0]]);
     expect(result.current.expenses).toEqual([]);
     expect(result.current.totalIncome).toBe(500000);
     expect(result.current.totalExpenses).toBe(0);
@@ -41,7 +42,6 @@ describe('useBudget', () => {
     const { result } = renderHook(() => useBudget());
 
     const entry = {
-      id: '1',
       description: 'Groceries',
       amountInCents: 7500,
       type: ENTRY_TYPES.EXPENSE,
@@ -51,9 +51,11 @@ describe('useBudget', () => {
       result.current.addEntry(entry);
     });
 
-    expect(result.current.entries).toEqual([entry]);
+    expect(result.current.entries).toHaveLength(1);
+    expect(result.current.entries[0]).toMatchObject(entry);
+    expect(result.current.entries[0].id).toBeDefined();
+    expect(result.current.expenses).toEqual([result.current.entries[0]]);
     expect(result.current.income).toEqual([]);
-    expect(result.current.expenses).toEqual([entry]);
     expect(result.current.totalIncome).toBe(0);
     expect(result.current.totalExpenses).toBe(7500);
     expect(result.current.remainingBudget).toBe(-7500);
@@ -63,28 +65,24 @@ describe('useBudget', () => {
     const { result } = renderHook(() => useBudget());
 
     const salary = {
-      id: '1',
       description: 'Salary',
       amountInCents: 500000,
       type: ENTRY_TYPES.INCOME,
     };
 
     const freelance = {
-      id: '2',
       description: 'Freelance',
       amountInCents: 125000,
       type: ENTRY_TYPES.INCOME,
     };
 
     const rent = {
-      id: '3',
       description: 'Rent',
       amountInCents: 150000,
       type: ENTRY_TYPES.EXPENSE,
     };
 
     const groceries = {
-      id: '4',
       description: 'Groceries',
       amountInCents: 35000,
       type: ENTRY_TYPES.EXPENSE,
@@ -97,15 +95,23 @@ describe('useBudget', () => {
       result.current.addEntry(groceries);
     });
 
+    expect(result.current.entries).toHaveLength(4);
     expect(result.current.entries).toEqual([
-      salary,
-      freelance,
-      rent,
-      groceries,
+      expect.objectContaining(salary),
+      expect.objectContaining(freelance),
+      expect.objectContaining(rent),
+      expect.objectContaining(groceries),
     ]);
 
-    expect(result.current.income).toEqual([salary, freelance]);
-    expect(result.current.expenses).toEqual([rent, groceries]);
+    expect(result.current.income).toEqual([
+      expect.objectContaining(salary),
+      expect.objectContaining(freelance),
+    ]);
+
+    expect(result.current.expenses).toEqual([
+      expect.objectContaining(rent),
+      expect.objectContaining(groceries),
+    ]);
 
     expect(result.current.totalIncome).toBe(625000);
     expect(result.current.totalExpenses).toBe(185000);

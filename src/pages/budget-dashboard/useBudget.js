@@ -23,7 +23,13 @@ export const useBudget = () => {
   const remainingBudget = totalIncome - totalExpenses;
 
   const addEntry = (entry) => {
-    setEntries((current) => [...current, entry]);
+    setEntries((current) => [
+      ...current,
+      {
+        ...entry,
+        id: crypto.randomUUID(),
+      },
+    ]);
   };
 
   return {
