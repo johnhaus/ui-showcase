@@ -5,9 +5,9 @@ import Button from '../../shared/button/Button';
 import { useState } from 'react';
 import BudgetEntryForm from './BudgetEntryForm';
 import BudgetSummaryCard from './BudgetSummaryCard';
+import BudgetEntryList from './BudgetEntryList';
 import useBudget from './useBudget';
 import Modal from '../../shared/modal/Modal';
-import { formatCurrency } from '../../utils/formatCurrency';
 import { ENTRY_TYPES } from './constants';
 
 const Container = styled.div`
@@ -156,34 +156,18 @@ const BudgetDashboard = () => {
             <BudgetContainer>
               <SectionCard>
                 <SectionTitle>Income</SectionTitle>
-                {income.length === 0 ? (
-                  <EmptyState>No income entries yet.</EmptyState>
-                ) : (
-                  <ul>
-                    {income.map((entry) => (
-                      <li key={entry.id}>
-                        {entry.description} —{' '}
-                        {formatCurrency(entry.amountInCents)}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <BudgetEntryList
+                  entries={income}
+                  emptyMessage="No income entries yet."
+                />
               </SectionCard>
 
               <SectionCard>
                 <SectionTitle>Expenses</SectionTitle>
-                {expenses.length === 0 ? (
-                  <EmptyState>No expense entries yet.</EmptyState>
-                ) : (
-                  <ul>
-                    {expenses.map((entry) => (
-                      <li key={entry.id}>
-                        {entry.description} —{' '}
-                        {formatCurrency(entry.amountInCents)}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <BudgetEntryList
+                  entries={expenses}
+                  emptyMessage="No expense entries yet."
+                />
               </SectionCard>
             </BudgetContainer>
           </DashboardContent>

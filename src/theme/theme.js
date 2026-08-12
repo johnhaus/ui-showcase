@@ -12,6 +12,7 @@ export const darkTheme = {
     background: {
       canvas: palette.black,
       surface: palette.white,
+      raised: palette.black10,
       fixedLight: palette.white,
     },
     text: {
@@ -64,6 +65,7 @@ export const lightTheme = {
     background: {
       canvas: palette.white,
       surface: palette.black,
+      raised: palette.white91,
       fixedLight: palette.white,
     },
     text: {
