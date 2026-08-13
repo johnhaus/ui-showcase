@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { ThemeProvider } from 'styled-components';
 import BudgetEntryList from './BudgetEntryList';
@@ -44,6 +44,7 @@ describe('BudgetEntryList', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByText('Salary')).toBeInTheDocument();
     expect(screen.getByText('Rent')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /Delete/ })).toHaveLength(2);
   });
 
   it('formats entry amounts as currency', () => {
@@ -66,5 +67,24 @@ describe('BudgetEntryList', () => {
 
     expect(screen.getByText('$5,000.00')).toBeInTheDocument();
     expect(screen.getByText('$1,250.00')).toBeInTheDocument();
+  });
+
+  it('calls onDelete with the entry id when delete is clicked', () => {
+    const entries = [
+      {
+        id: '1',
+        description: 'Salary',
+        amountInCents: 500000,
+        type: ENTRY_TYPES.INCOME,
+      },
+    ];
+
+    const onDelete = vi.fn();
+
+    renderBudgetEntryList({ entries, onDelete });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete Salary' }));
+
+    expect(onDelete).toHaveBeenCalledWith('1');
   });
 });

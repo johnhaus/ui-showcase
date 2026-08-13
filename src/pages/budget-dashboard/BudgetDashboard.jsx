@@ -102,6 +102,7 @@ const BudgetDashboard = () => {
     totalExpenses,
     remainingBudget,
     addEntry,
+    removeEntry,
   } = useBudget();
 
   const addBudgetEntry = (entry) => {
@@ -159,6 +160,7 @@ const BudgetDashboard = () => {
                 <BudgetEntryList
                   entries={income}
                   emptyMessage="No income entries yet."
+                  onDelete={removeEntry}
                 />
               </SectionCard>
 
@@ -167,6 +169,7 @@ const BudgetDashboard = () => {
                 <BudgetEntryList
                   entries={expenses}
                   emptyMessage="No expense entries yet."
+                  onDelete={removeEntry}
                 />
               </SectionCard>
             </BudgetContainer>

@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { formatCurrency } from '../../utils/formatCurrency';
+import RoundButton from '../../shared/button/RoundButton';
+import { FaTrashAlt } from 'react-icons/fa';
 
 const List = styled.ul`
   list-style: none;
@@ -31,14 +33,20 @@ const EmptyState = styled.p`
   opacity: 0.7;
 `;
 
-const BudgetEntryRow = ({ entry }) => (
+const BudgetEntryRow = ({ entry, onDelete }) => (
   <BudgetEntry>
     <Description>{entry.description}</Description>
     <div>{formatCurrency(entry.amountInCents)}</div>
+    <RoundButton
+      icon={<FaTrashAlt />}
+      aria-label={`Delete ${entry.description}`}
+      $bgColor={({ theme }) => theme.colors.accent.primary}
+      onClick={() => onDelete(entry.id)}
+    />
   </BudgetEntry>
 );
 
-const BudgetEntryList = ({ entries, emptyMessage }) => {
+const BudgetEntryList = ({ entries, emptyMessage, onDelete }) => {
   if (entries.length === 0) {
     return <EmptyState>{emptyMessage}</EmptyState>;
   }
@@ -46,7 +54,7 @@ const BudgetEntryList = ({ entries, emptyMessage }) => {
   return (
     <List>
       {entries.map((entry) => (
-        <BudgetEntryRow key={entry.id} entry={entry} />
+        <BudgetEntryRow key={entry.id} entry={entry} onDelete={onDelete} />
       ))}
     </List>
   );

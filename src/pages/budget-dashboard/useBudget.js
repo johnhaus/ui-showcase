@@ -32,6 +32,10 @@ export const useBudget = () => {
     ]);
   };
 
+  const removeEntry = (entryId) => {
+    setEntries((current) => current.filter((entry) => entry.id !== entryId));
+  };
+
   return {
     entries,
     income,
@@ -40,6 +44,7 @@ export const useBudget = () => {
     totalExpenses,
     remainingBudget,
     addEntry,
+    removeEntry,
   };
 };
 

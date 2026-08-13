@@ -35,13 +35,21 @@ const StyledButton = styled.button`
     `}
 `;
 
-const RoundButton = ({ icon, $bgColor, $isPriority, $priority, onClick }) => {
+const RoundButton = ({
+  icon,
+  $bgColor,
+  $isPriority,
+  $priority,
+  onClick,
+  ...buttonProps
+}) => {
   return (
     <StyledButton
       $bgColor={$bgColor}
       $isPriority={$isPriority}
       $priority={$priority}
       onClick={onClick}
+      {...buttonProps}
     >
       {icon}
     </StyledButton>
