@@ -32,6 +32,14 @@ export const useBudget = () => {
     ]);
   };
 
+  const updateEntry = (entryId, updates) => {
+    setEntries((current) =>
+      current.map((entry) =>
+        entry.id === entryId ? { ...entry, ...updates } : entry
+      )
+    );
+  };
+
   const removeEntry = (entryId) => {
     setEntries((current) => current.filter((entry) => entry.id !== entryId));
   };
@@ -44,6 +52,7 @@ export const useBudget = () => {
     totalExpenses,
     remainingBudget,
     addEntry,
+    updateEntry,
     removeEntry,
   };
 };
