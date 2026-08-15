@@ -41,10 +41,12 @@ const RoundButton = ({
   $isPriority,
   $priority,
   onClick,
+  type = 'button',
   ...buttonProps
 }) => {
   return (
     <StyledButton
+      type={type}
       $bgColor={$bgColor}
       $isPriority={$isPriority}
       $priority={$priority}

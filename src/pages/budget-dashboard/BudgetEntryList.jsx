@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { formatCurrency } from '../../utils/formatCurrency';
 import RoundButton from '../../shared/button/RoundButton';
 import { FaTrashAlt, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
+import { MAX_AMOUNT_IN_CENTS } from './constants';
 
 const List = styled.ul`
   list-style: none;
@@ -47,7 +48,7 @@ const Amount = styled.span`
   overflow-wrap: anywhere;
 `;
 
-const EditFields = styled.div`
+const EditForm = styled.form`
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 140px;
@@ -83,18 +84,20 @@ const BudgetEntryRow = ({ entry, onDelete, onUpdate }) => {
 
   const handleSave = () => {
     const parsedAmount = Number.parseFloat(amount);
+    const amountInCents = Math.round(parsedAmount * 100);
 
     if (
       !description.trim() ||
-      parsedAmount <= 0 ||
-      Number.isNaN(parsedAmount)
+      Number.isNaN(parsedAmount) ||
+      amountInCents <= 0 ||
+      amountInCents > MAX_AMOUNT_IN_CENTS
     ) {
       return;
     }
 
     onUpdate(entry.id, {
       description: description.trim(),
-      amountInCents: Math.round(parsedAmount * 100),
+      amountInCents,
     });
 
     setIsEditing(false);
@@ -109,38 +112,42 @@ const BudgetEntryRow = ({ entry, onDelete, onUpdate }) => {
   if (isEditing) {
     return (
       <BudgetEntry>
-        <EditFields>
+        <EditForm onSubmit={handleSave}>
           <EditInput
             aria-label={`Description for ${entry.description}`}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
           />
 
           <EditInput
             aria-label={`Amount for ${entry.description}`}
             type="number"
             min="0.01"
+            max={MAX_AMOUNT_IN_CENTS / 100}
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-          />
-        </EditFields>
-
-        <Actions>
-          <RoundButton
-            icon={<FaCheck />}
-            aria-label={`Save ${entry.description}`}
-            $bgColor={({ theme }) => theme.colors.intent.success}
-            onClick={handleSave}
+            required
           />
 
-          <RoundButton
-            icon={<FaTimes />}
-            aria-label={`Cancel editing ${entry.description}`}
-            $bgColor={({ theme }) => theme.colors.accent.primary}
-            onClick={handleCancel}
-          />
-        </Actions>
+          <Actions>
+            <RoundButton
+              type="submit"
+              icon={<FaCheck />}
+              aria-label={`Save ${entry.description}`}
+              $bgColor={({ theme }) => theme.colors.intent.success}
+            />
+
+            <RoundButton
+              type="button"
+              icon={<FaTimes />}
+              aria-label={`Cancel editing ${entry.description}`}
+              $bgColor={({ theme }) => theme.colors.accent.primary}
+              onClick={handleCancel}
+            />
+          </Actions>
+        </EditForm>
       </BudgetEntry>
     );
   }
@@ -156,6 +163,7 @@ const BudgetEntryRow = ({ entry, onDelete, onUpdate }) => {
         <RoundButton
           icon={<FaEdit />}
           aria-label={`Edit ${entry.description}`}
+          $bgColor={({ theme }) => theme.colors.intent.warning}
           onClick={() => setIsEditing(true)}
         />
 

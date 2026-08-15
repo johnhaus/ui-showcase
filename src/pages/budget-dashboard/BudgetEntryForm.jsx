@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../shared/button/Button';
-import { ENTRY_TYPES } from './constants';
+import { ENTRY_TYPES, MAX_AMOUNT_IN_CENTS } from './constants';
 
 const Form = styled.form`
   display: flex;
@@ -51,16 +51,22 @@ const BudgetEntryForm = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!description.trim() || Number(amount) <= 0) {
+    const parsedAmount = Number.parseFloat(amount);
+    const amountInCents = Math.round(parsedAmount * 100);
+
+    if (
+      !description.trim() ||
+      Number.isNaN(parsedAmount) ||
+      amountInCents <= 0 ||
+      amountInCents > MAX_AMOUNT_IN_CENTS
+    ) {
       return;
     }
-
-    const parsedAmount = Number.parseFloat(amount);
 
     onSubmit({
       type,
       description: description.trim(),
-      amountInCents: Math.round(parsedAmount * 100),
+      amountInCents,
     });
 
     setType(ENTRY_TYPES.INCOME);
@@ -101,6 +107,7 @@ const BudgetEntryForm = ({ onSubmit }) => {
           id="amount"
           type="number"
           min="0.01"
+          max={MAX_AMOUNT_IN_CENTS / 100}
           step="0.01"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
