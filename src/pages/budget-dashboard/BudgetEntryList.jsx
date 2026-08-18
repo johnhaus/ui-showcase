@@ -31,8 +31,8 @@ const BudgetEntry = styled.li`
 
 const EntryDetails = styled.div`
   min-width: 0;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
 `;
@@ -44,19 +44,11 @@ const Description = styled.span`
 `;
 
 const Amount = styled.span`
-  flex-shrink: 0;
   overflow-wrap: anywhere;
 `;
 
 const EditForm = styled.form`
-  min-width: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 140px;
-  gap: 8px;
-
-  @container (max-width: 400px) {
-    grid-template-columns: 1fr;
-  }
+  display: contents;
 `;
 
 const EditInput = styled.input`
@@ -68,7 +60,6 @@ const EditInput = styled.input`
 
 const Actions = styled.div`
   display: flex;
-  flex-shrink: 0;
   justify-content: flex-end;
 `;
 
@@ -113,23 +104,25 @@ const BudgetEntryRow = ({ entry, onDelete, onUpdate }) => {
     return (
       <BudgetEntry>
         <EditForm onSubmit={handleSave}>
-          <EditInput
-            aria-label={`Description for ${entry.description}`}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
+          <EntryDetails>
+            <EditInput
+              aria-label={`Description for ${entry.description}`}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
 
-          <EditInput
-            aria-label={`Amount for ${entry.description}`}
-            type="number"
-            min="0.01"
-            max={MAX_AMOUNT_IN_CENTS / 100}
-            step="0.01"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-          />
+            <EditInput
+              aria-label={`Amount for ${entry.description}`}
+              type="number"
+              min="0.01"
+              max={MAX_AMOUNT_IN_CENTS / 100}
+              step="0.01"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+          </EntryDetails>
 
           <Actions>
             <RoundButton
