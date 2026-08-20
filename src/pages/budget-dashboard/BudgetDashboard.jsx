@@ -93,7 +93,7 @@ const EnableFeature = styled.div`
 `;
 
 const BudgetDashboard = () => {
-  const { isEnabled, toggle } = useFeatureFlag('betaBudgetDashboard');
+  const { isEnabled, toggle } = useFeatureFlag('BudgetDashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     income,
@@ -117,7 +117,7 @@ const BudgetDashboard = () => {
         <ToggleSwitch
           checked={isEnabled}
           onChange={toggle}
-          label="Enable Beta Budget Dashboard"
+          label="Enable Budget Dashboard"
         />
       </FeatureToggle>
 
@@ -180,8 +180,8 @@ const BudgetDashboard = () => {
         </DashboardWrapper>
       ) : (
         <EnableFeature>
-          <div>Feature coming soon...</div>
-          <div>Toggle checkbox to see current work in progress</div>
+          <div>Budget Dashboard is disabled</div>
+          <div>Enable the feature flag above to view the dashboard</div>
         </EnableFeature>
       )}
     </Container>
