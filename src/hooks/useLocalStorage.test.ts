@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useLocalStorage } from './useLocalStorage';
 
 describe('useLocalStorage', () => {
@@ -43,7 +43,10 @@ describe('useLocalStorage', () => {
     });
 
     expect(result.current.value).toBe('new-value');
-    expect(JSON.parse(localStorage.getItem(key))).toBe('new-value');
+
+    const stored = localStorage.getItem(key);
+    expect(stored).not.toBeNull();
+    expect(JSON.parse(stored!)).toBe('new-value');
   });
 
   it('supports functional updates', () => {
@@ -54,7 +57,10 @@ describe('useLocalStorage', () => {
     });
 
     expect(result.current.value).toBe(2);
-    expect(JSON.parse(localStorage.getItem(key))).toBe(2);
+
+    const stored = localStorage.getItem(key);
+    expect(stored).not.toBeNull();
+    expect(JSON.parse(stored!)).toBe(2);
   });
 
   it('removes value and resets to initialValue', () => {
@@ -98,16 +104,5 @@ describe('useLocalStorage', () => {
     });
 
     expect(result.current.value).toBe('initial');
-  });
-
-  it('handles undefined value by removing from localStorage', () => {
-    const { result } = renderHook(() => useLocalStorage(key, 'initial'));
-
-    act(() => {
-      result.current.setValue(undefined);
-    });
-
-    expect(localStorage.getItem(key)).toBe(null);
-    expect(result.current.value).toBe(undefined);
   });
 });

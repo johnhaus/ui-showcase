@@ -3,13 +3,13 @@ import { getItem, setItem, removeItem } from '../utils/localStorage';
 
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [value, setValueState] = useState<T>(() =>
-    getItem(key, initialValue)
+    getItem<T>(key, initialValue)
   );
 
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key === key) {
-        setValueState(getItem(key, initialValue));
+        setValueState(getItem<T>(key, initialValue));
       }
     };
 

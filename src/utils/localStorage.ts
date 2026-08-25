@@ -1,12 +1,17 @@
-const isBrowser = () => typeof window !== 'undefined';
+const isBrowser = (): boolean => typeof window !== 'undefined';
 
-const logError = (message, error) => {
+const logError = (message: string, error: unknown): void => {
   if (import.meta.env.DEV) {
     console.warn(message, error);
   }
 };
 
-export const getItem = (key, initialValue = null) => {
+export function getItem(key: string): null;
+export function getItem<T>(key: string, initialValue: T): T;
+export function getItem<T>(
+  key: string,
+  initialValue: T | null = null
+): T | null {
   if (!isBrowser()) return initialValue;
 
   try {
@@ -14,18 +19,18 @@ export const getItem = (key, initialValue = null) => {
     if (stored === null) return initialValue;
 
     try {
-      return JSON.parse(stored);
-    } catch (e) {
+      return JSON.parse(stored) as T;
+    } catch (e: unknown) {
       logError(`Invalid JSON for key "${key}"`, e);
       return initialValue;
     }
-  } catch (e) {
+  } catch (e: unknown) {
     logError(`localStorage getItem failed for key "${key}"`, e);
     return initialValue;
   }
-};
+}
 
-export const setItem = (key, value) => {
+export const setItem = <T>(key: string, value: T): void => {
   if (!isBrowser()) return;
 
   try {
@@ -35,27 +40,27 @@ export const setItem = (key, value) => {
     }
 
     localStorage.setItem(key, JSON.stringify(value));
-  } catch (e) {
+  } catch (e: unknown) {
     logError(`localStorage setItem failed for key "${key}"`, e);
   }
 };
 
-export const removeItem = (key) => {
+export const removeItem = (key: string): void => {
   if (!isBrowser()) return;
 
   try {
     localStorage.removeItem(key);
-  } catch (e) {
+  } catch (e: unknown) {
     logError(`localStorage removeItem failed for key "${key}"`, e);
   }
 };
 
-export const clear = () => {
+export const clear = (): void => {
   if (!isBrowser()) return;
 
   try {
     localStorage.clear();
-  } catch (e) {
+  } catch (e: unknown) {
     logError('localStorage clear failed', e);
   }
 };
