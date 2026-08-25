@@ -1,12 +1,22 @@
+import type { ReactNode } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { PreferencesContext } from './PreferencesContext';
 
-const defaultPreferences = {
+type Preferences = {
+  theme: string
+  language: string
+};
+
+type PreferencesProviderProps = {
+  children: ReactNode;
+};
+
+const defaultPreferences: Preferences = {
   theme: 'system',
   language: 'en',
 };
 
-export function PreferencesProvider({ children }) {
+export function PreferencesProvider({ children }: PreferencesProviderProps) {
   const {
     value: preferences,
     setValue: setPreferences,
@@ -15,9 +25,9 @@ export function PreferencesProvider({ children }) {
 
   const mergedPreferences = { ...defaultPreferences, ...preferences };
 
-  const setTheme = (theme) => setPreferences((prev) => ({ ...prev, theme }));
+  const setTheme = (theme: string) => setPreferences((prev) => ({ ...prev, theme }));
 
-  const setLanguage = (language) =>
+  const setLanguage = (language: string) =>
     setPreferences((prev) => ({ ...prev, language }));
 
   const resetPreferences = () => {
