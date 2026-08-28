@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 
-export function useResolvedTheme(themePreference) {
-  const getSystemTheme = () =>
+type ThemePreference = 'light' | 'dark' | 'system';
+type ResolvedTheme = 'light' | 'dark';
+
+export function useResolvedTheme(
+  themePreference: ThemePreference
+): ResolvedTheme {
+  const getSystemTheme = (): ResolvedTheme =>
     window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
 
-  const [resolvedTheme, setResolvedTheme] = useState(
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(
     themePreference === 'system' ? getSystemTheme() : themePreference
   );
 
