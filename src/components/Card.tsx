@@ -21,7 +21,13 @@ const TextArea = styled.div`
   padding: 8px;
 `;
 
-const Card = ({ to, title, children }) => {
+interface CardProps {
+  to: string;
+  title: string;
+  children: React.ReactNode;
+}
+
+const Card = ({ to, title, children }: CardProps ) => {
   return (
     <StyledCard to={to}>
       <Header>{title}</Header>
