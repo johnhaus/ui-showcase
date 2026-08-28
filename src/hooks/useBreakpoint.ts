@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
-const useBreakpoint = (key) => {
+const useBreakpoint = (key: 'mobile') => {
   const theme = useTheme();
   const query = `(max-width: ${theme.breakpoints[key]})`;
 

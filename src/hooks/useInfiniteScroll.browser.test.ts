@@ -1,29 +1,50 @@
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
-
 import React, { act } from 'react';
-import { createRoot } from 'react-dom/client';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { createRoot, type Root } from 'react-dom/client';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import useInfiniteScroll from './useInfiniteScroll';
 
-let observerCallback;
-let observeMock;
-let disconnectMock;
-let observerOptions;
+declare global {
+  var IS_REACT_ACT_ENVIRONMENT: boolean;
+}
+
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
+type ObserverCallback = IntersectionObserverCallback;
+type ObserverOptions = IntersectionObserverInit | undefined;
+
+let observerCallback: ObserverCallback | undefined;
+let observeMock: (element: Element) => void;
+let disconnectMock: () => void;
+let observerOptions: ObserverOptions;
 
 class MockIntersectionObserver {
-  constructor(cb, options) {
+  constructor(cb: ObserverCallback, options?: IntersectionObserverInit) {
     observerCallback = cb;
     observerOptions = options;
   }
 
-  observe = (...args) => observeMock(...args);
-  disconnect = (...args) => disconnectMock(...args);
+  observe = (element: Element) => {
+    observeMock(element);
+  };
+
+  disconnect = () => {
+    disconnectMock();
+  };
+
   unobserve = vi.fn();
 }
 
-globalThis.IntersectionObserver = MockIntersectionObserver;
+globalThis.IntersectionObserver =
+  MockIntersectionObserver as unknown as typeof IntersectionObserver;
 
-function TestComponent(props) {
+type TestComponentProps = {
+  hasMore: boolean;
+  loading: boolean;
+  onLoadMore: () => void;
+  rootMargin?: string;
+};
+
+function TestComponent(props: TestComponentProps) {
   const sentinelRef = useInfiniteScroll(props);
   return React.createElement('div', {
     ref: sentinelRef,
@@ -32,10 +53,10 @@ function TestComponent(props) {
 }
 
 describe('useInfiniteScroll', () => {
-  let container;
-  let root;
+  let container: HTMLDivElement;
+  let root: Root;
 
-  function renderTest(props) {
+  function renderTest(props: TestComponentProps) {
     act(() => {
       root.render(React.createElement(TestComponent, props));
     });
@@ -54,10 +75,8 @@ describe('useInfiniteScroll', () => {
   });
 
   afterEach(() => {
-    if (root) {
-      act(() => root.unmount());
-    }
-    container?.remove();
+    act(() => root.unmount());
+    container.remove();
   });
 
   it('calls onLoadMore when the sentinel intersects', () => {
@@ -72,7 +91,10 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([{ isIntersecting: true }]);
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).toHaveBeenCalledTimes(1);
@@ -91,7 +113,10 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([{ isIntersecting: true }]);
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).not.toHaveBeenCalled();
@@ -128,9 +153,18 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([{ isIntersecting: true }]);
-      observerCallback([{ isIntersecting: true }]);
-      observerCallback([{ isIntersecting: true }]);
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).toHaveBeenCalledTimes(1);
@@ -160,7 +194,10 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([{ isIntersecting: false }]);
+      observerCallback?.(
+        [{ isIntersecting: false } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).not.toHaveBeenCalled();
@@ -178,7 +215,10 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([{ isIntersecting: true }]);
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).toHaveBeenCalledTimes(1);
@@ -196,7 +236,10 @@ describe('useInfiniteScroll', () => {
     });
 
     act(() => {
-      observerCallback([{ isIntersecting: true }]);
+      observerCallback?.(
+        [{ isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).toHaveBeenCalledTimes(2);
@@ -214,7 +257,13 @@ describe('useInfiniteScroll', () => {
     expect(observerCallback).toBeDefined();
 
     act(() => {
-      observerCallback([{ isIntersecting: false }, { isIntersecting: true }]);
+      observerCallback?.(
+        [
+          { isIntersecting: false } as IntersectionObserverEntry,
+          { isIntersecting: true } as IntersectionObserverEntry,
+        ],
+        {} as IntersectionObserver
+      );
     });
 
     expect(onLoadMore).not.toHaveBeenCalled();
@@ -230,7 +279,7 @@ describe('useInfiniteScroll', () => {
       rootMargin: '200px',
     });
 
-    expect(observerOptions.rootMargin).toBe('200px');
+    expect(observerOptions?.rootMargin).toBe('200px');
   });
 
   it('recreates observer when rootMargin changes', () => {

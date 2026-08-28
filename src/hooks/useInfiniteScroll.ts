@@ -1,12 +1,19 @@
 import { useEffect, useRef } from 'react';
 
+type UseInfiniteScrollOptions = {
+  hasMore: boolean;
+  loading: boolean;
+  onLoadMore: () => void;
+  rootMargin?: string;
+};
+
 export default function useInfiniteScroll({
   hasMore,
   loading,
   onLoadMore,
   rootMargin = '100px',
-}) {
-  const sentinelRef = useRef(null);
+}: UseInfiniteScrollOptions) {
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
   const triggeredRef = useRef(false);
 
   useEffect(() => {
