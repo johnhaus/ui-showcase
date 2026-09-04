@@ -93,7 +93,7 @@ const EnableFeature = styled.div`
 `;
 
 const BudgetDashboard = () => {
-  const { isEnabled, toggle } = useFeatureFlag('BudgetDashboard');
+  const { isEnabled, toggle } = useFeatureFlag('budgetDashboard');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     income,
