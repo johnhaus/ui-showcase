@@ -25,7 +25,7 @@ interface FeatureFlagProviderProps {
 }
 
 const loadFlags = (): FeatureFlags => {
-  const stored = getItem(STORAGE_KEY, {});
+  const stored = getItem<Record<string, unknown>>(STORAGE_KEY, {});
 
   if (typeof stored !== 'object' || stored === null) {
     return { ...defaultFlags };

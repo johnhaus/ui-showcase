@@ -4,7 +4,7 @@ export const mergeFlags = <T extends BooleanFlags>(
   defaults: T,
   overrides: Record<string, unknown> = {}
 ): T => {
-  const result = { ...defaults };
+  const result: BooleanFlags = { ...defaults };
 
   for (const key of Object.keys(defaults)) {
     if (key in overrides && typeof overrides[key] === 'boolean') {
@@ -12,7 +12,7 @@ export const mergeFlags = <T extends BooleanFlags>(
     }
   }
 
-  return result;
+  return result as T;
 };
 
 export const extractOverrides = <T extends BooleanFlags>(
