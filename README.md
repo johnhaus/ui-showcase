@@ -1,8 +1,8 @@
-# UI Showcase SPA
+# UI Showcase Single Page Application
 
-A single-page application built with React 19 to showcase reusable components, scalable architecture, and state management.
+This application serves both as a showcase of my development skills and as a space to experiment with new ideas and technologies. It has evolved over time as I’ve added new pages, refined existing features, and improved the underlying codebase, making it a useful representation of my current approach to software development.
 
-This project is intentionally structured as a portfolio piece to showcase practical engineering decisions — not just UI features.
+The project is now in a solid state as a demo application, while still providing opportunities for further improvement. My current priority is migrating the project to TypeScript. I’m also considering several future additions, including data visualization for the budget dashboard, nested data such as comments for the posts explorer, and support for additional languages. There is also potential to introduce backend services as the project continues to evolve. 
 
 ---
 
@@ -14,7 +14,7 @@ This project is intentionally structured as a portfolio piece to showcase practi
 
 # 🧠 Overview
 
-UI Showcase is a SPA built with React and Vite.
+UI Showcase is a Single Page Application built with React 19 and Vite.
 
 It demonstrates:
 
@@ -22,11 +22,12 @@ It demonstrates:
 - Infinite scrolling using IntersectionObserver
 - Controlled search with query-based pagination reset
 - Extracted business logic for improved testability
+- Feature flag-driven UI
 - Reusable component abstraction
 - Light/Dark theme switching
 - Accessibility-conscious UI implementation
-
-The Posts Explorer feature fetches data from the JSONPlaceholder API and supports infinite scroll loading with loading, success, error, and retry states.
+- Form-driven data management
+- Responsive dashboard layouts
 
 ---
 
@@ -50,7 +51,7 @@ The Posts Explorer feature fetches data from the JSONPlaceholder API and support
 
 # ✨ Features
 
-## 🔁 Posts Explorer
+## 🔁 Posts Explorer - Fetches data from an API and allows for a user to search within that data
 
 - Infinite scrolling via IntersectionObserver (no scroll listeners)
 - Controlled search with separated input and applied query state
@@ -58,28 +59,37 @@ The Posts Explorer feature fetches data from the JSONPlaceholder API and support
 - Explicit loading, error, and retry handling
 - Accessible status messaging (`role="status"`, `aria-live`)
 
-## ✅ Todo List
+## 💰 Budget Dashboard - Provides a small financial tracking tool to manage income and expenses
+
+- Feature flag-controlled dashboard
+- Separate income and expense lists with derived totals for income, expenses, and remaining budget
+- Modal-based entry form
+- Extracted budget state and business logic through useBudget
+- Centralized entry type constants
+
+## ✅ Todo List - A todo list that allows users to create tasks and group by priority
 
 - Add, delete, and complete tasks
 - Priority flagging with logical grouping
 - Extracted pure utility functions (`todoUtils`)
-- Unit and interaction tests using Vitest
+- Unit tests using Vitest
 
-## 🔐 Demo Authentication (Frontend Only)
+## 🔐 Demo Authentication (Frontend Only) - Shows a login flow with create, update, and delete accounts.
+
+> ⚠️ This authentication flow is intentionally frontend-only and not production-safe.  
+> It exists to demonstrate UI state transitions and form validation patterns.
 
 - Account creation, login, update, and deletion flows
 - UI state-driven authentication transitions
 - Credentials stored in `localStorage` (intentionally insecure for demo)
 
-> ⚠️ This authentication flow is intentionally frontend-only and not production-safe.  
-> It exists to demonstrate UI state transitions and form validation patterns.
-
 ## 🎨 UI & Theming
 
 - Light/Dark mode switching using theme tokens
 - Styled-components for co-located styling
-- Reusable Button, RoundButton, and Card components
+- Reusable components, including Button, RoundButton, Card, Modal, and ToggleSwitch
 - Focus-visible styles and semantic HTML
+- Responsive layouts
 
 ---
 
@@ -88,11 +98,10 @@ The Posts Explorer feature fetches data from the JSONPlaceholder API and support
 ## Reducer-Driven State (Posts Explorer)
 
 `useReducer` was chosen over multiple `useState` hooks to:
-
-- Centralize state transitions
-- Make pagination and search resets explicit
-- Prevent inconsistent async state combinations
-- Improve maintainability as complexity grows
+    - Centralize state transitions
+    - Make pagination and search resets explicit
+    - Prevent inconsistent async state combinations
+    - Improve maintainability as complexity grows
 
 The reducer models explicit transitions for:
 
@@ -115,7 +124,31 @@ Search state is intentionally separated into:
 
 This prevents unnecessary API calls on every keystroke, ensures pagination resets cleanly when a new query is submitted, and keeps fetch logic deterministic.
 
+## 💰 Domain Logic with useBudget
+The Budget Dashboard keeps state and business logic separate from the main dashboard component through a dedicated useBudget hook.
+The hook is responsible for managing:
+
+- Income entries
+- Expense entries
+- Adding entries
+- Updating entries
+- Removing entries
+- Derived totals
+This keeps BudgetDashboard primarily responsible for composition and presentation rather than managing the underlying domain logic. The approach also makes the budget functionality easier to test independently and provides a clear boundary for future enhancements such as persistence or API integration.
+
 ---
+
+## 🚩 Feature Flag Architecture
+The Budget Dashboard uses a feature flag to control whether the feature is available. The feature flag abstraction keeps feature availability separate from the feature's implementation. It allows code for the feature to be pushed to production incrementally without affecting the user's experience.
+This pattern provides a simple foundation for:
+
+- Incremental feature releases
+- Experimental features
+- Feature previews
+- Conditional UI
+- Future integration with a remote feature-flag service
+- For this project, the feature flag is intentionally frontend-only and lightweight.
+
 
 ## 🚨 Error Handling Strategy
 
@@ -129,7 +162,6 @@ The application:
 - Provides a retry mechanism
 
 This avoids invalid async state combinations and ensures predictable behavior.  
-In a production environment, errors would integrate with monitoring or observability tooling.
 
 ---
 
@@ -150,14 +182,28 @@ A sentinel element at the bottom of the list triggers pagination when it enters 
 
 ## 🧩 Separation of Logic and UI
 
-The Todo feature extracts business logic into standalone utility functions.
+Feature-specific business logic is extracted from presentation components where appropriate. The Todo feature uses standalone utility functions for business logic, while the Budget Dashboard uses the useBudget hook to encapsulate domain state and operations.
 
-This:
+This approach:
 
 - Keeps components declarative
 - Improves unit testability
 - Encourages predictable state transitions
 - Reduces UI–logic coupling
+- Makes feature-specific behavior easier to evolve
+
+## 🧱 Component Abstraction
+
+The application uses reusable UI primitives across features, including:
+- Buttons
+- Round buttons
+- Cards
+- Modals
+- Toggle switches
+- Summary cards
+- Entry lists
+Feature components compose these primitives rather than duplicating common UI behavior.
+This demonstrates a balance between reusable abstractions and feature-specific components.
 
 ---
 
@@ -169,6 +215,9 @@ Styled-components were selected to:
 - Leverage theme-based design tokens
 - Support dynamic theming
 - Maintain scalable styling patterns
+- Keep feature-specific styles close to the components they belong to
+
+Responsive layouts are implemented using media queries within the component styles.
 
 ---
 
@@ -179,6 +228,8 @@ Styled-components were selected to:
 - Buttons are keyboard accessible
 - Semantic HTML used for interactive elements
 - Focus-visible styling implemented
+- Modal interactions provide a dedicated UI context for forms
+- Feature-toggle controls include accessible labels
 
 Accessibility was treated as a first-class concern during development.
 
@@ -188,31 +239,41 @@ Accessibility was treated as a first-class concern during development.
 
 Testing is implemented with Vitest.
 
-The Todo feature includes:
+Testing features include:
 
 - Unit tests for utility logic
-- Interaction tests for task creation, deletion, completion, and priority toggling
+- Browser tests for infinite scroll
 - Edge case validation (e.g., empty input handling)
 
-### Planned Improvements
+The application is structured to make additional feature-level testing straightforward.
 
-- Reducer unit tests for Posts Explorer
-- Mocked API tests for async flows
-- Integration tests for infinite scroll behavior
-- Visual regression testing
+# 🔮 Technical Debt & Future Improvements
 
----
+Current priorities
 
-# 🔮 Tradeoffs & Future Improvements
+- Migrate the app from JavaScript to TypeScript
+- Add improvements or fixes as needed in order to accomodate Typescript migration
 
-If evolving this into a production-ready application, I would:
+Future work
 
-- Extract API logic into a dedicated data layer
-- Implement request cancellation with `AbortController`
-- Persist Todo data beyond in-memory state
-- Expand reducer and async test coverage
-- Add API response validation
-- Remove credentials stored in `localStorage` and configure secure login
+Some ideas for future feature work include
+- Data visualization for the budget dashboard
+- Adding nested comments for the posts in the posts explorer
+
+Future improvements
+
+Future improvements to existing code that I am considering
+- Adding test cases where none currently exist
+- Adding visual regression tests
+- Adding backend services to make a more complete application
+- Integrate application monitoring and observability
+
+Known lower priority improvements
+
+There is code that could be improved, but is lower priority. Some examples include
+- Internationalization - The preferences model includes a language setting (en), but the application currently supports English only.
+- Budget calculations - useBudget currently uses multiple filter and reduce operations to derive income, expenses, and totals. These could potentially be optimized, but they are fully functional for the current use case.
+- SSR considerations: localStorage.js contain defensive checks that are not currently required. They may become relevent in the future.
 
 ---
 
@@ -230,19 +291,30 @@ All architectural decisions, implementation choices, and tradeoff evaluations we
 # 📁 Project Structure
 
 ```
+
+ 📁 Project Structure
 src/
  ├── components/        # Reusable UI components (e.g., Card)
+ ├── config/            # JSON data for feature flags
+ ├── context/           # Shared application context and feature flags logic
  ├── hooks/             # Custom hooks (e.g., useBreakpoint)
- ├── pages/             # Feature modules (login, posts-explorer, todo, settings)
+ ├── pages/             # Feature modules
+ │   ├── budget-dashboard/
+ │   ├── login/
+ │   ├── posts-explorer/
+ │   ├── settings/
+ │   └── todo/
  ├── preferences/       # User preference context & provider
- ├── shared/            # Shared UI primitives (buttons, navbar, etc.)
+ ├── shared/            # Shared UI primitives (buttons, modal, navbar, etc.)
  ├── styles/            # Shared style utilities
  ├── theme/             # Theme configuration & design tokens
+ ├── utils/             # Utility functions (formatCurrency and localStorage)
  ├── globalstyles.js    # Global styled-components styles
  ├── Home.js
  ├── Layout.js          # Layout wrapper
  ├── main.js            # Application entry point
  └── ThemedRouter.jsx   # Router abstraction with theme support
+
 ```
 
 The project follows a hybrid structure combining:
@@ -251,6 +323,7 @@ The project follows a hybrid structure combining:
 - Shared UI abstraction (`shared/`)
 - App-level architecture (`preferences/`, `theme/`, `Layout`, routing)
 - Reusable custom hooks (`hooks/`)
+- Domain-specific business logic within individual features
 
 This organization keeps concerns separated while remaining scalable as features expand.
 
@@ -262,7 +335,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/johnhaus/ui-showcase.git
-cd posts-explorer
+cd ui-showcase
 ```
 
 Install dependencies:
@@ -299,5 +372,3 @@ npm run preview
 ## Author
 
 John Haus
-
-This project was built as part of a focused effort to strengthen modern React development skills and demonstrate production-aware frontend architecture decisions suitable for real-world applications.
