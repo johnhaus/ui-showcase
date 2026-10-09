@@ -1,4 +1,5 @@
 import { formatCurrency } from './formatCurrency';
+ import { describe, it, expect } from 'vitest';
 
 describe('formatCurrency', () => {
   it('formats whole dollars', () => {
