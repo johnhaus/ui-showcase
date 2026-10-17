@@ -4,7 +4,7 @@ export const baseTheme = {
   breakpoints: {
     mobile: '768px',
   },
-};
+} as const;
 
 export const darkTheme = {
   ...baseTheme,
@@ -57,7 +57,7 @@ export const darkTheme = {
       fixedLight: palette.white,
     },
   },
-};
+} as const;
 
 export const lightTheme = {
   ...baseTheme,
@@ -107,4 +107,4 @@ export const lightTheme = {
       fixedLight: palette.white,
     },
   },
-};
+} as const;
