@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
+import { baseTheme } from '../theme/theme';
 
-const useBreakpoint = (key) => {
+type BreakpointKey = keyof typeof baseTheme.breakpoints;
+
+const useBreakpoint = (key: BreakpointKey): boolean => {
   const theme = useTheme();
   const query = `(max-width: ${theme.breakpoints[key]})`;
 
