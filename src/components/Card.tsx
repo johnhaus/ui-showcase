@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router';
+import type { ReactNode } from 'react';
 import { cardStyles } from '../styles/cardStyles';
+
+interface CardProps {
+  to: string;
+  title: string;
+  children: ReactNode;
+}
 
 const StyledCard = styled(NavLink)`
   width: 300px;
@@ -21,7 +28,7 @@ const TextArea = styled.div`
   padding: 8px;
 `;
 
-const Card = ({ to, title, children }) => {
+const Card = ({ to, title, children }: CardProps) => {
   return (
     <StyledCard to={to}>
       <Header>{title}</Header>
