@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useLocalStorage } from './useLocalStorage';
 
 describe('useLocalStorage', () => {
@@ -43,18 +43,18 @@ describe('useLocalStorage', () => {
     });
 
     expect(result.current.value).toBe('new-value');
-    expect(JSON.parse(localStorage.getItem(key))).toBe('new-value');
+    expect(localStorage.getItem(key)).toBe(JSON.stringify('new-value'));
   });
 
   it('supports functional updates', () => {
     const { result } = renderHook(() => useLocalStorage(key, 1));
 
     act(() => {
-      result.current.setValue((prev) => prev + 1);
+      result.current.setValue((prev) => (prev ?? 0) + 1);
     });
 
     expect(result.current.value).toBe(2);
-    expect(JSON.parse(localStorage.getItem(key))).toBe(2);
+    expect(localStorage.getItem(key)).toBe(JSON.stringify(2));
   });
 
   it('removes value and resets to initialValue', () => {

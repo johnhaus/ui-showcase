@@ -1,13 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getItem, setItem, removeItem } from '../utils/localStorage';
 
-export const useLocalStorage = (key, initialValue = null) => {
-  const [value, setValueState] = useState(() => getItem(key, initialValue));
+type SetValueAction<T> =
+  | T
+  | undefined
+  | ((prev: T | undefined | null) => T | undefined);
+
+export const useLocalStorage = <T = null>(
+  key: string,
+  initialValue: T | null = null
+) => {
+  const [value, setValueState] = useState<T | null | undefined>(
+    () => getItem<T>(key, initialValue)
+  );
 
   useEffect(() => {
-    const handleStorage = (e) => {
+    const handleStorage = (e: StorageEvent) => {
       if (e.key === key) {
-        setValueState(getItem(key, initialValue));
+        setValueState(getItem<T>(key, initialValue));
       }
     };
 
@@ -16,10 +26,16 @@ export const useLocalStorage = (key, initialValue = null) => {
   }, [key, initialValue]);
 
   const setValue = useCallback(
-    (newValue) => {
+    (newValue: SetValueAction<T | null>) => {
       setValueState((prev) => {
         const resolvedValue =
-          typeof newValue === 'function' ? newValue(prev) : newValue;
+          typeof newValue === 'function'
+            ? (
+                newValue as (
+                  prev: T | null | undefined
+                ) => T | null | undefined
+              )(prev)
+            : newValue;
 
         setItem(key, resolvedValue);
         return resolvedValue;
