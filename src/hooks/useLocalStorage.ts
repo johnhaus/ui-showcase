@@ -3,10 +3,17 @@ import { getItem, setItem, removeItem } from '../utils/localStorage';
 
 type SetValueAction<T> =
   | T
+  | null
   | undefined
-  | ((prev: T | undefined | null) => T | undefined);
+  | ((prev: T | null | undefined) => T | null | undefined);
 
-export const useLocalStorage = <T = null>(
+function isUpdater<T>(
+  value: SetValueAction<T>
+): value is (prev: T | null | undefined) => T | null | undefined {
+  return typeof value === 'function';
+}
+
+export const useLocalStorage = <T>(
   key: string,
   initialValue: T | null = null
 ) => {
@@ -16,7 +23,7 @@ export const useLocalStorage = <T = null>(
 
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
-      if (e.key === key) {
+      if (e.key === key || e.key === null) {
         setValueState(getItem<T>(key, initialValue));
       }
     };
@@ -26,16 +33,11 @@ export const useLocalStorage = <T = null>(
   }, [key, initialValue]);
 
   const setValue = useCallback(
-    (newValue: SetValueAction<T | null>) => {
+    (newValue: SetValueAction<T>) => {
       setValueState((prev) => {
-        const resolvedValue =
-          typeof newValue === 'function'
-            ? (
-                newValue as (
-                  prev: T | null | undefined
-                ) => T | null | undefined
-              )(prev)
-            : newValue;
+        const resolvedValue = isUpdater(newValue)
+          ? newValue(prev)
+          : newValue;
 
         setItem(key, resolvedValue);
         return resolvedValue;

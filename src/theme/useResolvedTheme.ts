@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-
-type ThemePreference = 'light' | 'dark' | 'system';
-type ResolvedTheme = 'light' | 'dark';
+import type { Theme, ResolvedTheme } from '../preferences/PreferencesContext';
 
 export function useResolvedTheme(
-  themePreference: ThemePreference
+  themePreference: Theme
 ): ResolvedTheme {
   const getSystemTheme = (): ResolvedTheme =>
     window.matchMedia('(prefers-color-scheme: dark)').matches
