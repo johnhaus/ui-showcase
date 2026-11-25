@@ -6,7 +6,7 @@ import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import prettierPlugin from 'eslint-plugin-prettier';
-import vitestPlugin from 'eslint-plugin-vitest';
+import vitest from '@vitest/eslint-plugin';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
@@ -16,7 +16,6 @@ export default defineConfig([
     files: ['**/*.{js,jsx}'],
     plugins: {
       prettier: prettierPlugin,
-      vitest: vitestPlugin,
     },
     extends: [
       js.configs.recommended,
@@ -43,17 +42,19 @@ export default defineConfig([
   },
   {
     files: ['**/*.test.js', '**/*.test.jsx', '**/*.spec.js', '**/*.spec.jsx'],
+    plugins: {
+      vitest,
+      prettier: prettierPlugin,
+    },
+    extends: [vitest.configs.recommended],
     languageOptions: {
       globals: {
         ...globals.browser,
-        // Explicit Vitest globals for test files only
-        describe: 'readonly',
-        it: 'readonly',
-        expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        vi: 'readonly',
+        ...globals.vitest,
       },
+    },
+    rules: {
+      'prettier/prettier': 'error',
     },
   },
 ]);
