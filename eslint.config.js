@@ -1,6 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-// import storybook from 'eslint-plugin-storybook';
-
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -19,7 +16,7 @@ export default defineConfig([
     },
     extends: [
       js.configs.recommended,
-      reactHooks.configs['recommended-latest'],
+      reactHooks.configs.flat['recommended-latest'],
       reactRefresh.configs.vite,
     ],
 
@@ -42,11 +39,11 @@ export default defineConfig([
   },
   {
     files: ['**/*.test.js', '**/*.test.jsx', '**/*.spec.js', '**/*.spec.jsx'],
+    ...vitest.configs.recommended,
     plugins: {
       vitest,
       prettier: prettierPlugin,
     },
-    extends: [vitest.configs.recommended],
     languageOptions: {
       globals: {
         ...globals.browser,
